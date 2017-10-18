@@ -1,0 +1,323 @@
+---
+title: "R Tutorial 4"
+output:
+  html_document:
+    toc: true
+    theme: united
+    number_sections: true
+---
+
+* * * * * * * * * * * * * * * * * * * * * * * * 
+
+Tables and Graphs for Professional Reports
+==========================
+
+Many of you will have to produce professional reports and
+presentations, for which producing nice tables and graphs is
+important. The best way to automate this process is to use
+[LaTeX](http://www.latex-project.org/) and
+[Beamer](http://en.wikibooks.org/wiki/LaTeX/Presentations) rather than
+Microsoft Word and Powerpoint. Alternatively, check out the RStudio
+team's slick [R Markdown package](http://rmarkdown.rstudio.com/),
+which makes producing beautiful reports really simple.
+
+However, here are some options if you still want to use Word. 
+
+* * * * * * * * * * * * * * * * * * * * * * * * 
+
+Tables
+----------
+
+You can produce tables quickly without having to copy and paste
+every number from R to Word. 
+
+To do so: 
+
+1. Create a table or data.frame in R. 
+2. Write this table to a comma-separated .txt file using `write.table()`. 
+3. Copy and paste the text in the .txt file into Word. 
+4. In Word, 
+    a. select the text you just pasted from the .txt file
+    b. go to Table $\rightarrow$ Convert $\rightarrow$ Convert Text to Table...
+    c. make sure "Commas" is selected under "Separate text at", click OK 
+
+The text should now end up in a table that you can format in Word.  
+
+### Example 1 ###
+Here's an example of the first two steps using a [dataset on
+U.S. states](states.csv) (codebook [here](states_codebook.csv)).
+
+```{r}
+# Read data
+states <- read.csv("states.csv")          
+
+# (1) Create a table of Bush support by U.S. region in 2000 (South versus Non-South): 
+t <- with(states, table(south, gb_win00))
+t <- prop.table(t, margin = 1)
+t                                         #large Majority of Southerners voted for Bush:    
+
+# (2) Write this table to a comma separated .txt file:    
+write.table(t, file = "bush_south.txt", sep = ",", quote = FALSE)
+```
+The .txt file will end up in your working directory. Now follow steps 3 and 4
+to create a table in Word. 
+
+### Example 2 ###
+Here's another example that again uses the [states.csv](states.csv) dataset. Say we 
+wanted to create a table with summary statistics for five of the variables
+in this dataset: 
+
+```{r}
+# Keep 5 variables in states dataset
+states_sub <- select(states, blkpct, attend_pct, bush00, obama08, womleg)
+
+# Find summary statistics for each variable
+library(plyr)                              #to access colwise function
+means <- colwise(mean)(states_sub)
+stdev <- colwise(sd)(states_sub)
+mins <- colwise(min)(states_sub)
+maxs <- colwise(max)(states_sub)
+
+# Create df with summary statistics, putting variables in rows using transpose function t()
+df <- data.frame(t(means),
+                 t(stdev),
+                 t(mins),
+                 t(maxs))
+
+# Clean column and row names
+names(df) <- c("Mean", "SD", "Min", "Max")
+row.names(df) <- c("Black (%)", "Attend Church (%)", "Bush -00 (%)",
+                   "Obama -08 (%)", "Women in Legislature (%)")
+
+# Restrict number of decimal points to 1
+df <- round(df, 1)
+df
+
+# Write data frame to .txt file
+write.table(df, file = "sumstats.txt", sep = ",", quote = FALSE)
+
+```
+
+### Exercises ###
+
+1. Create a table of summary statistics in Word for `vep04_turnout`,
+`vep08_turnout`, `unemploy`, `urban`, and `hispanic`. The table should
+include the number of observations (*n*), mean, median, 10th
+percentile, and 90th percentile of each of the variables. Put the
+variables in the rows of the table and the summary statistics in the
+columns, like we did in the example above. Format your table in Word
+to make it look similar to [this table](summary_stats_example.tif). 
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * 
+
+Graphs
+---------
+
+In Tutorial 2, we covered graphing with the `ggplot` package. Let's talk about 
+how to ensure that the graphs you produce look good when you include them 
+in your write-ups. 
+
+### Saving images as .pdf ###
+
+Saving images as .pdf is usually your best option. This format ensures that 
+images don't pixelate. (And you can insert .pdfs into word like you do with 
+other image file formats.) 
+
+To save a .pdf, use the `pdf()` function before the image you want to save, and
+include `dev.off()` after the image. 
+
+Here's an example, again using the [states.csv](states.csv) dataset: 
+
+```{r}
+states <- read.csv("states.csv")
+
+library(ggplot2)
+p <- ggplot(states, aes(x = attend_pct, y = bush00)) +
+       geom_point() +
+       geom_text(aes(label = stateid, y = bush00 - 0.7), size = 3) +
+       geom_smooth(method = "loess", se = F) +
+       xlab("% in State Attending Religious Services") +
+       ylab("% in State Voting for Bush in 2000")
+
+# Save the image as a pdf:
+pdf(file = "bush_religion.pdf", height = 6, width = 8)
+p
+dev.off()
+```
+
+### Arranging images in columns and rows ###
+
+Arranging graphs into a matrix of rows and columns, like we did on problem set
+2, can be very useful for presentational purposes. There are two ways to do 
+this using `ggplot`: 
+
+1. Create each graph separately and then arrange them using the function 
+`grid.arrange()` in the `gridExtra` package. 
+2. Use
+[facet_wrap()](http://docs.ggplot2.org/0.9.3.1/facet_wrap.html), like
+we did in [this example in Tutorial
+2](http://stanford.edu/~ejdemyr/tutorial2.html#scatter-plots).  This
+second approach is useful if we want to display the same relationship
+across different groups or years.
+
+Here's an example of the first approach: 
+
+```{r fig.width=8, fig.height=8}
+p1 <- ggplot(states, aes(x = bush00, y = bush04)) +
+        geom_point() +
+        geom_text(aes(label = stateid, y = bush04 - 0.7), size = 3) +
+        geom_smooth(method = "loess", se = F) +
+        xlab("% in State Voting for Bush in 2000") +
+        ylab("% in State Voting for Bush in 2004")  
+
+p2 <- ggplot(states, aes(x = bush04, y = obama08)) +
+        geom_point() +
+        geom_text(aes(label = stateid, y = obama08 - 0.7), size = 3) +
+        geom_smooth(method = "loess", se = F) +
+        xlab("% in State Voting for Bush in 2004") +
+        ylab("% in State Voting for Obama in 2008")
+
+p3 <- ggplot(states, aes(x = vep04_turnout, y = bush04)) +
+        geom_point() +
+        geom_text(aes(label = stateid, y = bush04 - 0.7), size = 3) +
+        geom_smooth(method = "loess", se = F) +
+        xlab("Turnout among Voting Eligible Population (2004)") +
+        ylab("% in State Voting for Bush in 2004")
+
+p4 <- ggplot(states, aes(x = vep08_turnout, y = obama08)) +
+        geom_point() +
+        geom_text(aes(label = stateid, y = obama08 - 0.7), size = 3) +
+        geom_smooth(method = "loess", se = F) +
+        xlab("Turnout among Voting Eligible Population (2008)") +
+        ylab("% in State Voting for Obama in 2008")
+
+library(gridExtra)
+grid.arrange(p1, p2, p3, p4,     #specify the graphs to include
+             ncol = 2)           #specify the number of columns we want   
+
+```
+
+Of course, you could save this graph using the `pdf()` function from above. 
+
+### Exercises ###
+
+1. Using `ggplot` and `gridExtra`, create four scatterplots of your choice 
+(not the same as in the examples above) and arrange them into 2 rows and 
+2 columns. 
+2. Save this image using `pdf()` and 'dev.off()`, specifying an appropriate 
+width and height, and insert this image into Word. 
+
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * 
+
+Hypothesis Testing in R
+==========================
+
+For Problem Set 3, you will need to carry out one- and two-sample hypothesis
+tests. Refer to the lecture notes for the theory behind these tests. What
+follows is a brief discussion of how to implement these tests in R. 
+Let's keep working with the [states.csv dataset](states.csv). 
+
+* * * * * * * * * * * * * * * * * * * * * * * *
+
+Chi-Squared Tests
+---------------
+
+Given a cross-tab, a chi-squared test essentially tests whether there is a 
+"relation between the rows and columns", or whether there is statistical 
+independence given the marginal distributions of the rows and columns. 
+
+```{r}
+states <- read.csv("states.csv")
+
+with(states, table(gb_win00, states$gay_policy))
+
+# Rearrange the order of the gay policy scale 
+states$gay_policy <- factor(states$gay_policy,
+                            levels = c("Most liberal", "Liberal",
+                                       "Conservative", "Most conservative"))
+
+with(states, table(gb_win00, states$gay_policy))
+```
+
+* * * * * * * * * * * * * * * * * * * * * * * *
+
+**Class Exercise:** What would this distribution look like if the cell 
+values approximately were proportional to the marginal distributions? 
+
+* * * * * * * * * * * * * * * * * * * * * * * *
+
+Let's do a chi-squared test on the actual distribution: 
+
+```{r, warning = F}
+t <- with(states, table(gb_win00, states$gay_policy))
+chisq.test(t)
+```
+
+How do we interpret this output? 
+
+* * * * * * * * * * * * * * * * * * * * * * * *
+
+One-Sample t-Tests
+---------------
+In one-sample t-tests, we test whether an estimated mean can be statistically
+distinguished from a posited "true" population mean $\mu_0$. Let's test whether per 
+capita income---with an estimated mean of 31951 across
+states---actually is 30000. So, the null hypothesis defines $\mu_0 =$ 30000. 
+How weird would it be to see a value of 31951 given that 
+$\mu_0$ actually is 30000? 
+
+```{r}
+mean(states$prcapinc)
+t.test(states$prcapinc, mu = 30000)
+```
+
+How do we interpret this output? 
+
+<!-- If the true mean---assumed to follow a t-distribution with 49 (*n* - 1)
+degrees of freedom---actually was 30000, then we would expect to see a
+value of 31951 only about 3 times in 1000, so we can be quite
+confident that average per capita income is not 30000. -->
+ 
+
+* * * * * * * * * * * * * * * * * * * * * * * *
+
+Two-Sample t-Tests
+---------------
+
+In two-sample t-tests, we want to test whether two samples (or groups)
+assumed to come from the same distribution have different means. For
+example, say we wanted to test whether the percentage women in state
+legislatures differ across Southern and non-Southern states. Before
+we carry out this test, what is the null hypothesis? What is the alternative
+hypothesis? 
+
+
+The following carries out a Welch test, which doesn't assume that the two
+groups have the same variances and uses Satterthaite-Welch adjustment
+of the degrees of freedom (usually resulting in non-integer degrees of
+freedom):
+
+```{r} 
+with(states, t.test(womleg ~ south))
+```
+
+How do we interpret this output? 
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * 
+\
+
+The code used in this tutorial is available [here](tutorial4.R). 
+\
+\
+
+
+
+
+
+
+
+

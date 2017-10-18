@@ -1,0 +1,60 @@
+
+/*
+----------------------------------------------------------------------
+R Markdown default css from github:rstudio/rmarkdown
+----------------------------------------------------------------------
+*/
+
+
+pre .operator,
+pre .paren {
+ color: rgb(104, 118, 135)
+}
+
+pre .literal {
+ color: #990073
+}
+
+pre .number {
+ color: #099;
+}
+
+pre .comment {
+ color: #998;
+ font-style: italic
+}
+
+pre .keyword {
+ color: #900;
+ font-weight: bold
+}
+
+pre .identifier {
+ color: rgb(0, 0, 0);
+}
+
+pre .string {
+ color: #d14;
+}
+
+code {
+    white-space: pre;
+}
+
+pre:not([class]) {
+    background-color: white;
+}
+
+.main-container {
+    max-width: 940px;
+    margin-left: auto;
+    margin-right: auto;
+}
+code {
+    color: inherit;
+    background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+    max-width:100%; 
+    height: auto; 
+}

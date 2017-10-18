@@ -1,0 +1,322 @@
+
+/*
+----------------------------------------------------------------------
+Custom styles for tutorials, @Simon Ejdemyr
+----------------------------------------------------------------------
+*/
+
+
+html {
+  min-width: 768px;
+}
+
+body {
+    top: 0px; 
+    position: relative; 
+    background-color: #fff;
+    color: #000; 
+    font: 14px/19px "Lora", "HelveticaNeue-Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 160%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-rendering: optimizeLegibility;
+    text-transform: none; 
+    font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 300; 
+    letter-spacing: -2px;
+}
+
+a {
+    color: #4582ec;
+}
+
+a:hover {
+    color: #e31a1c;
+}
+
+p {
+    margin: 20px 0; 
+}
+
+
+#this-tutorial {
+    margin: -8px 0 10px 90px;
+    text-indent: -90px;
+}
+
+#this-tutorial > span > a {
+    margin-right: 12px;
+}
+
+#summary {
+    margin-top: 6px;
+    text-indent: -89px;
+    margin-left: 89px
+}
+
+#content {
+    margin-bottom: 75px;
+}
+
+.title {
+    text-rendering: optimizeLegibility;
+    font-size: 55px;
+    letter-spacing: -2px;
+    margin-left: -4px;
+    margin-bottom: 22px; 
+}
+
+#author-date {
+    font-size: 90%;
+    padding-top: 15px;   
+}
+
+#author {
+    margin-right: 3px; 
+}
+
+.indent {
+    margin-left: 15px; 
+}
+
+
+h1:not(.title) {
+    margin-top: -5px;
+    padding-top: 35px;
+    margin-bottom: 15px;
+    font-size: 40px;
+    margin-left: -2px;
+}
+
+
+h2 {
+    margin: 27px 0 20px 0; 
+}
+
+
+.fw {
+    font: Courier;
+    letter-spacing: 1px;
+    font-size: 90%; 
+}
+
+.footer {
+    margin-top: 75px; 
+    font-size: 11px;
+    color: #777;
+}
+
+.general-note {
+    font-size: 90%; 
+    border-left: 6px solid #66c2a5;
+    background: #f9f9f9;
+    border-radius: 2px; 
+    margin: 0.5em 0; 
+    padding: 0.5em 20px;
+}
+
+.general-note > p {
+    margin: 10px 0; 
+}
+
+.general-note > p > code {
+    background-color: #f9f9f9;
+}
+
+ol {
+    padding-left: 14px; 
+}
+
+@media screen and (max-width: 991px) {
+    #content {
+	padding: 0px; 
+    }
+}
+
+
+/* Styling of R code */ 
+pre, .sourceCode.r, code {
+    padding: 0; 
+    margin: 0;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 0px;
+}
+
+div.sourceCode {
+    padding-left: 16px;
+    margin-left: -18px;
+    border-left: solid 1px #bdbdbd;
+}
+
+div.sourceCode + .level1 > h1 {
+    margin-top: 5px; 
+}
+
+pre:not(.r) {
+    padding-left: 10px;
+    padding-top: 10px; 
+    margin-left: -18px;
+    margin-top: 0;
+    margin-bottom: 25px;
+    border-left: solid 1px #bdbdbd;
+    color: #969696; 
+}
+
+
+
+/*
+
+pre.sourceCode.r {
+    border-radius: 0;
+    margin: 2em 0 2em -8px;
+    padding-left: 10px; 
+}
+
+
+pre:not(.r) {
+    margin-top: -9px;
+    background-color: white;
+    color: #333;
+}
+
+pre + pre:not(.r) {
+    margin-bottom: 5px; 
+}
+
+pre:not(.r) + pre {
+    margin-bottom: -10px; 
+}
+     
+pre:not(.r) + p {
+    margin-top: 25px; 
+}
+
+*/
+
+.indent > pre + p {
+    margin-top: -15px; 
+}
+
+pre .operator,
+pre .paren,
+pre .literal,
+pre .number,
+pre .keyword,
+pre .string
+{
+    color: #333; 
+}
+
+pre .comment {
+    color: #998;
+    font-style: italic
+}
+
+pre .keyword {
+    font-weight: normal; 
+}
+
+pre .identifier {
+    font-weight: normal; 
+}
+
+
+
+/* If want colors: 
+
+pre .operator,
+pre .paren {
+    color: rgb(104, 118, 135)
+}
+
+pre .literal {
+    color: #9e0142;
+}
+
+pre .number {
+    color: #1a9850;
+}
+
+pre .comment {
+    color: #998;
+    font-style: italic
+}
+
+pre .keyword {
+    color: #e31a1c;
+    font-weight: bold
+}
+
+pre .identifier {
+    color: #000;
+    font-weight: normal; 
+}
+
+pre .string {
+    color: #8da0cb;
+}
+
+*/
+
+/*----------------------------------------------------------------------
+Styling of navbars
+----------------------------------------------------------------------*/
+
+
+/* Fixed navbar with page content */ 
+#nav.affix {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index:10;
+    left: 0px;
+    right: 0px;
+}
+
+.navbar {
+    border-radius: 0;
+    background-image: none;
+    border: none;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    min-height: 20px;
+    background-color: #000;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.navbar-nav > li > a {
+    padding-top: 15px !important; 
+    padding-bottom: 10px !important;
+}
+
+
+.navbar-nav>li>a, 
+.navbar-nav>li>a:focus,
+.navbar-nav>li>a:hover {
+    color: #ccc; 
+}
+
+.navbar-nav>.active>a,
+.navbar-nav>.active>a:focus,
+.navbar-nav>.active>a:hover {
+    color: #4582ec;
+}
+
+.navbar-nav > li > a:hover {
+    color: #777;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+footer {
+    margin: 20px 0; 
+    font-size: small; 
+}
+

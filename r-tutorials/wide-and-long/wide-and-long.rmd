@@ -1,0 +1,199 @@
+---
+title: Wide &#38; Long Data
+author: <a href="http://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a> 
+date: January, 2016
+summary: This tutorial has three purposes&#58; to explain the difference between
+ long and wide form datasets, to show why it's generally preferable to
+ use long form datasets, and to go over how to convert datasets from wide to
+ long form.
+output:
+  html_document:
+     template: ../template/r-tutorial-template-v2.html
+     mathjax: null
+---
+
+
+
+Wide versus long data
+=====================
+
+Illustrating the difference between wide and long datasets is easiest
+using an example. Here are two datasets with the exact same information
+represented in wide and long form respectively (imagine that `avgtemp`
+represents average temperature in Celsius):  
+
+
+```{r}
+# Create long dataset
+country_long <- data.frame(
+    expand.grid(country = c("Sweden", "Denmark", "Norway"), year = 1994:1996),
+    avgtemp = round(runif(9, 3, 12), 0)
+    )
+country_long
+
+# Create wide dataset
+country_wide <- data.frame(
+    country = c("Sweden", "Denmark", "Norway"),
+    avgtemp.1994 = country_long$avgtemp[1:3],
+    avgtemp.1995 = country_long$avgtemp[4:6],
+    avgtemp.1996 = country_long$avgtemp[7:9])
+country_wide 
+```
+
+
+As is obvious, the long dataset separates the unit of analysis (country-year)
+into two separate variables. The wide dataset combines one of the keys (`year`)
+with the value variable (`avgtemp`).
+
+
+A case for long data
+=====================
+
+There are many reasons to prefer datasets structured in long
+form. Repeating some of the points made in Hadley Wickham's
+[excellent paper on the topic](http://vita.had.co.nz/papers/tidy-data.html),
+here are three reasons why you should attempt to structure your data
+in long form:
+
+1. If you have many value variables, it is difficult to summarize
+wide-form datasets at a glance (which in turn makes it hard to identify
+mistakes in the data). For example, imagine we have a dataset with 50 years
+and 10 value variables of interest --- this would result in 500 columns in wide form.
+Summarizing each column to look for strange observations, or simply understanding
+which variables are included in the dataset, becomes difficult in this case.
+
+2. Structuring data as key-value pairs --- as is done in long-form
+datasets --- facilitates conceptual clarity. For example, in
+`country_long` above, it is clear that the unit of analysis is
+country-year --- or, put differently, that the variables `country` and
+`year` jointly constitute the key in the dataset. In wide-form datasets,
+one of the variables that constitutes the unit of analysis is mixed with
+a variable that holds values. (Read more about this in Hadley's paper referenced
+above.)
+
+3. Long-form datasets are often required for advanced statistical
+analysis and graphing. For example, if you wanted to run a regression with
+year and/or country fixed effects, you would have to structure your data
+in long form. Furthermore, many graphing packages, including `ggplot`,
+rely on your data being in long form. 
+
+
+
+Wide-to-long conversion
+========================
+
+To illustrate how to convert a dataset from wide to long format, we'll
+use a UNICEF dataset on under-five child mortality across 196
+countries. Download the dataset [here](../data/unicef-u5mr.csv); it is
+based on data that can be found at
+[www.childmortality.org](http://www.childmortality.org/). The under-five mortality
+rate is expressed as the number of under-five deaths per 1,000 live births.
+
+Set your working directory and read the file: 
+
+```{r, echo=FALSE}
+u5mr <- read.csv("../data/unicef-u5mr.csv")
+```
+
+```{r, eval=FALSE}
+u5mr <- read.csv("unicef-u5mr.csv")
+```
+
+This dataset has 196 rows, one for each country, and 67 variables:  
+
+```{r}
+dim(u5mr) #dimensions of the data frame
+names(u5mr) #the variable names
+```
+
+Let's convert it to long format, where the unit of analysis is
+country-year. That is, we'll have three variables indicating country,
+year, and U5MR. This can be done using `gather()` in the `tidyr`
+package. 
+
+```{r}
+require(tidyr)
+u5mr_long <- u5mr %>% gather(year, u5mr, U5MR.1950:U5MR.2015)
+tail(u5mr_long)
+```
+
+`gather()` takes three arguments. The first two specify a key-value
+pair: year is the key and u5mr the value. The third argument specifies
+which variables in the original data to convert into the key-value
+combination (in this case, all variables from `U5MR.1950` to
+`U5MR.2015`).
+
+Note that it would be better if `year` indicated years as numeric
+values. This only requires one more line of code, which uses
+`mutate()` from the `dplyr` package, `gsub()` to remove instances of
+"`U5MR.`", and `as.numeric()` to convert the variable from character
+to numeric.
+
+```{r}
+require(dplyr)
+u5mr_long <- u5mr %>%
+    gather(year, u5mr, U5MR.1950:U5MR.2015) %>%
+    mutate(year = as.numeric(gsub("U5MR.", "", year)))
+tail(u5mr_long)
+```
+
+Learn more about `gather()` and other excellent `tidyr` functions that
+facilitate tidy data
+[here](http://blog.rstudio.org/2014/07/22/introducing-tidyr/) and
+[here](http://blog.rstudio.org/2015/09/13/tidyr-0-3-0/).
+
+
+Exercises
+==========
+
+Go to [www.childmortality.org](http://www.childmortality.org/) and
+download the dataset under "Estimates for under-five, infant and
+neonatal mortality".  (You can also download it
+[here](../data/RatesDeaths_AllIndicators.xlsx).)  The dataset is in
+wide form and contains six value variables of interest: under-five
+(0-4 years) mortality, infant (0-1 years) mortality, neonatal (0-1
+month) mortality, as well as the number of under-five, infant, and
+neonatal deaths. 
+
+
+1. Read the dataset into R. Note that it is in .xlsx format --- there
+are R packages that will allow you to read such files, or you can
+convert it to .csv using software such as Excel and then use
+`read.csv()`. Note that you don't need the first few rows of the
+dataset.
+
+2. Subset the dataset to the median estimate for each country (i.e.,
+drop rows representing lower and upper uncertainty bounds).
+
+3. Convert the dataset to long form. The final dataset should have
+four variables:
+* `country` (a character variable with the country name)
+* `year` (a numeric variable with the year)
+* `type` (a character or factor variable with six categories: "U5MR", "IMR", "NMR",
+"Under five deaths", "Infant deaths", and "Neonatal deaths").
+* `value` (a numeric variable with the value for the given country, year, and type)
+
+<div class="indent">
+
+For example, here are what 12 observations for Afghanistan (displaying
+only years 1990-91) should look like:
+
+```{r, echo=FALSE}
+
+read.csv("../data/unicef-all.csv") %>%
+    filter(CountryName == "Afghanistan", Uncertainty.bounds == "Median") %>%
+    select(CountryName, contains("1990"), contains("1991")) %>%
+    gather(type, value, U5MR.1990:Neonatal.Deaths.1991) %>%
+    mutate(year = c(rep(1990, 6), rep(1991, 6)),
+           type = rep(c("U5MR", "IMR", "NMR",
+               "Under five deaths", "Infant deaths", "Neonatal deaths"), 2)) %>%
+    select(country = CountryName, year, type, value)
+
+```
+
+</div>
+
+4. How many under-five, infant, and neonatal deaths occurred in total in the world
+in years 1990, 1995, 2000, 2005, and 2015? (Hint: see the tutorial on [collapsing data](../collapsing-data).)
+
+

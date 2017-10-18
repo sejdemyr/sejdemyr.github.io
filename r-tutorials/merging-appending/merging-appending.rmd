@@ -1,0 +1,214 @@
+---
+title: Merging &#38; Appending
+author: <a href="http://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a> 
+date: December, 2015
+summary: This tutorial explains how to combine datasets by merging or appending
+ them. Merging means transferring *columns* from one dataset to
+ another, while appending means transferring *rows* from one dataset to
+ another. These are two important tasks since datasets only very rarely
+ come with all the information we need. 
+output:
+  html_document:
+     template: ../template/r-tutorial-template-v2.html
+     mathjax: null
+---
+
+
+
+Merging
+==================
+
+Say you're interested in how economic development affects democracy
+across countries, but all you have are two separate datasets on these
+two factors. What you need to do is to combine the two.  When you're
+done with this, you also need information on what world region each
+country is located in. These tasks can be accomplished with one-to-one
+merging and one-to-many merging.
+
+
+One-to-one merging
+--------------------
+
+To illustrate, say you had two datasets that look like this: 
+
+```{r}
+# Generate toy dataset 1: 
+demo <- data.frame(
+    country = c("USA", "Albania", "Turkey", "China", "Sudan"),
+    democracy_score = c(19, 16, 16, 5, 10)
+    )
+demo
+
+# Generate toy dataset 2: 
+econ <- data.frame(
+    country = c("China", "Albania", "Turkey", "USA", "Sudan"),
+    gdp_pc = c(12000, 10000, 9000, 20000, 500)
+    )
+econ
+```
+
+We can merge these datasets using R's `merge()` command, where `by` specifies
+the variable the two datasets has in common (usually called an "ID" variable):
+```{r}
+df <- merge(demo, econ, by = "country")
+df
+```
+
+You can merge on more than one variable. Say you had two datasets that look 
+like this:
+ 
+```{r}
+# Generate toy dataset 1: 
+demo <- data.frame(
+    expand.grid(country = c("USA", "China", "Sudan"), year = 1994:1996),
+    democracy_score = round(runif(9, 0, 20), 0)
+    )
+demo
+
+# Generate toy dataset 2: 
+econ <- data.frame(
+    expand.grid(year = 1994:1996, country = c("USA", "China", "Sudan")),
+    gdp_pc = round(runif(9, 1000, 20000), 0)
+    )
+econ
+
+merge(demo, econ, by = c("country", "year"))
+```
+
+Here, we're merging on both country and year. 
+
+If one of the data frames has missing observations, only observations 
+the two data frames have in common will be kept when merging, unless
+you specify `all.x`, `all.y`, or `all`: 
+
+```{r}
+econ <- econ[-c(5, 9), ] #delete obs. 5 & 9 for illustrative purposes
+econ
+dim(demo) #different number of observations (rows) than 'econ'
+dim(econ) #different number of observations (rows) than 'demo'          
+
+merge(demo, econ, by = c("country", "year")) #keep only matching observations 
+merge(demo, econ, by = c("country", "year"), all.x = TRUE) #keep all observations in 'demo'
+```
+
+
+One-to-many merging
+------------------------
+
+In the previous examples the ID variables we used for merging uniquely 
+identified observations in each data frame. This is called one-to-one
+merging. 
+
+Sometimes we need to do things slightly differently, using one-to-many merging. 
+Say, for example, we have the following two data frames: 
+
+```{r}
+demo <- data.frame(
+    expand.grid(country = c("USA", "China", "Sudan"), year = 1994:1996),
+    democracy_score = round(runif(9, 0, 20), 0)
+    )
+demo
+
+region <- data.frame(
+    country = c("USA", "China", "Sudan"), 
+    region = c("America", "Asia", "Africa")
+    )
+region
+```
+
+A one-to-many merge of these data frames would look like this: 
+
+```{r} 
+merge(demo, region, by = "country")
+```
+
+
+Appending
+===============
+
+Appending means matching datasets vertically. We can do this in R using 
+`rbind()`. The two dataframes you're appending must have identical 
+variable names. Here's an example: 
+
+```{r}
+df1 <- data.frame(
+    year = rep(1990:1995, 2),
+    country = c(rep("country1", 6), rep("country2", 6))
+    )
+df2 <- data.frame(
+    year = rep(1996:2000, 2),
+    country = c(rep("country1", 5), rep("country2", 5))
+    )
+
+df <- rbind(df1, df2) #append
+
+require(dplyr) #to display output in certain order
+arrange(df, country, year)
+```
+
+
+
+Exercises 
+==============
+
+**Warm-up:** Merge the three data frames defined below. Your final data
+frame should have 9 rows and 5 columns. Hint: merge only two data
+frames at a time.
+
+```{r}
+df1 <- data.frame(
+    name = c("Mary", "Thor", "Sven", "Jane", "Ake", "Stephan",
+             "Bjorn", "Oden", "Dennis"),
+    treatment_gr = c(rep(c(1, 2, 3), each = 3)),
+    weight_p1 = round(runif(9, 100, 200), 0)
+    )
+df2 <- data.frame(
+    name = c("Sven", "Jane", "Ake", "Mary", "Thor", "Stephan", 
+             "Oden", "Bjorn"),
+    weight_p2 = round(runif(8, 100, 200), 0)
+    )                           
+df3 <- data.frame(
+    treatment_gr = c(1, 2, 3),
+    type = c("dog-lovers", "cat-lovers", "all-lovers")
+    )
+
+```
+
+
+**More extensive:** A prominent economic theory predicts that higher
+income inequality should be associated with more redistribution from
+the rich to the poor (Meltzer and Richard 1981). Let's create a
+dataset that will allow us to test this prediction using
+U.S. state-level data.
+
+1. Download data on inequality and tax collection (links below). Take
+a moment to familiarize yourself with the codebooks. Then read each
+dataset into R.
+* [Dataset](../data/Frank_All_v97.csv) with six measures of inequality
+(originally from [Mark W. Frank](http://www.shsu.edu/eco_mwf/inequality.html)). 
+* [Tax data](http://www.census.gov/govs/statetax/historical_data.html) that
+can be used to measure fiscal capacity/redistribution. Use 
+the "State Government Tax Collections" link. 
+
+
+
+2. Keep only the Year, State, Name, Total Taxes, and Total Income
+Taxes variables in the tax dataset, and rename these if
+necessary. Keep all the variables in the inequality dataset. Subset
+both datasets to be in the year range 1960-2012. 
+
+3. Merge the two datasets. Take a moment to think about how to do
+this. Your final dataset should have 2650 rows and 12 variables. (Keep
+only data on the 50 states; 50 states x 53 years = 2650 observations.)
+Hint: You may find [this dataset with state identifiers](../data/State_FIPS.csv) 
+helpful. 
+
+4. The Total Tax and Total Income Tax variables from the tax dataset have
+commas in them, and are therefore not numeric. Remove the commas and 
+convert the variables to numeric. Hint: `gsub()`. 
+
+
+
+
+
+

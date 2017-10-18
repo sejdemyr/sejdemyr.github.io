@@ -1,0 +1,495 @@
+---
+title: Modifying Data
+author: <a href="http://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a> 
+date: December, 2015
+summary: Being able to quickly modify datasets is critical. This involves,
+ among other things&#58; subsetting, sorting, extracting unique
+ observations, renaming variables, dropping variables, and creating new
+ variables.  To accomplish each of these tasks, we'll use a set of
+ relatively new functions introduced in the **dplyr** package developed
+ by [Hadley Wickham](http://had.co.nz/).  A nice introduction to this
+ package is [here](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html).
+ I'll try to give more of a beginner's introduction below.
+related: <a href="../dataset-basics">Dataset basics</a>
+         <a href="../collapsing-data">Collapsing data</a> 
+         <a href="../merging-appending">Merging &amp; appending</a>
+output:
+  html_document:
+     template: ../template/r-tutorial-template-v2.html
+     mathjax: null
+---
+
+
+Overview
+====================
+
+The table below gives an overview of very common data management tasks
+and their corresponding dplyr function. 
+
+<table class="table" style="width: auto !important">
+
+<thead class="text-left">
+<tr>
+<th>Task</th>
+<th>Function</th>
+</tr>
+</thead>
+
+<tfoot>
+<tr>
+<td>
+<span style="font-size: 11px"> &#42;Covered in a [separate tutorial](../collapsing-data).</span>
+</td>
+<td> </td>
+</tr>
+</tfoot>
+
+
+<tbody>
+<tr>
+<td>Subsetting</td>
+<td>`filter()`</td>
+</tr>
+<tr>
+<td>Sorting</td>
+<td>`arrange()`</td>
+</tr>
+<tr>
+<td>Dropping variables</td>
+<td>`select()`</td>
+</tr>
+<tr>
+<td>Renaming variables</td>
+<td>`rename()`</td>
+</tr>
+<tr>
+<td>Extracting unique values</td>
+<td>`distinct()`</td>
+</tr>
+<tr>
+<td>Creating new variables</td>
+<td>`mutate()`</td>
+</tr>
+<tr>
+<td>Collapsing data&#42;</td>
+<td>`group_by()` and `summarize()` 
+</tr>
+</tbody>
+
+
+
+</table>
+
+
+All of these tasks can also be accomplished using R's base
+functions, but this usually requires more involved code.  An
+additional advantage of using dplyr functions is that they can be
+combined in an elegant way using [chaining](#chaining).
+
+To demonstrate these functions, we'll rely on a small
+data frame called `countries` that you can create as follows: 
+
+```{r}
+countries <- data.frame(
+    expand.grid(country = c("USA", "China", "Sudan"), year = 1994:1996),
+    gdp_pc = round(runif(9, 1000, 20000), 0)
+    )
+countries$country <- as.character(countries$country) #factor --> character
+countries
+```
+
+We'll also make use of `world-small.csv`, which you can download
+[here](../data/world-small.csv).
+
+Before we begin, let's also load two packages we'll need. (Of course,
+they need to be installed first --- remind yourself
+[here](../introduction/#packages).)
+
+```{r}
+require(plyr) 
+require(dplyr) 
+```
+
+<div style="margin-top: 15px"> </div>
+
+Subsetting
+==============
+
+The best way to subset a dataset is by using a logical statement. The
+idea is that we want to keep only some *rows* in a dataset that meet
+some logical condition.
+
+Say we wanted to subset the `countries` dataset to (1) a certain
+country, (2) a certain year, (3) a certain country *and* year, or (4)
+a certain GDP range. Here's how we can do this using `filter()`.
+
+```{r}
+filter(countries, country == "China")
+filter(countries, year == 1996)
+filter(countries, country == "USA" & year == 1995)
+filter(countries, gdp_pc > 5000 & gdp_pc < 14000)
+```
+
+As should be obvious, the first argument in the `filter()` function
+specifies the dataset on which to carry out the operation. The second
+argument specifies the logical operation used to filter the data.
+
+In fact, **the first argument in all dplyr functions is a dataset**.
+Using dplyr we can move this first argument outside the function and
+use the special operator `%>%` to chain statements. The benefits of
+this will become more obvious in the section on chaining. The code
+below accomplishes the same thing as that above using `%>%` and moving
+the data frame outside the `filter()` function.
+
+```{r}
+countries %>% filter(country == "China") 
+countries %>% filter(year == 1996)
+countries %>% filter(country == "USA" & year == 1995)
+countries %>% filter(gdp_pc > 5000 & gdp_pc < 14000)
+```
+
+One last note that applies throughout most of this tutorial: I'm not
+saving the subsets to any object here. You would normally want to do
+this. (I'm not doing it here so that you can see the output of the
+function without extra lines of code.) Just to be clear, if you wanted
+to take a subset and save the result into an object you'd use the
+assignment operator as usual.
+
+```{r}
+china <- countries %>% filter(country == "China")
+china
+```
+
+
+Sorting
+============
+
+Use `arrange()` to sort a dataset. Here are a few examples. (I'll use
+the chaining operator `%>%` from now on --- if you're confused about
+this remember that you can just bring the data frame `countries`
+inside the function.)
+
+```{r}
+# Sort by country names 
+countries %>% arrange(country) 
+
+# Sort by GDP (ascending is default) 
+countries %>% arrange(gdp_pc)
+
+# Sort by GDP (descending)
+countries %>% arrange(desc(gdp_pc))
+
+# Sort by country name, then GDP
+countries %>% arrange(country, gdp_pc)
+```
+
+Dropping
+====================
+
+To only keep some variables in a data frame use `select()`:
+
+```{r}
+# Keep country and GDP
+countries %>% select(country, gdp_pc)
+
+# Same thing using '-', implying you want to delete a variable
+countries %>% select(-year)
+
+# Selecting and renaming in one
+countries %>% select(country_name = country, gdp_pc)
+```
+
+Renaming
+====================
+
+As illustrated in the last line of code above you can rename variables
+using `select()`. But this can also be done using `rename()`:
+
+```{r}
+# Rename GDP per capita
+countries %>% rename(GDP.PC = gdp_pc)
+```
+
+Unique values
+=====================
+
+Removing duplicate observations can be useful, but be careful: entire
+rows will be deleted. Use `distinct()`:
+
+```{r}
+countries %>% distinct(country)
+```
+
+Note that the function keeps the first non-duplicate. This is more
+useful when you suspect that duplicate values of the following kind
+have slipped into the dataset:
+
+```{r}
+countries2 <- rbind(
+    data.frame(country = "USA", year = 1994, gdp_pc = 10000),
+    countries
+    )
+countries2 
+```
+
+Note that we all of a sudden have two USA 1994 observations. Delete
+one of them using `distinct()`.
+
+```{r}
+countries2 %>% distinct(country, year)
+```
+
+New variables 
+================
+
+Use `mutate()` to create new variables or to modify existing
+variables. Here are a few examples.
+
+```{r}
+# Create a new variable that has GDP per capita in 1000s
+countries %>% mutate(gdppc_1k = gdp_pc / 1000)
+
+# Create a new variable with lower-case country names
+countries %>% mutate(country_lc = tolower(country))
+
+# Both in one statement
+countries %>% mutate(gdppc_1k = gdp_pc / 1000,
+                     country_lc = tolower(country))
+    
+```
+
+A lot of times it makes more sense to just overwrite an
+existing variable rather than adding a variable.
+
+```{r}
+countries %>% mutate(country = tolower(country))
+```
+
+`mutate()` can be combined with two other useful functions: `ifelse()`
+and `revalue()`. 
+
+
+<span class="fw"> ifelse() </span>
+------------------------------
+
+`ifelse()` is a logical function that is useful for modifying
+variables in datasets (or individual vectors). Here's an illustration
+of how it works:
+
+```{r}
+numbers <- 1:10
+ifelse(numbers > 5, numbers * 10, numbers / 10)
+```
+
+The function takes three arguments: (1) a logical test, (2) what to do
+if the test is true, and (3) what to do if the test is false. Thus, in
+the code above numbers greater than 5 are multiplied by 10 and numbers
+less than or equal to 5 are divided by 10.
+
+We can apply this to variables in data frames. Let's use the `world-small.csv`
+dataset to illustrate (download [here](../data/world-small.csv)). 
+
+
+```{r, echo=FALSE}
+world <- read.csv("../data/world-small.csv")
+```
+
+```{r, eval=FALSE}
+# Read world-small dataset 
+world <- read.csv("world-small.csv")
+```
+
+
+```{r}
+head(world)
+
+# Create a new variable equal to "democracy" if a country has
+# a polity score >= 15 and "autocracy" otherwise 
+world <- world %>% mutate(democracy = ifelse(polityIV >= 15, "democracy", "autocracy"))
+head(world)
+
+# Or represent this information as a dummy variable instead 
+world <- world %>% mutate(democracy = ifelse(polityIV >= 15, 1, 0))
+head(world)
+```
+
+We first created a new variable called `democracy` equal to
+"democracy" if a country has a Polity IV score of at least 15 and
+"autocracy" otherwise.  We then overwrote this variable with a "dummy
+variable" representing the same information using zeroes and ones. 
+
+<div class="general-note">
+
+<strong> General note about dummy variables: </strong> Dummy variables
+--- sometimes called "indicator variables" or "binary variables" ---
+are extremely useful for representing binary information. Their
+usefulness in part stems from their applicability in regression models
+and in part from how they can be used to summarize information. For
+example, taking the mean of the dummy variable `democracy` above ---
+that is, `mean(world$democracy)` --- gives us the proportion of
+countries that we classified as "democracy".
+
+</div>
+
+
+
+<span class="fw"> revalue() </span>
+------------------------------
+
+We often want to recode the categories of a variable. 
+For example, take a look at the `region` variable in `world`:
+
+```{r}
+table(world$region)
+```
+
+Currently this variable has eight categories. Say we wanted to
+simplify it a little bit by combining the three regions in Europe. We
+also want to rename the two regions in America. This can be accomplished
+with `revalue()` from the **plyr** package. 
+
+```{r}
+world$region <- revalue(world$region, c(
+    "C&E Europe" = "Europe",
+    "Scandinavia" = "Europe",
+    "W. Europe" = "Europe",
+    "N. America" = "North America",
+    "S. America" = "South America"))
+table(world$region)
+```
+
+This can also be accomplished with `ifelse()`, but we would have to
+nest several `ifelse()` statements. For this reason I prefer `revalue()`. 
+
+
+
+
+A note on factor variables 
+------------------------------
+
+The `read.csv()` function automatically converts variables that
+contain strings to the class "factor". Note, for example, that both
+the `country` and `region` variables in the `world` dataset are
+represented as factors. 
+
+```{r}
+class(world$country)
+class(world$region)
+```
+
+These variables are useful in regression models in R. For example,
+including `region` in an OLS model (using command `lm()`) would
+automatically represent all regions as dummy variables except one
+left as the reference category. If that's not making sense to you
+at this stage, don't worry at all.
+
+But factor variables can also cause issues if you're not careful.  In
+particular, factor variables are sometimes displayed to the user as a
+certain set of numbers, yet are stored internally as an entirely
+different set of numbers. For example, say the `gdppcap08` variable in
+`world` had been read as a factor. (Fortunately, in reality it was
+read correctly as numeric, but this sometimes isn't the case.) 
+
+
+```{r}
+# Recode gdp per capita to factor
+# NOTE: Only for illustrative purposes! 
+world <- world %>% mutate(gdppcap08 = as.factor(gdppcap08))
+head(world)
+class(world$gdppcap08)
+```
+
+Ok, the GDP variable is now a factor variable. Note, though, that it
+looks just like a numeric variable. You might therefore be tempted to
+try to do things like `mean(world$gdppcap08)`, yet this would return
+`NA` instead of an actual value as before. You might also be tempted to
+recode the GDP variable from factor to numeric using the following code:
+
+```{r}
+head(world %>% mutate(gdppcap08 = as.numeric(gdppcap08)))
+```
+
+Something has gone seriously wrong --- look at the values of
+`gdppcap08`. **Here's the learning lesson: to convert a factor
+variable to numeric, you have to recode it to character first.** Use
+`as.numeric(as.character(variable))`, where `variable` is the factor
+variable to convert. 
+
+```{r}
+world <- world %>% mutate(gdppcap08 = as.numeric(as.character(gdppcap08)))
+head(world)
+class(world$gdppcap08)
+```
+
+
+Chaining
+=============
+
+What if you wanted to apply *multiple* functions to one data frame?
+This is where chaining is elegant and facilitates debugging.
+
+More specifically, say we wanted to use `countries` to create a new
+data frame called `countries_new`, which should have observations from
+years 1995 and 1996 (dropping 1994), should be sorted by country name
+(in lower case), and should have a new variable equal to GDP per
+capita in 1000s.
+
+Here's how we could do this *without* chaining: 
+
+```{r}
+countries_new <- filter(countries, year != 1994) #drop year 1994
+countries_new <- arrange(countries_new, country) #sort by country names
+countries_new <- mutate(countries_new, country = tolower(country), #convert name to lower-case
+                                       gdppc_1k = gdp_pc / 1000) #create GDP pc in 1000s
+countries_new
+```
+
+Here's the same thing using chaining: 
+
+```{r}
+countries_new <- countries %>%
+    filter(year != 1994) %>%
+    arrange(country) %>%
+    mutate(country = tolower(country), gdppc_1k = gdp_pc / 1000)
+countries_new
+```
+
+I find code that makes use of chaining more readable. Chaining always
+begins with specifying the data frame we want to operate on (e.g.,
+`countries`).  Every subsequent statement will operate on this data
+frame, starting with the function that comes right after the data
+frame and working its way down.  In our case, the first thing we'll do
+to `countries` is to subset it. We'll then sort it by country name. Lastly,
+we'll overwrite the country name to be lower-case and create a new
+variable representing GDP per capita in 1000s.
+
+
+
+Exercises 
+==================
+
+1. Read the `world-small.csv` dataset into R and store it in an object called `world`.
+
+2. Subset `world` to European countries. Save this subset as a new data frame called `europe`.
+
+3. Add two variables to `europe`: 
+    a. A variable that recodes `polityIV` from 0-20 to -10-10. 
+    b. A variable that categorizes a country as "rich" or "poor" based on some 
+cutoff of `gdppcap08` you think is reasonable. 
+
+4. Drop the `region` variable in `europe` (keep the rest). 
+
+5. Sort `europe` based on Polity IV. 
+
+6. Repeat Exercises 2-5 using chaining. 
+
+7. What was the world's mean GDP per capita in 2008? Polity IV score?
+
+8. What was Africa's mean GDP per capita and Polity IV score?
+
+9. What was the poorest country in the world in 2008? Richest? 
+
+10. How many countries in Europe are "rich" according to your coding? 
+How many are poor? What percentage have Polity IV scores of at least 18?
+
+

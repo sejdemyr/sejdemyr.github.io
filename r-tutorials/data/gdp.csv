@@ -1,0 +1,291 @@
+"country","year","gdppcap"
+"Albania",2008,7715
+"Algeria",2008,8033
+"Angola",2008,5899
+"Argentina",2008,14333
+"Armenia",2008,6070
+"Australia",2008,35677
+"Austria",2008,38152
+"Azerbaijan",2008,8765
+"Bahrain",2008,34605
+"Bangladesh",2008,1334
+"Belarus",2008,12261
+"Belgium",2008,34493
+"Benin",2008,1468
+"Bhutan",2008,4755
+"Bolivia",2008,4278
+"Botswana",2008,13392
+"Brazil",2008,10296
+"Bulgaria",2008,12393
+"Burkina Faso",2008,1161
+"Cambodia",2008,1905
+"Cameroon",2008,2215
+"Canada",2008,36444
+"Central African Republic",2008,736
+"Chad",2008,1455
+"Chile",2008,14465
+"China",2008,5962
+"Colombia",2008,8885
+"Comoros",2008,1169
+"Congo Brazzaville",2008,3946
+"Congo Kinshasa",2008,321
+"Costa Rica",2008,11241
+"Croatia",2008,19084
+"Cuba",2008,9500
+"Czech Republic",2008,24712
+"Denmark",2008,36607
+"Djibouti",2008,2140
+"Ecuador",2008,8009
+"Egypt",2008,5416
+"El Salvador",2008,6794
+"Equatorial Guinea",2008,33873
+"Eritrea",2008,632
+"Estonia",2008,20662
+"Fiji",2008,4382
+"Finland",2008,35427
+"France",2008,34045
+"Gabon",2008,14527
+"Gambia",2008,1363
+"Georgia",2008,4896
+"Germany",2008,35613
+"Ghana",2008,1452
+"Greece",2008,29361
+"Guatemala",2008,4760
+"Guinea",2008,1204
+"Guinea-Bissau",2008,538
+"Guyana",2008,2542
+"Haiti",2008,1177
+"Honduras",2008,3965
+"Hungary",2008,19330
+"India",2008,2972
+"Indonesia",2008,3975
+"Iran",2008,11666
+"Iraq",2008,3570
+"Ireland",2008,44200
+"Israel",2008,27548
+"Italy",2008,30756
+"Jamaica",2008,7705
+"Japan",2008,34099
+"Jordan",2008,5283
+"Kazakhstan",2008,11315
+"Kenya",2008,1590
+"Korea South",2008,27939
+"Kuwait",2008,39914
+"Kyrgyzstan",2008,2188
+"Laos",2008,2134
+"Latvia",2008,17100
+"Lesotho",2008,1588
+"Liberia",2008,388
+"Libya",2008,15402
+"Lithuania",2008,18824
+"Macedonia",2008,10041
+"Madagascar",2008,1049
+"Malawi",2008,837
+"Malaysia",2008,14215
+"Mali",2008,1128
+"Mauritania",2008,2052
+"Mauritius",2008,12079
+"Mexico",2008,14495
+"Moldova",2008,2925
+"Mongolia",2008,3566
+"Morocco",2008,4388
+"Mozambique",2008,855
+"Namibia",2008,6343
+"Nepal",2008,1112
+"Netherlands",2008,40849
+"New Zealand",2008,27029
+"Nicaragua",2008,2682
+"Niger",2008,684
+"Nigeria",2008,2082
+"Norway",2008,58138
+"Oman",2008,22478
+"Pakistan",2008,2644
+"Papua New Guinea",2008,2208
+"Paraguay",2008,4709
+"Peru",2008,8507
+"Philippines",2008,3510
+"Poland",2008,17625
+"Portugal",2008,23074
+"Qatar",2008,85868
+"Romania",2008,14065
+"Russia",2008,16139
+"Rwanda",2008,1022
+"Saudi Arabia",2008,23920
+"Senegal",2008,1772
+"Sierra Leone",2008,766
+"Singapore",2008,49284
+"Slovakia",2008,22081
+"Slovenia",2008,27605
+"Solomon Islands",2008,2610
+"South Africa",2008,10109
+"Spain",2008,31954
+"Sri Lanka",2008,4560
+"Sudan",2008,2153
+"Swaziland",2008,4928
+"Sweden",2008,37383
+"Switzerland",2008,42536
+"Taiwan",2008,30881
+"Tajikistan",2008,1906
+"Tanzania",2008,1263
+"Thailand",2008,7703
+"Togo",2008,829
+"Tunisia",2008,7996
+"Turkey",2008,13920
+"Turkmenistan",2008,6641
+"UAE",2008,38830
+"Uganda",2008,1165
+"Ukraine",2008,7271
+"United Kingdom",2008,35445
+"United States",2008,46716
+"Uruguay",2008,12734
+"Uzbekistan",2008,2656
+"Venezuela",2008,12804
+"Vietnam",2008,2785
+"Yemen",2008,2400
+"Zambia",2008,1356
+"Zimbabwe",2008,188
+"Albania",2009,7717
+"Algeria",2009,8049
+"Angola",2009,5900
+"Argentina",2009,14324
+"Armenia",2009,6071
+"Australia",2009,35682
+"Austria",2009,38152
+"Azerbaijan",2009,8764
+"Bahrain",2009,34609
+"Bangladesh",2009,1335
+"Belarus",2009,12256
+"Belgium",2009,34488
+"Benin",2009,1478
+"Bhutan",2009,4762
+"Bolivia",2009,4277
+"Botswana",2009,13377
+"Brazil",2009,10292
+"Bulgaria",2009,12401
+"Burkina Faso",2009,1159
+"Cambodia",2009,1906
+"Cameroon",2009,2216
+"Canada",2009,36439
+"Central African Republic",2009,731
+"Chad",2009,1447
+"Chile",2009,14466
+"China",2009,5966
+"Colombia",2009,8883
+"Comoros",2009,1174
+"Congo Brazzaville",2009,3936
+"Congo Kinshasa",2009,327
+"Costa Rica",2009,11244
+"Croatia",2009,19076
+"Cuba",2009,9510
+"Czech Republic",2009,24728
+"Denmark",2009,36608
+"Djibouti",2009,2155
+"Ecuador",2009,8009
+"Egypt",2009,5399
+"El Salvador",2009,6795
+"Equatorial Guinea",2009,33859
+"Eritrea",2009,621
+"Estonia",2009,20665
+"Fiji",2009,4383
+"Finland",2009,35439
+"France",2009,34043
+"Gabon",2009,14517
+"Gambia",2009,1368
+"Georgia",2009,4896
+"Germany",2009,35611
+"Ghana",2009,1470
+"Greece",2009,29362
+"Guatemala",2009,4754
+"Guinea",2009,1208
+"Guinea-Bissau",2009,555
+"Guyana",2009,2561
+"Haiti",2009,1183
+"Honduras",2009,3959
+"Hungary",2009,19344
+"India",2009,2976
+"Indonesia",2009,3969
+"Iran",2009,11651
+"Iraq",2009,3565
+"Ireland",2009,44190
+"Israel",2009,27542
+"Italy",2009,30734
+"Jamaica",2009,7696
+"Japan",2009,34090
+"Jordan",2009,5291
+"Kazakhstan",2009,11332
+"Kenya",2009,1593
+"Korea South",2009,27945
+"Kuwait",2009,39910
+"Kyrgyzstan",2009,2203
+"Laos",2009,2138
+"Latvia",2009,17099
+"Lesotho",2009,1591
+"Liberia",2009,393
+"Libya",2009,15396
+"Lithuania",2009,18815
+"Macedonia",2009,10033
+"Madagascar",2009,1068
+"Malawi",2009,841
+"Malaysia",2009,14199
+"Mali",2009,1152
+"Mauritania",2009,2063
+"Mauritius",2009,12076
+"Mexico",2009,14499
+"Moldova",2009,2934
+"Mongolia",2009,3562
+"Morocco",2009,4369
+"Mozambique",2009,846
+"Namibia",2009,6342
+"Nepal",2009,1120
+"Netherlands",2009,40862
+"New Zealand",2009,27022
+"Nicaragua",2009,2675
+"Niger",2009,677
+"Nigeria",2009,2094
+"Norway",2009,58136
+"Oman",2009,22473
+"Pakistan",2009,2650
+"Papua New Guinea",2009,2185
+"Paraguay",2009,4713
+"Peru",2009,8505
+"Philippines",2009,3494
+"Poland",2009,17632
+"Portugal",2009,23068
+"Qatar",2009,85869
+"Romania",2009,14068
+"Russia",2009,16139
+"Rwanda",2009,1024
+"Saudi Arabia",2009,23909
+"Senegal",2009,1787
+"Sierra Leone",2009,761
+"Singapore",2009,49290
+"Slovakia",2009,22082
+"Slovenia",2009,27622
+"Solomon Islands",2009,2589
+"South Africa",2009,10127
+"Spain",2009,31963
+"Sri Lanka",2009,4556
+"Sudan",2009,2160
+"Swaziland",2009,4925
+"Sweden",2009,37384
+"Switzerland",2009,42552
+"Taiwan",2009,30887
+"Tajikistan",2009,1902
+"Tanzania",2009,1265
+"Thailand",2009,7702
+"Togo",2009,822
+"Tunisia",2009,8005
+"Turkey",2009,13918
+"Turkmenistan",2009,6636
+"UAE",2009,38821
+"Uganda",2009,1155
+"Ukraine",2009,7278
+"United Kingdom",2009,35464
+"United States",2009,46730
+"Uruguay",2009,12738
+"Uzbekistan",2009,2657
+"Venezuela",2009,12798
+"Vietnam",2009,2781
+"Yemen",2009,2403
+"Zambia",2009,1333
+"Zimbabwe",2009,177

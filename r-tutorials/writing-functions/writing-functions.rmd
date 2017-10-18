@@ -1,0 +1,520 @@
+---
+title: Writing Functions
+author: <a href="http://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a> 
+date: January, 2016
+summary: This tutorial explains how you can write your own functions in R. Why
+ do this? Functions are useful when you want to execute a task over and
+ over again, resulting in less verbose and more easily interpretable
+ code. After explaining the basics of writing functions, this tutorial
+ covers two data science applications for writing functions.
+output:
+  html_document:
+     template: ../template/r-tutorial-template-v2.html
+     mathjax: null
+---
+
+
+
+Motivation
+=============
+
+To illustrate the value of functions, let's start by a thought experiment:
+say R didn't provide a function for finding the median of a numeric vector.
+(Of course this is not true --- R has a built-in function called `median()`
+for this purpose.) In this annoying scenario, it would still be possible
+to find the median using a few lines of code. 
+
+```{r}
+# Create a numeric vector 
+v <- c(2, 5, 8, 0, 10)
+
+# Find the number of elements in v  
+n <- length(v)
+
+# Is n odd?
+n %% 2  #use mod to find remainder after dividing by 2; if remainder is 1 --> odd
+ 
+# Cool, it's odd so let's find the mid-value after sorting v
+v_sort <- sort(v)
+v_sort[n / 2 + 1] #this is the median
+```
+
+Ok, we found the median, but what a nightmare! Imagine if we had to go
+through these steps every time we wanted to find the median.  Plus,
+the code above isn't general enough to account for scenarios in which
+the numeric vector has an even number of elements. In scenarios like
+this, it's therefore extremely useful to write a function. Here's one
+way of doing so for finding the median: 
+
+```{r}
+median2 <- function(vec) {
+    n <- length(vec)
+    odd <- n %% 2 == 1
+    vec_sort <- sort(vec)
+
+    if(odd) {
+        result <- vec_sort[n / 2 + 1]
+    } else {
+        result <- (vec_sort[n / 2] + vec_sort[n / 2 + 1]) / 2
+    }
+
+    return(result)
+}
+```
+
+Let's test if it works on two vectors, one with an odd number
+of elements and the other with an even number:
+
+```{r}
+v1 <- c(2, 5, 8, 0, 10)
+median2(v1)
+
+v2 <- c(2, 5, 8, 0, 10, 12)
+median2(v2)
+```
+
+This motivating example shows that writing functions can save us many
+lines of code and avoid mistakes that inevitably will happen if you
+rely too heavily on copying and pasting code.
+
+
+Building blocks
+=============
+
+Remind yourself of a basic mathematical principle: a function takes
+some input, transforms it, and outputs the transformation. For example,
+the function *f(x) = 2x* takes a vector *x* and transforms each element
+to twice its original value. Functions in R (and other languages) do
+the same thing. For example:
+
+```{r}
+doubleval <- function(x) 2 * x #write a function that doubles x
+doubleval(c(3, 5, 7)) #test the function on a vector
+```
+
+Here are other, equivalent, ways of writing this function: 
+
+```{r}
+doubleval <- function(x) return(2 * x)
+doubleval <- function(x) {
+    tranformation <- 2 * x
+    transformation
+}
+doubleval <- function(x) {
+    tranformation <- 2 * x
+    return(transformation)
+}
+```
+
+Observe the following:
+
+1. Functions include some input or, more technically, one or many
+*parameters*. The function `doubleval` has one parameter called `x`;
+`median2` also has one parameter (`vec`). The name of parameters are
+arbitrary: you can call them whatever you want as long as you
+reference the same name within the function. Note that functions often
+have more than one parameter.
+
+2. Functions include a line that specifies the output of the
+function. For clarity, it is useful to use the `return()` statement
+for indicating what the function is outputting, although this is
+not necessary. 
+
+3. If a function includes several operations, those operations should
+be written on separate lines and be surrounded by curly brackets
+(`{}`).  Very simple functions can be written on one line, omitting
+the curly brackets.
+
+4. Objects created within functions do not exist in the
+global variable space. For example, `vec_sort` in the function
+`median2` (and other objects created within the function) cannot be
+accessed outside the function. This relates to an important feature of
+programming called [scope](http://www.wikiwand.com/en/Scope_(computer_science)). 
+
+
+Applications
+=============
+
+Functions can be used in a wide variety of scenarios. Here are two applications, 
+which I go over in detail below:
+
+1. A function that reads and manipulates a .csv file. Use it with
+`lapply()` or in a `for` loop to iterate over several files with a
+similar structure. Then combine the resulting data frames into one
+data frame.
+
+2. A function that carries out a regression or graphing analysis on a
+select number of variables or on a subset of the data.
+
+
+Reading several files
+---------------------
+
+Begin by downloading a [.zip file with service request data from NYC](../data/nyc-311-sample.zip).
+The zip file contains six files for years 2004-2009, each with 10,000 observations. The data are
+originally from [NYC's Open Data portal](https://nycopendata.socrata.com/data?cat=social%20services),
+which hosts datasets with millions of service requests filed by residents through
+the city's 311 program. For the purpose of this example, I have taken a random sample
+of 10,000 for each year.
+
+Here's what the 2004 file looks like (the other years have the same structure).
+
+```{r}
+
+```{r, eval=FALSE}
+# Read the 311 data for 2004 (after setting the working directory)
+nyc04 <- read.csv("nyc-311-2004-sample.csv")
+head(nyc04)
+```
+
+```{r, echo=FALSE}
+nyc04 <- read.csv("../data/nyc-311-sample/nyc-311-2004-sample.csv")
+head(nyc04)
+```
+
+The variables in the data are as follows: 
+
+* `Unique.Key`: An id number unique to each request.
+* `Created.Date`: The date the request was filed in the 311 system.
+* `Closed.Date`: The date the request was resolved by city workers (`NA`
+implies that it was never resolved).
+* `Complaint.Type`: The subject of the complaint.
+* `Location`: Coordinates that give the location of the service issue.
+
+
+Our goal with the function is to read the file and clean it. In particular,
+we want to convert the `Created.Date` and `Closed.Date` variables so that
+R recognizes them as dates. From these variables, we can then calculate
+measures of *government responsiveness*: (1) how many days it took city
+workers to resolve a request, and (2) whether or not a request was resolved
+within a week. 
+
+```{r}
+# Load required packages
+require(dplyr) 
+require(lubridate) #to work with dates
+
+# Create a function that reads and cleans a service request file.
+# The input is the name of a service request file and the
+# output is a data frame with cleaned variables.  
+clean_dta <- function(file_name) {
+
+    # Read the file and save it to an object called 'dta'
+    dta <- read.csv(file_name)
+
+    # Clean the dates in the dta file and generate responsiveness measures
+    dta <- dta %>%
+        mutate(opened = mdy(substring(Created.Date, 1, 10)),
+               closed = mdy(substring(Closed.Date, 1, 10)),
+               resptime = as.numeric(difftime(closed, opened, units = "days")),
+               resptime = ifelse(resptime >=0, resptime, NA),
+               solvedin7 = ifelse(resptime <= 7, 1, 0))
+
+    # Return the cleaned data 
+    return(dta)
+}
+
+```
+
+Let's test the function on the 2004 data:
+
+```{r, eval=FALSE}
+# Execute function on the 2004 data 
+nyc04 <- clean_dta("nyc-311-2004-sample.csv")
+head(nyc04)
+```
+
+```{r, echo=FALSE}
+nyc04 <- clean_dta("../data/nyc-311-sample/nyc-311-2004-sample.csv")
+head(nyc04)
+```
+
+The cleaned dataset has four new variables:
+
+* `opened`: The date the request was filed in date format. 
+* `closed`: The date the request was resolved in date format. 
+* `resptime`: The number of days it took to resolve the request (`closed` - `opened`).
+* `solvedin7`: A dummy variable equal to 1 if the request was solved within a week
+  and 0 otherwise. 
+
+We can now use this function on all the six files using 
+`lapply()`, saving each cleaned data frame into a
+list. (Read more about `lapply()`
+[here](http://www.r-bloggers.com/using-apply-sapply-lapply-in-r/). Of course,
+you can also use a [for loop](../for-loops).)
+
+
+```{r}
+# First create a vector with the names of the files we want to read
+file_names <- paste0("nyc-311-", 2004:2009, "-sample.csv")
+file_names
+```
+
+```{r, echo=FALSE}
+file_names <- paste0("../data/nyc-311-sample/nyc-311-", 2004:2009, "-sample.csv")
+```
+
+```{r} 
+# Now use the vector of file names and the 'clean_dta' function in lapply()
+nyc_all <- lapply(file_names, clean_dta)
+```
+
+The list `nyc_all` now has six elements, consisting of cleaned data for each
+of the years in 2004-2009. For example, here's the first and second elements
+with the 2004 and 2005 data: 
+
+```{r}
+head(nyc_all[[1]]) #cleaned data for 2004
+head(nyc_all[[2]]) #cleaned data for 2005 
+```
+
+Here's the same task using a `for` loop instead. (In reality, you'd either use
+`lapply()` or a `for` loop, not both --- this is just for illustrative purposes. As
+you'll see, `lapply()` is more compact and elegant in this case, but a `for` loop
+is probably more intuitive.) 
+
+```{r}
+nyc_all <- list()
+for(i in 1:length(file_names)) {
+    nyc_all[[i]] <- clean_dta(file_names[i])
+}
+head(nyc_all[[1]]) #take a look at the 2004 data
+```
+
+Finally, let's [append](../merging-appending) the data frames stored in
+the `nyc_all` list into one data frame. This is easy using
+`do.call()` and `rbind()`. 
+
+```{r}
+# List of data frames --> one data frame
+nyc_all <- do.call(rbind, nyc_all)
+class(nyc_all) #nyc_all is now a data frame
+dim(nyc_all) #nyc_all now has 60,000 observations 
+summary(nyc_all$opened) #opened contains all years in 2004-2009
+```
+
+
+Complex analyses 
+---------------------
+
+Functions can also be used when you have to carry out a bunch of
+analyses in a flexible way. Let's use the `nyc_all` dataset that we
+just created above to test the hypothesis that it takes city workers
+in NYC a longer time to resolve requests that are filed during the winter
+(December-February), presumably because of tougher weather conditions.
+
+First let's add a dummy variable equal to 1 if a request was filed
+during December-February.
+
+```{r}
+nyc_all <- nyc_all %>% mutate(winter = ifelse(month(opened) %in% c(1, 2, 12), 1, 0))
+head(select(nyc_all, opened, winter)) #'winter' equals 1 if request opened in Dec-Feb
+```
+
+Now let's write a function that allows us to test our hypothesis in a
+few different ways. The function has four parameters:
+
+* `dta`: the data frame to use in the analyses (probably `nyc_all`).
+* `model`: a regression model, specified in a `formula()` call
+* `method`: the method by which to carry out the analysis (either "OLS" or "logit").
+
+The output of the will be a regression table (either OLS or logit). 
+
+
+```{r}
+nyc_analysis <- function(dta, model, method) {
+
+    if (method == "OLS") {
+        m <- lm(model, data = dta)
+    } else if (method == "logit") {
+        m <- glm(model, data = dta, family = binomial)
+    }
+
+    return(summary(m))
+    
+}
+
+# Run OLS and logit models
+nyc_analysis(nyc_all, formula(resptime ~ winter), "OLS")
+nyc_analysis(nyc_all, formula(solvedin7 ~ winter), "logit")
+```
+
+It actually appears that, on average, it takes city workers less time
+--- about 5 days less --- to respond to service requests during the winter
+(OLS model), which is corroborated by the logit model, which shows a
+higher likelihood of requests being resolved within a week during the
+winter.
+
+Say we settle for the OLS model and want to graph the OLS coefficient
+for each year in the data (to look at over-time changes). We can then
+write a function that gets the OLS coefficient on `winter` for a desired
+year as well as lower and upper 95% confidence bounds on this
+estimate. 
+
+
+```{r}
+nyc_ols <- function(dta, model, year) {
+
+    # Filter the data to the desired year
+    sub <- dta %>% filter(year(opened) == year)
+
+    # Run OLS model
+    m <- lm(model, data = sub)
+
+    # Get the coefficient estimate, standard error, and confidence bounds
+    coef <- coef(m)[2]
+    se <- sqrt(diag(vcov(m)))[2]
+    lb <- coef - se * 1.96
+    ub <- coef + se * 1.96
+    
+    # Create a data frame with this information (as well as the year)
+    # The data frame will have only one row
+    result <- data.frame(year, coef, se, lb, ub, row.names = NULL)
+
+    return(result) 
+    
+}
+
+# Test that the function works for 2004
+nyc_ols(nyc_all, formula(resptime ~ winter), 2004)
+
+# Confirm using regular approach
+# Coefficient and SE should be the same as above
+summary(lm(resptime ~ winter, data = nyc_all, subset = year(opened) == 2004))
+```
+
+
+Now that we can run this model for a given year, we can iterate over
+all the years in the dataset, again using `lapply()` (which creates a
+list of data frames). We then create one data frame from this list and
+graph the results.
+
+
+```{r}
+f <- formula(resptime ~ winter)
+nyc_results <- lapply(2004:2009, nyc_ols, dta = nyc_all, model = f)
+nyc_results <- do.call(rbind, nyc_results) #list --> data.frame
+nyc_results
+
+# Graph the results
+require(ggplot2)
+
+ggplot(nyc_results, aes(x = year, y = coef)) +
+    geom_point() +
+    geom_errorbar(aes(ymin = lb, ymax = ub), width = 0) +
+    geom_hline() +
+    theme_bw() +
+    ylab("response time during winter compared to summer (days)") + 
+    ggtitle("Response time during winter compared to summer (in days)")
+```
+
+Note that negative values indicate how many fewer days, on average, it
+takes city workers to resolve requests during the winter as compared
+to the summer. If this analysis is correct, it seems like it takes the
+city less time to respond to service requests during the winter as
+compared to the summer (between 2 and 9 days less) for all years
+except 2004.
+
+We can also run the analyses with controls. Most importantly, maybe a
+different type of complaint is filed during the winter than during other
+periods of the year. We can adjust for such potential confounding by
+introducing complaint type as a covariate in the analysis:
+
+
+```{r}
+f <- formula(resptime ~ winter + factor(Complaint.Type))
+nyc_results <- lapply(2004:2009, nyc_ols, dta = nyc_all, model = f)
+nyc_results <- do.call(rbind, nyc_results) #list --> data.frame
+nyc_results
+
+# Graph the results
+require(ggplot2)
+
+ggplot(nyc_results, aes(x = year, y = coef)) +
+    geom_point() +
+    geom_errorbar(aes(ymin = lb, ymax = ub), width = 0) +
+    geom_hline() +
+    theme_bw() +
+    ylab("response time during winter compared to summer (days)") +  
+    ggtitle("Response time, winter v. summer (controlling for complaint type)")
+```
+
+Now it indeed seems like it takes *longer* to resolve service
+requests during the winter (at least between 2004 and 2006). 
+
+
+To summarize, in the applications above, a function was created to
+allow for easy and flexible completion of a task. Not creating a
+function for these tasks would work, though it would also result in
+more verbose code (e.g., copying and pasting, changing only some
+aspects of the code).  Functions minimize potential mistakes that may
+result from such manual iteration of code. They are also useful for
+carrying out a range of analyses and graphing the results, as the last
+application makes clear. 
+
+
+Exercises
+==============
+
+1. Write a function called `second_largest` that finds the second
+largest value in a vector of numeric values. That is, the input should
+be a numeric vector and the output should be the second largest value
+in the vector. You can assume that the input vector has at least two
+values. Test your function on the following two vectors: 
+
+* `v1 <- 1:10`
+* `v2 <- c(15, 1000, 2, 3, 8)`
+
+2. Modify the `second_largest` function so that it accounts for two
+special cases: (1) when the user inputs a numeric vector with only
+one value, the function should return the message "Invalid input: at
+least two values required"; (2) when the user inputs a vector that is
+**not** numeric, the function should return the message "Invalid input:
+only numeric vectors accepted". Test your new function on the following
+vectors:
+
+* `v1 <- 1:10`
+* `v2 <- 2`
+* `v3 <- c("banana", "apple", "orange")`
+* `v4 <- as.factor(1:10)`
+
+3. Using the `nyc_all` data frame created above (it should have 60,000
+observations and have observations from 2004 to 2009), write a
+function called `no_obs` that finds the number of observations for a
+given complaint type in a given year. The function should have three
+parameters: `dta` (the data frame of interest), `type` (the complaint
+type category as a string), and `year` (the year the request was
+opened).  The output of the function should be a data frame with one
+row with the name of the complaint type, the year, and a value with
+the number of observations. The function should be indifferent to
+whether the complaint type is in upper or lower case or capitalized
+(e.g., "HEATING", "Heating", and "heating" should be counted as one
+complaint type). You can assume the input data frame (`dta`) always
+has a variable called `Complaint.Type`. Test your function by ensuring
+that the results for the complaint types "Sewer", "sewer", and
+"heating" for various years look as follows: 
+
+```{r, echo=FALSE}
+no_obs <- function(dta, type, year) {
+
+    type <- tolower(type)
+    dta$Complaint.Type <- tolower(dta$Complaint.Type)
+
+    sub <- dta %>% filter(Complaint.Type == type, year(opened) == year)
+
+    return(data.frame(complaint.type = type, year, n = nrow(sub)))
+
+}
+```
+
+<div class="indent">
+```{r}
+no_obs(dta = nyc_all, type = "Sewer", year = 2004)
+no_obs(dta = nyc_all, type = "sewer", year = 2004)
+no_obs(dta = nyc_all, type = "heating", year = 2004)
+no_obs(dta = nyc_all, type = "heating", year = 2009)
+```
+</div>
+
+
+

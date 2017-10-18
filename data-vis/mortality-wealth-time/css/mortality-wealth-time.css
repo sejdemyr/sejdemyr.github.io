@@ -1,0 +1,111 @@
+
+#chart {
+    margin: 10px 0 40px -30px;
+    height: 506px;
+}
+
+text {
+    font-size: 9px;
+}
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.label {
+    fill: #777;
+}
+
+.year.label {
+    font: 500 140px "Helvetica Neue", Arial, sans-serif;
+    fill: #ddd;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+.year.label.active {
+    fill: #aaa;
+}
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+    cursor: ew-resize;
+}
+
+#tooltip {
+    background-color: white;
+    background-opacity: 0.3;
+    box-shadow: 0 0 5px #999999;
+    color: #333;
+    font-size: 12px;
+    left: 130px;
+    padding: 10px;
+    position: absolute;
+    text-align: left;
+    top: 95px;
+    width: 320px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+#tooltip.hidden {
+    display: none;
+}
+
+#tooltip p {
+    margin: 0;
+    font-size: 10px;
+    line-height: 20px;
+    color: #777;
+}
+
+#tooltip p.leadrow {
+    color: black;
+}
+
+#tooltip p.header {
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: bold;
+    color: black;
+    margin-top: 2px;
+}
+
+/* Table */
+table { 
+    margin-bottom: 5px; 
+    width:100%; 
+}
+
+/* Style for buttons used to toggle between country and region */
+.btn {
+    background-color: #fff;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    font-size: 11px;
+    text-decoration: none;
+    cursor: pointer;
+    border:none;
+    outline:none;
+    padding: 5px 5px;
+    color: #777;
+}
+
+.btn.active {
+    background: #E8E8E8;
+    color: #000;
+}
+
+.move-right {
+    margin-left: 50px;
+    margin-top: 10px;
+}
+
+
+
+
+
+

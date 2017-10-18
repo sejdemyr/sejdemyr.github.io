@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"$if(lang)$ lang="$lang$" xml:lang="$lang$"$endif$>
+  
+  <head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="pandoc" />
+
+
+    <!-- Meta information displayed if included in .rmd file -->
+    <!-- From R Markdown's default.html (github.com/rstudio/rmarkdown) --> 
+    $for(author-meta)$
+    <meta name="author" content="$author-meta$" />
+    $endfor$
+    
+    $if(date-meta)$
+    <meta name="date" content="$date-meta$" />
+    $endif$
+    
+    <title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$</title>
+
+    $for(header-includes)$
+    $header-includes$
+    $endfor$
+
+    
+    <!-- Styling -->
+
+    <!-- Bootstrap icons -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Bootstrap CSS --> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link href="../css/default.css" rel="stylesheet">
+
+    <!-- Google Fonts --> 
+    <link href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+
+
+    <!-- Styling options displayed if specified in .rmd -->
+    <!-- From R Markdown's default.html (github.com/rstudio/rmarkdown) --> 
+    $if(highlightjs)$
+    <style type="text/css">code{white-space: pre;}</style>
+    <link rel="stylesheet"
+	  href="$highlightjs$/$if(highlightjs-theme)$$highlightjs-theme$$else$default$endif$.css"
+	  $if(html5)$$else$type="text/css" $endif$/>
+    <script src="$highlightjs$/highlight.js"></script>
+    <style type="text/css">
+      pre:not([class]) {
+      background-color: white;
+      }
+    </style>
+    <script type="text/javascript">
+      if (window.hljs && document.readyState && document.readyState === "complete") {
+	  window.setTimeout(function() {
+	      hljs.initHighlighting();
+	  }, 0);
+      }
+    </script>
+    $endif$
+    
+    $if(highlighting-css)$
+    <style type="text/css">code{white-space: pre;}</style>
+    <style type="text/css">
+      $highlighting-css$
+    </style>
+    <style type="text/css">
+      pre:not([class]) {
+	background-color: white;
+      }
+    </style>    
+    $endif$
+
+    <link href="../css/style-tutorials.css" rel="stylesheet">
+    
+  
+  </head>
+
+  
+  <body>
+
+  
+    <header class="masthead">
+      <div class="container">
+	<div class="row">
+          <div class="col-lg-9 col-lg-offset-1">
+	    
+            <!-- Author and date -->
+	    $if(author)$
+	    <div id="author-date">
+              <span id="author">$author$</span>
+	      $if(date)$ <i class="fa fa-clock-o"></i> $date$ $endif$
+	    </div>
+	    $endif$	   
+	    
+	    <!-- Title -->
+            $if(title)$
+	    <h1 class="title">$title$</h1>
+	    $endif$
+	  
+	    
+            <hr>
+	    
+	    <!-- Contents and summary --> 
+	    <div style="font-size: 100%"> 
+	      <div class="row">
+		<div id="this-tutorial" class="col-md-12">
+		  <span style="font-style: italic; margin-right: 26px"> Contents </span>
+		  <span id="toc"> </span>
+		</div>
+	      </div>
+	      
+	      <div class="row">
+		<div id="summary" class="col-md-10">
+		  <span style="font-style: italic; margin-right: 22px"> Summary </span>
+		  $summary$
+		</div>
+	      </div>
+	    </div>
+	    
+
+	    
+	    
+	    
+            <hr>
+	  </div>
+	</div>
+      </div>
+      
+    </header>
+    
+
+   
+
+
+    
+    <!-- Tutorial content, including comments -->
+    <div class="container">   
+      <div class="col-lg-9 col-lg-offset-1">
+	
+	<!-- tutorial content --> 
+	<div id="content">
+	  
+	  $body$
+	  
+	</div>
+
+
+	
+	
+        
+	
+        <!-- Disqus -->	  	
+	<div id="disqus_thread"></div>
+	
+	<script>
+	  /**
+	  * RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+	  * LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+	  */
+	  /*
+	  var disqus_config = function () {
+	  this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+	  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+	  };
+	  */
+	  (function() { // DON'T EDIT BELOW THIS LINE
+	  var d = document, s = d.createElement('script');
+	  
+	  s.src = 'https://rtutorials.disqus.com/embed.js';
+	  
+	  s.setAttribute('data-timestamp', +new Date());
+	  (d.head || d.body).appendChild(s);
+	  })();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+	
+	
+	
+      
+      
+      
+      <!-- Footer -->
+      <footer>
+        <div class="row">
+          <div class="footer">
+            <a href="http://creativecommons.org/licenses/by-sa/4.0/"> <img style="width: 5%; margin-right: 5px" src="../template/cc-sa.png"></a>
+	    The material on this page is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License. 
+          </div>
+        </div>
+        <!-- /.row -->
+      </footer>
+
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.container -->
+    
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+    
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+    <!-- Custom script for navbar -->
+    <script src="../js/custom.js"></script>
+
+    <!-- Highlight: from R Markdown -->
+    <script src="../js/highlight.js"></script>
+        
+    <script id="dsq-count-scr" src="https://rtutorials.disqus.com/count.js" async></script>
+    
+  </body>
+  
+</html>

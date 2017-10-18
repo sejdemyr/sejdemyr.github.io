@@ -1,0 +1,187 @@
+---
+title: Tables in R (And How to Export Them to Word)
+author: <a href="http://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a> 
+date: October, 2015
+summary: This tutorial explains how to create and export different
+ types of tables in R. It was originally designed for undergraduate
+ students at Stanford who tend to use Word rather than LaTeX.
+output:
+  html_document:
+     template: ../template/r-tutorial-template-v2.html
+     mathjax: null
+---
+
+
+Overview
+==========================
+
+How to export tables from R depends on what word processor you
+use. This tutorial focuses on Word. If you use LaTeX, there are many
+existing R packages and tutorials that will get you started, including
+[xtable](https://cran.r-project.org/web/packages/xtable/xtable.pdf)
+and
+[stargazer](https://cran.r-project.org/web/packages/stargazer/stargazer.pdf).
+
+
+To export tables to Word, follow these general steps: 
+   
+<div style="margin-left: 20px">    
+   1. Create a table or data.frame in R. 
+   2. Write this table to a comma-separated .txt file using `write.table()`. 
+   3. Copy and paste the content of the .txt file into Word. 
+   4. In Word, 
+     a. select the text you just pasted from the .txt file
+     b. go to Table $\rightarrow$ Convert $\rightarrow$ Convert Text to Table...
+     c. make sure "Commas" is selected under "Separate text at", click OK 
+</div>
+
+You'll now have a basic table that you can format in Word. Below are
+three examples of how to use this process to create crosstabs, tables
+for summary statistics, and regression tables.
+
+Data and Packages
+--------------------
+Before we get started, read in a 
+[dataset on U.S. states](../data/states.csv) (codebook
+[here](../data/states_codebook.csv)) into R: 
+
+```{r, echo=FALSE}
+states <- read.csv("../data/states.csv")
+```
+
+```{r, eval=FALSE}
+states <- read.csv("states.csv")
+```
+
+Also install and load packages `dplyr`, `tidyr`, and `broom`: 
+
+```{r, eval=FALSE}
+pkgs <- c("dplyr", "tidyr", "broom")
+install.packages(pkgs) #install 
+sapply(pkgs, require, character.only = T) #load 
+```
+
+```{r, echo=FALSE}
+pkgs <- c("dplyr", "tidyr", "broom")
+sapply(pkgs, require, character.only = T) #load 
+```
+
+
+Crosstabs
+====================
+
+Create a table showing the proportion of states that supported Bush in
+2000, by region (South versus Non-South):
+
+```{r}
+# Create table
+t <- with(states, table(south, gb_win00))
+t <- prop.table(t, margin = 1)
+
+t #large majority of southern states supported Bush in 2000:   
+
+# Write this table to a comma separated .txt file:    
+write.table(t, file = "bush_south.txt", sep = ",", quote = FALSE, row.names = F)
+```
+The .txt file will end up in your working directory. Now follow steps 3 and 4
+in the Overview section above to create the crosstab in Word. 
+
+Summary statistics 
+=======================
+
+Here's another example that again uses the [states.csv](states.csv) dataset. Say we 
+wanted to create a table with summary statistics for five of the variables
+in this dataset: 
+
+```{r}
+sumstat <- states %>%
+
+    # Select and rename five variables 
+    select(
+        `Black (%)` = blkpct,
+        `Attend church (%)` = attend_pct,
+        `Supported Bush in 2000 (%)` = bush00,
+        `Supported Obama in 2008 (%)` = obama08,
+        `Women in State Legislature (%)` = womleg
+        ) %>%
+
+    # Find the mean, st. dev., min, and max for each variable 
+    summarise_each(funs(mean, sd, min, max)) %>%
+
+    # Move summary stats to columns
+    gather(key, value, everything()) %>% 
+    separate(key, into = c("variable", "stat"), sep = "_") %>%
+    spread(stat, value) %>%
+
+    # Set order of summary statistics 
+    select(variable, mean, sd, min, max) %>%
+
+    # Round all numeric variables to one decimal point
+    mutate_each(funs(round(., 1)), -variable)
+
+sumstat
+
+# Write to .txt
+write.table(sumstat, file = "sumstats.txt", sep = ",", quote = FALSE, row.names = F)
+
+```
+
+Again, the `sumstats.txt` file will end up in your working directory,
+and you can use steps 3 and 4 from the Overview section above to
+import this file into Word.
+
+
+Exercise 
+-------------
+
+Create a table of summary statistics in Word for `vep04_turnout`,
+`vep08_turnout`, `unemploy`, `urban`, and `hispanic`. The table should
+include the number of observations (*n*), mean, median, 10th
+percentile, and 90th percentile of each of the variables. Put the
+variables in the rows of the table and the summary statistics in the
+columns, like we did in the example above. Format your table in Word
+to make it look similar to [this table](summary_stats_example.tif). 
+
+
+Regression tables
+=======================
+
+Say we wanted to run three OLS models to predict state-level support
+for Bush in 2000, where each model adds a predictor to the preceding
+model. We can create a regression table with all three models like so: 
+
+```{r}
+m1 <- tidy(lm(bush00 ~ blkpct, states)) 
+m2 <- tidy(lm(bush00 ~ blkpct + south, data = states))
+m3 <- tidy(lm(bush00 ~ blkpct + south + womleg, data = states))
+# Note that tidy() from the broom package is used to convert each model to a data frame
+
+all_models <- rbind_list(
+    m1 %>% mutate(model = 1),
+    m2 %>% mutate(model = 2),
+    m3 %>% mutate(model = 3))
+
+all_models
+
+
+# Now make this data frame look more like a regression table 
+ols_table <- all_models %>%
+    select(-statistic, -p.value) %>%
+    mutate_each(funs(round(., 2)), -term) %>% 
+    gather(key, value, estimate:std.error) %>%
+    spread(model, value) 
+
+ols_table
+
+# Export
+write.table(ols_table, file = "olstab.txt", sep = ",", quote = FALSE, row.names = F)
+
+```
+
+Again, follow steps 3 and 4 from the Overview section above to import
+the content of the .txt file into Word. 
+
+
+
+
+

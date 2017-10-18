@@ -1,0 +1,317 @@
+---
+title: Dataset Basics
+author: <a href="http://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a> 
+date: December, 2015
+summary: This tutorial introduces datasets --- "data frames" in R. If you've
+ completed the <a href="../vectors">tutorial on vectors</a>, you'll
+ soon see that datasets can be thought of as a collection of vectors
+ stored as columns in a dataset. We'll talk about how to create
+ datasets and how to read them from file. We'll also talk more
+ conceptually about how datasets should be structured.
+output:
+  html_document:
+     template: ../template/r-tutorial-template-v2.html
+     mathjax: null
+---
+
+
+
+Creating datasets
+==================
+
+Let's start by learning how to create a dataset in R. This turns
+out to be very simple --- just combine vectors using the `data.frame()`
+command. 
+
+
+```{r}
+# Create three vectors 
+name <- c("al", "bea", "carol")
+age <- c(6, 7, 4)
+hair <- c("brown", "green", "blond")
+
+# Create data frame 
+children <- data.frame(name, age, hair)
+children
+
+# Creating a data frame can also be done without first saving vectors 
+children <- data.frame(
+    name = c("al", "bea", "carol"),
+    age = c(6, 7, 4),
+    hair = c("brown", "green", "blond")
+    )
+children
+```
+
+We created a dataset called `children`, which has 3 rows and 3
+columns. We used two approaches that differ in whether they first save
+vectors to R's memory. 
+
+
+Dataset structure
+====================
+
+More important than learning the mechanics of creating a dataset in
+R is to understand their general structure: 
+
+1. Each column should consist of a vector that gives some fact about
+the world (e.g., age in years). We usually refer to these columns
+as *variables*. 
+2. At least one column should identify who or what the information in
+the data is about.  Such a variable is called an "id" variable or
+"key". In the `children` dataset above this variable is `name`. The
+remaining variables have the facts or measurements that we care
+about. For example, we gather from the dataset that Al is 6 years old
+(one fact) and that Al has brown hair (a second fact).
+
+To better understand the proper structure of datasets, let's create a
+second data frame. Suppose here that `gdp_pc` is a measure of a
+country's GDP per capita in a given year. (Use `?expand.grid` and
+`?runif` to learn more about these functions, though that is not a
+priority right now.)
+
+```{r}
+countries <- data.frame(
+    expand.grid(country = c("USA", "China", "Sudan"), year = 1994:1996),
+    gdp_pc = round(runif(9, 1000, 20000), 0)
+    )
+countries
+```
+
+This time around our dataset has two id variables: `country` and
+`year`. Why two and not one? One way to think about it is that
+`country` by itself wouldn't be sufficient to uniquely identify a row,
+because there are three rows for each country (and likewise with
+`year`). Combined, however, `country` and `year` uniquely identify
+each row. In other words, GDP per capita (the only fact or measurement
+in this dataset) describes a given country in a given year.
+
+We can say that the **unit of analysis** in the dataset `countries` is
+country-year. This means that two id variables (country and
+year) are required to uniquely identify each row. In the `children`
+dataset above the unit of analysis is "child" or "person".
+
+
+Basic commands
+=================
+
+Here are some commands that are useful for getting to know your data
+and for understanding dataset structures in general.
+
+Dimensions
+---------------------
+
+The first is `dim()`, which gives the dimensions of a data frame. The
+number of rows are listed first, columns second.
+
+```{r}
+dim(countries)
+```
+
+Use `nrow()` and `ncol()` to to get the number of rows or columns
+separately.  These commands are useful for
+[code generalization](../vectors/#code-generalization).
+
+```{r}
+nrow(countries)
+ncol(countries)
+```
+
+Snapshots
+-------------
+
+Use `head()` and `tail()` to look at the first and last few rows of
+a dataset, respectively. This is more useful when we have datasets
+with many observations. 
+
+```{r}
+head(countries)
+tail(countries)
+```
+
+Other useful commands to get to know variables better include `summary()`,
+`table()`, and `prop.table()`. 
+
+```{r}
+# Get some summary information about each variable
+summary(countries)
+
+# Number of observations by country 
+table(countries$country)
+
+# Proportion of observations by country 
+prop.table(table(countries$country))
+```
+
+Accessing specific rows and columns
+-------------------
+
+Like with vectors, brackets (`[]`) can be used to access data in
+datasets. But unlike with vectors, we need to input *two* arguments
+--- separated by a comma --- into the brackets. The first argument
+always applies to rows while the second applies to columns. 
+
+```{r}
+countries <- data.frame(
+    expand.grid(country = c("USA", "China", "Sudan"), year = 1994:1996),
+    gdp_pc = round(runif(9, 1000, 20000), 0)
+    )
+countries
+
+# Access row 2, col 3
+countries[2, 3]
+
+# Access entire row 5
+countries[5, ] #note: leaving second argument blank
+
+# Access entire column 3
+countries[, 3] #note: leaving first argument blank
+```
+
+In general, though, accessing rows and columns by index is bad for
+[code generalization](../vectors/#code-generalization).  It
+particularly causes problems when you add or delete rows/columns,
+because then the indexing will change (e.g., column 3 representing GDP
+per capita may now be in column 4).
+
+For this reason, it's better to access columns using column
+names. 
+
+```{r}
+# Access a column using column/variable name (two equivalent approaches)
+countries$year
+countries[, "year"]
+```
+Note that when we're accessing a column this way, it's just a vector
+and all the things we've learned about [vectors](../vectors) apply.
+For example:
+
+```{r}
+# Get mean gdp per cap
+mean(countries$gdp_pc)
+```
+
+To access rows, it's best to use a logical statement, which is covered
+in more detail in a separate tutorial on
+[modifying data](../modifying-data).  But just to
+give an example, here's how we can access a row using bracket notation
+and a logical statement:
+
+```{r}
+countries[countries$year == 1995 & countries$country == "USA", ]
+```
+
+
+
+Reading data 
+=========================
+
+
+Note: In this section we'll be working with a dataset called
+`world-small.csv`, which you can download [here](../data/world-small.csv).
+
+So far we've created datasets ourselves. Oftentimes, however, we'll
+want to read a dataset into R from file. Datasets come in many formats
+--- e.g., .csv, .txt, .dta, and .RData. R can read most data formats
+as is, but sometimes it may be necessary to manually reformat some
+elements in the file or even to reconvert the whole file to a
+different format (e.g., using Stat/Transfer). For now, we'll assume
+that the file is in a readable format.
+
+To read a file you need to 
+
+1. Specify where the file is located on your computer. This is referred to 
+as setting your working directory. 
+2. Execute a command that will read the file from your working directory. 
+
+
+Setting the working directory 
+----------------------
+
+You can set your working directory manually. In RStudio, go to
+Session --> Set Working Directory --> Choose Directory...
+and find the folder in which your file is located.
+
+While this works, you should also set the working directory using
+code. Use `setwd(path-to-dir)` where `path-to-dir` is the the path to
+the folder in which the file is located. How can you find this path?
+Here are instructions for
+[Windows](https://technet.microsoft.com/en-us/magazine/ff678296.aspx)
+and [mac](http://josharcher.uk/code/find-path-to-folder-on-mac/).
+If you're still not sure how to do this, take a look at
+[this tutorial](https://sites.google.com/site/manabusakamoto/home/r-tutorials/r-tutorial-4).
+
+To check that your working directory includes the file you want
+to read, use `dir()` without anything in the parentheses. This function
+outputs all the files in your working directory into the R console.
+So, if you want to read the `world-small.csv` file that you downloaded above,
+you should see this file listed when you execute `dir()`. 
+
+
+Reading the file 
+----------------------
+
+Now that we've told R where to look for our file, it's time to read
+it. Different commands are used to read different types of files. This
+is the syntax used for reading a .csv file:
+
+```{r, echo=FALSE}
+world <- read.csv("../data/world-small.csv")
+```
+
+```{r, eval=FALSE}
+world <- read.csv("world-small.csv") 
+```
+
+I'm reading the file from the working directory and assigning it
+to the object `world`, which becomes of class `data.frame`. 
+
+```{r}
+class(world)
+```
+
+Let's check if the file was read correctly, using `dim()`
+(returns the dimensions), `head()` (returns the top six rows),
+and `summary()` (returns summary information about each variable):
+
+```{r}
+dim(world) #the number of rows and columns 
+head(world) #the first few rows of the dataset
+summary(world) #a summary of the variables in the dataset
+```
+
+Everything looks as we would have hoped.
+
+
+Exercises
+============
+
+1. Read the `world-small.csv` data into R and store it in an object
+called `world`. (Set your working directory using code first.) 
+
+2. (Conceptual) What is the unit of analysis in the dataset? What's the name
+of the dataset's id variable?
+
+3. How many observations does `world` have? How many variables? Use an R
+command to find out.
+
+4. Use brackets and a logical statement to inspect all the values for
+   Nigeria and United States. That is, your code should return two
+   entire rows of the dataset. 
+
+5. Use R to return China's Polity IV score. As in question 4, use a logical
+statement and brackets, but don't return the entire row. Rather, return a single
+value with the Polity IV score.
+
+6. What is the lowest GDP per capita in the dataset? (Use R to return only the value.)
+
+7. What country has the lowest GDP per capita? (Your code should
+return the country name and be general enough so that if the observations
+in the dataset --- or their order --- change, your code should still return the
+country with the lowest GDP per capita.)
+
+
+
+
+
+

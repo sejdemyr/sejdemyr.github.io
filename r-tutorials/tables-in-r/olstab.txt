@@ -1,0 +1,9 @@
+term,key,1,2,3
+(Intercept),estimate,50.92,51.26,66.01
+(Intercept),std.error,1.83,1.74,4.52
+blkpct,estimate,-0.05,-0.36,-0.42
+blkpct,std.error,0.13,0.18,0.16
+southSouth,estimate,NA,9.05,6.04
+southSouth,std.error,NA,3.61,3.36
+womleg,estimate,NA,NA,-0.57
+womleg,std.error,NA,NA,0.16

@@ -1,0 +1,352 @@
+---
+title: Segregation Measures in R
+author: <a href="http://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a> 
+date: October, 2015
+summary: This tutorial explains how to calculate segregation measures in R, and
+ highlights some pitfalls that may occur when doing so. If you just
+ want to play around with the code, it's [here](segregation-stylized.R).
+related: <a href="../modifying-data">Modifying data</a>
+output:
+  html_document:
+     template: ../template/r-tutorial-template-v2.html
+     mathjax: null
+---
+
+
+
+
+Set-up 
+====================
+
+Let's load some packages we'll need throughout: 
+
+```{r}
+pkgs <- c("ggplot2", "gridExtra", "grid", "RColorBrewer", "rgdal", "rgeos", 
+          "maptools", "seg", "splancs", "dplyr")
+sapply(pkgs, require, character.only = TRUE)
+```
+
+If you don't have them installed, use `install.packages` before loading them.
+Let's also set some graphing parameters for `ggplot`: 
+
+```{r}
+theme <- theme_bw() + theme(
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(), 
+    panel.border = element_blank(), 
+    axis.ticks = element_blank(), 
+    axis.text = element_blank(), 
+    strip.background = element_blank(),
+    strip.text.x = element_text(size = 10)
+    ) 
+```
+
+<div style="margin-top: 15px"> </div>
+
+
+Data for a stylized example
+====================
+
+Let's begin by generating a spatial grid that serves as a "city" with
+16 "neighborhoods":
+
+```{r}
+# Set dimensions of grid, cell size, and number of localities 
+grid.dim <- c(4, 4)
+cell.size <- 1
+no.loc <- grid.dim[1] * grid.dim[2]
+
+# Generate grid
+grd <- GridTopology(c(0, 0), c(cell.size, cell.size), grid.dim)
+grd.sp <- as.SpatialPolygons.GridTopology(grd)
+polyg <- fortify(grd.sp) #for ggplot
+```
+
+Here's how to plot this grid using both `R`'s base functions
+and `ggplot`. (Side note: `ggplot` looks intimidating but is much
+more powerful when graphing complex spatial data.)
+
+
+```{r out.width=c('310px', '225px'), fig.retina=1, fig.show='hold'}
+plot(grd.sp, main = "(base)")
+
+ggplot(grd.sp, aes(x = long, y = lat)) +
+   geom_polygon(aes(group = id), color = "black", fill = "white") +
+   coord_equal() +
+   theme +
+   xlab("") + ylab("") + ggtitle("(ggplot)")
+```
+
+Let's also create a second grid with only four neighborhoods:
+
+```{r}
+ids <- c(rep(c(1, 1, 2, 2), 2), rep(c(3, 3, 4, 4), 2))
+grd.sp2 <- gUnionCascaded(grd.sp, id = ids)
+polyg2 <- fortify(grd.sp2) #for ggplot
+```
+
+Now we'll generate a population for each of six cities, assuming we
+know the demographic makeup of neighborhoods. The result is graphed
+below.
+
+```{r fig.width=10, fig.height=7}
+# Set number of members of each group
+g1 <- 1000
+g2 <- 1000
+
+# Data for three segregated cities 
+dta.seg1 <- data.frame(
+    id = 1:no.loc, 
+    group1 = c(rep(g1 / (no.loc/2), no.loc/2), rep(0, no.loc/2)),
+    group2 = c(rep(0, no.loc/2), rep(rep(g2 / (no.loc/2), no.loc/2))),
+    j = "(a)"
+    )
+
+dta.seg2 <- data.frame(
+    id = 1:no.loc, 
+    group1 = c(rep(g1 / (no.loc/4), no.loc/4), rep(0, no.loc * 3/4)),
+    group2 = c(rep(0, no.loc/2), rep(rep(g2 / (no.loc/2), no.loc/2))),
+    j = "(b)"
+    )
+
+dta.seg3 <- data.frame(
+    id = 1:no.loc, 
+    group1 = c(rep(0, no.loc * 1/4), rep(g1 / (no.loc/4), no.loc/4), rep(0, no.loc / 2)),
+    group2 = c(rep(0, no.loc/2), rep(rep(g2 / (no.loc/2), no.loc/2))),
+    j = "(c)"
+    )
+
+# Integrated city 
+dta.int <- data.frame(
+    id = 1:no.loc, 
+    group1 = rep(g1 / no.loc, no.loc),  
+    group2 = rep(g2 / no.loc, no.loc),
+    j = "(d)"
+    )
+
+# Two checkerboard cities 
+dta.cb1 <- data.frame(
+    id = 1:no.loc, 
+    group1 = rep(c(g1 / (no.loc/2), 0), no.loc/2),  
+    group2 = rep(c(0, g2 / (no.loc/2)), no.loc/2),
+    j = "(e)"
+    )
+
+dta.cb1$group1[c(5:8, 13:16)] <- dta.cb1$group1[c(2:5, 2:5)]
+dta.cb1$group2[c(5:8, 13:16)] <- dta.cb1$group2[c(2:5, 2:5)]
+
+dta.cb2 <- dta.cb1 %>% mutate(id = ids, j = "(f)") 
+dta.cb2.collapse <- dta.cb2 %>% group_by(id) %>% select(-j) %>% summarise_each(funs(sum)) %>% mutate(j = "(f)")
+
+
+# Plot
+dta.list <- list(dta.seg1, dta.seg2, dta.seg3, dta.int, dta.cb1, dta.cb2)
+plots <- lapply(dta.list, function(dta) {
+
+    g1 <- dotsInPolys(grd.sp, as.integer(dta$group1))
+    g2 <- dotsInPolys(grd.sp, as.integer(dta$group2))
+
+    points <- rbind(data.frame(coordinates(g1), group = "group 1"),
+                    data.frame(coordinates(g2), group = "group 2"))
+
+	if(length(unique(dta$id)) < no.loc) polyg <- polyg2
+
+    ggplot(data = polyg, aes(x = long, y = lat)) + 
+        geom_polygon(aes(group = id), color = "black", fill = "white", size = 1.1) +
+        geom_point(data = points, aes(x = x, y = y, color = group, shape = group), size = 1.4) +
+        scale_color_manual(values = c("black", "#1f78b4"), guide = F) +
+        scale_shape_manual(values = c(16, 0), guide = F) +
+	    coord_equal() +
+		labs(x = NULL, y = NULL) + 
+        ggtitle(as.character(dta$j[1])) +
+        theme 
+})
+
+do.call(grid.arrange, c(plots, nrow = 2))
+```
+
+So, we have six cities with different degrees of segregation. Imagine that
+each point represents an individual and that dots and squares represent
+different groups. The black lines within each city delineate neighborhoods. 
+(a)-(e) have 16 neighborhoods, while (f) has four. 
+
+Note that individuals in each neighborhood are randomly distributed
+(except in f).  In reality, we don't know where people live in each
+neighborhood. 
+
+In (f), which is the only city with only four neighborhoods, we assume
+that we actually have some idea where people live within each
+neighborhood. But, for whatever reason, we only have data at a more
+aggregate level (across four neighborhoods instead of 16). Below, I
+show how things can go very wrong in this case, illustrating an issue
+known as the
+[modifiable areal unit problem (MAUP)](https://en.wikipedia.org/wiki/Modifiable_areal_unit_problem).
+
+
+
+
+Calculate measures of segregation 
+=======================
+
+Using our hypothetical cities (a)-(f), we can now calculate measures of
+segregation for each. Intuitively, if we were to order the cities according
+to how segregated they are, we'd probably come up with the following ranking:
+
+`(b) > (a) > (c) > (e), (f) > (d)`
+
+That is, (b) is most segregated and (d) is least segregated. Do
+measures of segregation actually capture these differences? To find
+out, we'll calculate the
+[Dissimiliarity Index](https://en.wikipedia.org/wiki/Index_of_dissimilarity)
+-- the most common "non-spatial" measure of segregation -- as well as
+two "spatial" measures of segregation: Spatial Dissimilarity and
+Information Theory. See 
+[Reardon and O'Sullivan, "Measures of Spatial Segregation"](http://onlinelibrary.wiley.com/doi/10.1111/j.0081-1750.2004.00150.x/abstract)
+for a detailed discussion of spatial segregation measures. 
+
+All these measures range between 0 (complete integration) and 1
+(complete segregation).  The Dissimilarity Index captures the
+deviation between a city's demographic makeup and the demographic
+makeup of each of its neighborhoods. In the case of complete
+integration, all neighborhoods would have the same diversity as the
+city as a whole.
+
+Spatial segregation measures are different in that they also account
+for clustering of individuals across neighborhoods. For example, the
+Spatial Dissimilarity Index measures the deviation between the makeup
+of the city and individuals' "local environment," where the local
+environment can consist of (parts of) several neighboring
+neighborhoods. See Reardon and O'Sullivan for further details. 
+
+Let's write a function that outputs a set of segregation measures for
+a given city. The `dissim` and `spseg` functions used here are from
+package `seg`.
+
+```{r}
+calculate_seg <- function(polyg, dta, gr1, gr2, bandwidth) {
+    
+    # Subset the data to the groups of interest 
+    dta.sub <- dta[, c(gr1, gr2)]
+
+    # Find non-spatial dissimilarity index using 'dissim' from pkg 'seg'
+    dis.nspat <- dissim(data = dta.sub)$d
+    
+    # Find two spatial segregation measures
+    sp.seg <- spseg(polyg, dta.sub, smoothing = "kernel", sigma = bandwidth)
+    
+    dis.kern <- round(as.list(sp.seg)$d, 3)       #dissimilarity 
+    inf.kern <- round(as.list(sp.seg)$h, 3)       #information theory 
+
+    data.frame(
+        city = dta$j[1], 
+        measure = c("Non-Spatial Dissimilarity", "Spatial Dissimilarity", "Spatial Information Theory"),
+        bandwidth = c(NA, rep(bandwidth, 2)),
+        value = c(dis.nspat, dis.kern, inf.kern)
+		)    
+}
+```
+
+The function takes as its inputs: 
+
+1. A `SpatialPolygons` object. 
+
+2. Data associated with the `SpatialPolygons` object. The association
+between the polygons and data is by index, i.e., order. A different
+approach would involve using a `SpatialPolygonsDataFrame` in which
+each observation in the dataframe is directly associated with a
+polygon.
+
+3. The groups of interest: segregation will be calculated for `gr1`
+   with respect to `gr2`.
+
+4. A bandwidth, which specifies how much to smooth the population when
+calculating spatial segregation measures (not applicable for
+non-spatial segregation measures). A larger bandwidth will usually
+result in a smaller segregation score, since larger bandwidths
+incorporate larger areas and thus a larger share of the population
+(which usually will be more diverse).
+
+Let's test it using city (a) from above: 
+
+```{r}
+calculate_seg(grd.sp, dta.seg1, "group1", "group2", 0.5)
+```
+
+Let's run this function for all cities, and graph the result: 
+
+```{r fig.width=13, fig.height=13}
+dta.list <- list(dta.seg1, dta.seg2, dta.seg3, dta.int, dta.cb1, dta.cb2)
+p <- lapply(dta.list, function(dta) {
+
+    g1 <- dotsInPolys(grd.sp, as.integer(dta$group1))
+    g2 <- dotsInPolys(grd.sp, as.integer(dta$group2))
+
+    points <- rbind(data.frame(coordinates(g1), group = "group 1"),
+                    data.frame(coordinates(g2), group = "group 2"))
+
+    dta2 <- dta 
+    if(length(unique(dta$id)) < no.loc) {
+        polyg <- polyg2
+        grd.sp <- grd.sp2
+        dta2 <- dta.cb2.collapse
+    }
+    
+    g1 <- ggplot(data = polyg, aes(x = long, y = lat)) + 
+        geom_polygon(aes(group = id), color = "black", fill = "white", size = 1.1) +
+        geom_point(data = points, aes(x = x, y = y, color = group, shape = group)) +
+        scale_color_manual(values = c("black", "#1f78b4"), guide = F) +
+        scale_shape_manual(values = c(16, 0), guide = F) +        
+        ylab("") +
+        xlab("") +
+        ggtitle(as.character(dta$j[1])) +
+        coord_equal() +         
+        theme +
+		theme(plot.margin=unit(c(0,0,-0.5,0), "cm"))
+
+    seg <- rbind(calculate_seg(grd.sp, dta2, "group1", "group2", 0.2),
+	             calculate_seg(grd.sp, dta2, "group1", "group2", 0.7)[-c(1), ])
+    g2 <- tableGrob(seg, rows = rep("", 5))
+
+    arrangeGrob(g1, g2, ncol = 1, heights = c(0.7, 0.3))
+})
+
+plots <- arrangeGrob(p[[1]], p[[2]], p[[3]], p[[4]], p[[5]], p[[6]], nrow = 2)
+grid.newpage()
+grid.draw(plots)
+```
+
+Take a look at the table below each figure and see whether the
+segregation scores make intuitive sense. The exercise highlights a few
+important points:
+
+1. **Non-spatial measures of segregation don't capture important
+differences in segregation across cities.**
+Cities (a), (b), (c), and (e) have the same Non-Spatial Dissimilarity
+score -- 1 -- yet very different levels of segregation. The reason for
+the identical scores is that Non-Spatial Dissimilarity, like all
+non-spatial measures of segregation, captures the deviation between a
+city's diversity and the diversity of each of its neighborhoods
+*without taking into account where the neighborhoods themselves are
+located*.
+
+2. **Spatial measures do capture some important differences across
+cities.**
+For example, according to both spatial measures, (b) is more
+segregated than (a), which in turn is more segregated than (c). This
+is how we intuitively ranked these cities above.
+
+3. **A higher bandwidth means lower segregation.**
+For example, Spatial Dissimilarity in (a) is 0.730 using a bandwidth
+of 0.2 and 0.624 using a bandwidth of 0.7.
+
+4. **MAUP is a serious issue regardless of measure.**
+To your computer, (f) is identical to (d) -- resulting in a
+segregation score of 0 for both cities. You can spend a lot of time
+trying to pick a good measure of segregation, but if your data are
+measured at the wrong level you will be drawing inaccurate
+conclusions. Put differently, good measurement can't make up for bad
+data.
+
+
+
+

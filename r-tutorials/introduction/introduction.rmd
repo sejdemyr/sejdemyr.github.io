@@ -1,0 +1,208 @@
+---
+title: Introduction
+author: <a href="http://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a> 
+date: December, 2015
+summary: In this first in a number of tutorials, we'll cover the very basics of
+ R. If you've programmed before you can skip much of this. But
+ regardless of your background, I hope you'll find this and subsequent
+ tutorials useful for learning R's many tools for graphing,
+ statistical analysis, and data collection and management --- or what we
+ collectively might call "data science." 
+output:
+  html_document:
+     template: ../template/r-tutorial-template-v2.html
+     mathjax: null
+---
+
+
+	
+
+Running R
+=================
+
+You can run R using a number of text editors or "integrated
+development environments" (IDEs). Most people prefer some other
+application than R's native environment, which provides only limited
+functionality in terms of syntax highlighting, auto-completion, and
+debugging. Alternatives include [RStudio](https://www.rstudio.com/)
+and
+[Emacs](https://www.gnu.org/software/emacs/)/[ESS](http://ess.r-project.org/). I
+very much prefer the latter, but if you've never programmed before I
+would go with RStudio (installation instructions
+[here](https://www.rstudio.com/products/rstudio/download/); note that
+you need both R and RStudio).
+
+All IDEs include a console and a text editor. The console is where you'll
+see the results (or *output*) of commands executed from the editor. You can
+type commands directly into the console, but this is generally not a good
+strategy. This is because the whole purpose of writing code is to make
+it reproducible. Typing commands in the text editor will let you
+come back to them later as long as you save them (using extension .R).
+
+
+Your first script
+======================
+
+Fire up RStudio (or whatever IDE you use) and type the following two
+lines into the text editor. Then execute them, which can be done using a
+[keyboard shortcut](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts)
+--- <span class="fw">Ctrl+Enter</span> (Windows) or <span
+class="fw">Command+Enter</span> (mac) in RStudio.
+
+```{r}
+hello_world <- "hello world"
+hello_world 
+```
+
+In case it's not obvious, R output is displayed in
+<span style="color: #969696;"> gray</span>, above which is code that you
+should type into your text editor.
+
+Now execute the following code (but type it into your text editor first): 
+```{r eval=FALSE}
+# Create two objects and perform simple arithmetics
+a <- 5
+b <- 7
+a - b
+a + b + 10
+
+# Create a third object 
+w <- a + b
+w
+
+# Logical tests 
+w - b == a
+w - b > a
+b <- 1             #overwrite b 
+x <- w - b > a
+x
+```
+
+Does the output make sense to you? (I'm not displaying it here so that
+you can try to make sense of it yourself first.)
+
+Here are some things to pay attention to from our first few lines of code:
+
+1. **Comments**. Anything after `#` is a comment and won't be evaluated by R.
+
+2. **The assignment operator**. R uses `<-` (the assignment
+operator) to create objects. A single equal sign (`=`) also works, but
+the norm is to use `<-` in R. 
+
+3. **Objects**. We used the assignment operator to create *objects*
+--- for example, `hello_world` and `a`. The names of these objects are
+completely arbitrary. Unless they are created within a function, they
+are stored in R's memory with the value you assigned to them (e.g.,
+`"hello world"`, `5`) until the end of your R session.
+
+4. **Class.** R automatically assigns a class to each object
+you create. Three classes were used above: numeric,
+character, and logical. Use `class()` to see what type an object is
+(e.g., `class(hello_world)`, `class(a)`, and `class(x)`). Why is this
+important? For one, you may think a certain object has one class when
+it has another. This will cause issues. For example, this throws an error: 
+
+<div class="indent">
+```{r eval=FALSE}
+a <- 5
+b <- "7"
+a + b 
+```
+Not knowing that `b` is a character object (which often is much
+less obvious than here) would be frustrating. Other classes include
+<span class="fw">factor</span>, <span class="fw">matrix</span>,
+<span class="fw">data.frame</span> and many more that we'll get to. 
+</div>
+
+5. **Overwriting objects**. You can overwrite objects without R
+complaining (e.g., `b <- 1` above). This can be confusing if you don't
+keep track of which objects you have overwritten, but in general this
+ability is a good thing. R stores every object you create in
+memory, and overwriting an object saves memory to the extent that R
+doesn't need to hold an additional object, which may be consequential
+when you work with large datasets.
+
+
+Packages 
+========================== 
+
+The true power of R is that it's open-source. As such, anyone can
+extend its core functionality through packages. This often results in
+remarkable improvements to how we can approach complex data tasks. In
+subsequent tutorials, I will make particular use of a set of R packages 
+developed by [Hadley Wickham](http://had.co.nz/). 
+
+To use a package you must: 
+
+1. **Install it.** You only need to do this once. 
+2. **Load it.** You need to re-load packages every time you open R. 
+
+
+To install packages `plyr`, `dplyr`, and `tidyr`, which we'll use a lot,
+run
+
+```{r eval=FALSE}
+install.packages(c("plyr", "dplyr", "tidyr"), dep = T)
+```
+
+And to load these packages, use: 
+
+```{r, comment = "", eval=FALSE}
+require(plyr)
+require(dplyr)
+require(tidyr)
+```
+
+Or you can load many packages more compactly like so: 
+
+```{r, comment = "", eval=FALSE}
+pkgs <- c("plyr", "dplyr", "tidyr")
+sapply(pkgs, require, character.only = T)
+```
+
+<div style="margin-top: 15px"> </div>
+
+Style
+======================
+
+Writing good code requires a lot of practice. Good code executes
+quickly and is non-repetitive (e.g., uses functions for tasks that
+need to be executed several times). But most importantly for you right
+now, good code is easy to understand --- both for yourself if you were
+to come back to it and for someone else reading it.
+
+To that end, comments are extremely useful. Comments can delineate
+different blocks of code and, more importantly, clarify what a command
+or set of commands is doing. Especially use comments if you're doing
+something complex --- save them for routine tasks that most R
+programmers will understand.
+
+There are some other style guidelines you should attempt to follow.
+Please take a look at
+[Google's R Style Guide](https://google.github.io/styleguide/Rguide.xml).
+In particular, try to observe the spacing and line lengths limits
+outlined in that document. (Some other rules seem less important to
+me: I personally like underscores for object and function names.)
+
+
+
+
+Trouble shooting 
+========================== 
+
+Many, many times when coding you'll have an idea of what you want to
+do but won't know how to do it in R. This happens even for
+experienced coders. With the right strategies, you'll be able to solve
+a majority of issues you run into yourself. Not having to ask someone
+else every time you run into a problem will save you a lot of time.
+
+When you get stuck, google is your friend. For example, if you want
+to find the mean of a variable, try googling "how to find mean in R"
+and there will be tons of explanations of how to do this.
+
+R also has a help feature that can be called using the following
+syntax: `?commandname`, where `commandname` is the name of the command
+that you need help with. For example, `?mean` will bring up a help
+dialog box with information about how to use R's `mean()` command.
+
+
