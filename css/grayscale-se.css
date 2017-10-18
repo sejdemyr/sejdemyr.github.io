@@ -373,12 +373,12 @@ h6 {
 }
 .abstract {
     margin-top: -17px;
-    margin-bottom: 38px; 
+    margin-bottom: 38px;
 }
 
 @media (min-width: 767px) {
     #scroll-btn {
-	margin-top: 40px; 
+	margin-top: 40px;
     }
 }
 
@@ -413,12 +413,12 @@ p {
 
 .first-section {
     padding-top: 90px;
-    margin-top: 250px;   
+    margin-top: 250px;
 }
 
 .content-section {
     padding-top: 80px;
-    margin-top: -40px; 
+    margin-top: -40px;
 }
 
 .decrease-margin {
@@ -427,7 +427,7 @@ p {
 
 @media (min-width: 767px) {
     .content-section {
-	margin-top: -30px; 
+	margin-top: -30px;
 	padding-top: 90px;
     }
 
@@ -437,7 +437,7 @@ p {
 }
 
 .small {
-    font-size: 90%; 
+    font-size: 90%;
 }
 
 .article {
@@ -482,5 +482,5 @@ footer {
 }
 
 footer p {
-    font-size: 13px; 
+    font-size: 13px;
 }
