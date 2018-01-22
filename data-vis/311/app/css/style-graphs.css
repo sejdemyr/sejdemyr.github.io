@@ -1,0 +1,141 @@
+
+
+#choropleth-map {
+    margin-left: 20px;
+    margin-top: -20px; 
+}
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #000; 
+    shape-rendering: crispEdges; 
+}
+
+
+.axis text, .y label {
+    font-size: 11px;
+}
+
+.label {
+    fill: #777;
+    font-weight: 400; 
+}
+
+.tick text {
+    fill: #777;
+}
+
+.update {
+    fill: #000; 
+}
+
+div.tooltip {   
+  position: absolute;           
+  text-align: left;           
+  width: 250;                  
+  height: 70px;                            
+  font: 14px sans-serif #000; 
+  background: lightsteelblue; 
+  border: 0px;
+  border-radius: 5px; 
+  padding: 10px; 
+  pointer-events: none;
+  margin-top: -118%; 
+  margin-left: -37%;   
+}
+
+
+
+/*-------------Styles for line graph */
+.line {
+    fill: none;
+    stroke-width: 1.8px;
+    stroke: #000;
+}
+
+.lgleg {
+    stroke: #bdbdbd; 
+    stroke-width: 2; 
+    fill: none;  
+}
+
+.lglegtext, .lglegcw {
+    font-size: 11px;
+    text-transform: uppercase;
+    fill: #bdbdbd; 
+}
+
+
+/* Checkboxes 
+   Adapted http://bootsnipp.com/snippets/featured/material-design-switch
+   - added javascript that automatically populates switch */
+.material-switch > input[type="checkbox"] {
+    display: none;   
+}
+
+.material-switch > label {
+    cursor: pointer;
+    height: 0px;
+    position: relative; 
+    width: 40px;
+}
+
+.material-switch > label::before {
+    background: rgb(0, 0, 0); 
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    content: '';
+    height: 10px;
+    margin-top: -2px;
+    position:absolute;
+    opacity: 0.3;
+    transition: all 0.2s ease-in-out;
+    width: 30px;
+    left: 10px;
+}
+.material-switch > label::after {
+    background: rgb(255, 255, 255);
+    border-radius: 16px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 18px;
+    left: 6px;
+    margin-top: -3px;
+    position: absolute;
+    top: -4px;
+    transition: all 0.2s ease-in-out;
+    width: 18px;
+}
+
+.material-switch > input[type="checkbox"]:checked + label::before {
+    background: inherit;
+    opacity: 0.5;
+}
+.material-switch > input[type="checkbox"]:checked + label::after {
+    background: inherit;
+    left: 25px;
+}
+
+input[type="checkbox"] {
+    cursor: pointer;
+}
+
+#requestlist{
+    font-size: 11px; 
+}
+
+.panel.panel-default {
+    width: 230px; 
+}
+
+#selectall, #deselectall {
+    font-size: 11px; 
+}
+
+.panel-footer {
+    padding: 10px 15px;
+}
+
+.panel-footer > .checkbox {
+    margin: 0; 
+}
