@@ -1,0 +1,219 @@
+---
+title: Collapsing Data 
+author: <a href="http://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a> 
+date: December, 2015
+summary: This tutorial explains how to collapse data in R. Collapsing means
+ using one or several *grouping variables* to find summary statistics
+ --- mean, median, etc. --- for different categories in your data. For
+ example, if you have yearly income data for the 50 U.S. states over a
+ 10-year period (i.e., you have 500 data points), you may want to know
+ what the mean income was in each state (collapsing the data to 50 data
+ points) or in each year (10 data points). Or you may want to collapse
+ the data by year *and* U.S. region, say, South v. non-South (20 data
+ points). Like the [tutorial on modifying data](../modifying-data),
+ this tutorial draws on a set of intuitive and elegant functions from
+ the `dplyr` package.
+output:
+  html_document:
+     template: ../template/r-tutorial-template-v2.html
+     mathjax: null
+---
+
+
+Before we begin, let's load the `dplyr` package. We'll make particular
+use of two functions from this package: `group_by` and
+`summarize`. We'll also make use of chaining, which you can read more
+about in the tutorial on
+[modifying data](../modifying-data/#chaining).
+
+```{r}
+require(dplyr)
+```
+
+One grouping variable
+==============
+
+To illustrate how collapsing works, let's create a data frame with
+three variables: `student` (an id variable that uniquely
+identifies each row); `school` (a grouping variable indicating the
+student's school); and `sat_score` (the student's SAT score). 
+
+```{r}
+grades <- data.frame(
+    student = c("al", "bo", "cindy", "dan", "ella", "frank", "gina", "henry"), 
+    school = c(rep("stanford", 4), rep("berkley", 4)),
+    sat_score = c(750, 730, 690, 800, 780, 720, 730, 700)
+    )
+```
+
+Which school --- Stanford or Berkley --- attracts students with
+a higher SAT score? Based on my (in reality-not-so-random) random
+assignment of scores, it appears to be Stanford: 
+
+```{r}
+grades %>%
+    group_by(school) %>%
+    summarize(mean(sat_score))
+```
+
+In words, the mean SAT score for Berkley students is 732.5, and the mean
+for Stanford students is 742.5. (`dplyr` also outputs some information about
+the new data frame for us, such as its dimensions and the class of each
+of its variables.)
+
+To be clear, here's how `group_by()` and `summarize()` work. First,
+`group_by()` specifies the grouping variable, i.e., the variable that
+classifies observations into different clusters. In this case, we're
+classifying students by the school they attend. Second, `summarize()`
+specifies what to do with the data points within each cluster.  In
+this case, we're finding the mean SAT score in each cluster.
+
+It's often useful to assign a name to the collapsed variable:
+
+```{r}
+grades %>%
+    group_by(school) %>%
+    summarize(mean_sat = mean(sat_score))
+```
+
+Also note that you'd often want to save the resulting collapsed
+data frame to R's memory. Here's how to do this, creating a new
+object called `grades_clps` with the collapsed data: 
+
+
+```{r}
+grades_clps <- grades %>%
+    group_by(school) %>%
+    summarize(mean_sat = mean(sat_score))
+grades_clps
+```
+
+
+Several grouping variables
+============================
+
+In the previous example we collapsed the data using only one grouping
+variable. Collapsing can also be done using several grouping
+variables. Let's modify the `grades` data frame to illustrate:
+
+```{r}
+grades <- data.frame(
+    student = c("al", "bo", "cindy", "dan", "ella", "frank", "gina", "henry"), 
+    school = c(rep("stanford", 4), rep("berkley", 4)),
+    classof = rep(c(2017, 2017, 2018, 2018), 2), 
+    sat_score = c(750, 730, 690, 800, 780, 720, 730, 700)
+    )
+grades
+```
+
+We now have two grouping variables: `school` and `classof`. The latter specifies
+the expected graduation year for each student.
+
+Collapsing by these two grouping variables follows the same logic as above. Just
+specify the variables to collapse by inside `group_by()`. 
+
+```{r}
+grades %>%
+    group_by(school, classof) %>%
+    summarize(mean_sat = mean(sat_score))
+```
+
+
+Additional manipulation
+===========================
+
+One nice thing about using `dplyr` functions for collapsing data is
+that you can combine them with other data manipulation functions, many
+of which are covered in a separate tutorial on
+[modifying data](../modifying-data). The result is elegant code that
+is easy to debug and relatively quick to execute. Here's an example in
+which I'm filtering the `grades` data frame to class of 2017 and then
+collapsing:
+
+```{r}
+grades %>%
+    filter(classof == 2017) %>%
+    group_by(school) %>%
+    summarize(mean_sat = mean(sat_score))
+```
+
+Here's an example that adds a variable after the collapse (rescaling
+the mean SAT scores to be between 0 and 100, assuming 800 is the maximum
+possible score):
+
+```{r}
+grades %>%
+    group_by(school) %>%
+    summarize(mean_sat = mean(sat_score)) %>%
+    mutate(mean_sat_strd = (mean_sat / 800) * 100)
+```
+
+
+Different functions
+====================
+
+In all the examples above I've used `mean()` inside `summarize()`. Of
+course you're by no means limited to finding the mean. You can use all of
+R's built-in functions or write your own function. Here are examples that
+make use of other common functions:
+
+```{r}
+grades %>%
+    group_by(school) %>%
+    summarize(median_sat = median(sat_score),
+              sd_sat = sd(sat_score), 
+              min_sat = min(sat_score),
+              max_sat = max(sat_score),
+              dif_maxmin = max_sat - min_sat)
+```
+
+Here's an example of using your own function:
+
+```{r}
+maxmindif <- function(x) max(x) - min(x)
+
+grades %>%
+    group_by(school) %>%
+    summarize(dif_maxmin = maxmindif(sat_score))
+```
+
+Lastly, `dplyr` provides a few special functions that can be used
+within `summarize()`. One very useful special function is `n()`, which
+provides the number of observations in each cluster:
+
+```{r}
+grades %>%
+    group_by(school) %>%
+    summarize(no_obs = n())
+```
+
+
+Exercises
+=============
+
+1. Read the `world-small.csv` dataset (available
+[here](../data/world-small.csv)) into R. Get to know the structure of
+this dataset using functions like `dim()`, `head()`, and `summary()`.
+
+2. Find the mean and median GDP per capita and Polity IV score, by
+region (that is, for each region in the dataset). Also find the number
+of countries by region.
+
+3. Find the mean and median GDP per capita, by region and whether a country
+is a "democracy" or not. For the purpose of this exercise, a country is a
+"democracy" if it has a Polity IV score of 15 or higher.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
