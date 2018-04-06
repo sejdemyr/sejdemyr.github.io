@@ -222,7 +222,7 @@ vector.
 Subsetting using indexing
 ---------------------
 
-A different way to subset a vector is to specify the index or indeces
+A different way to subset a vector is to specify the index or indices
 you want to keep, again using brackets. Here are a few examples:
 
 ```{r}
