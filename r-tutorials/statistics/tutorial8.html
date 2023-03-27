@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="https://www.w3.org/1999/xhtml">
 
 <head>
 
@@ -189,16 +189,16 @@ ecls &lt;- read.csv(&quot;ecls.csv&quot;)</code></pre>
 ## 2        1  0.19386817</code></pre>
 <p>The difference-in-means is statistically significant at conventional levels of confidence (as is also evident from the small standard error above):</p>
 <pre class="r"><code>with(ecls, t.test(c5r2mtsc_std ~ catholic))</code></pre>
-<pre><code>## 
+<pre><code>##
 ##  Welch Two Sample t-test
-## 
+##
 ## data:  c5r2mtsc_std by catholic
 ## t = -9.1069, df = 2214.5, p-value &lt; 2.2e-16
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
 ##  -0.2727988 -0.1761292
 ## sample estimates:
-## mean in group 0 mean in group 1 
+## mean in group 0 mean in group 1
 ##     -0.03059583      0.19386817</code></pre>
 <hr />
 </div>
@@ -230,85 +230,85 @@ ecls %&gt;%
     t.test(ecls[, v] ~ ecls[, 'catholic'])
 })</code></pre>
 <pre><code>## [[1]]
-## 
+##
 ##  Welch Two Sample t-test
-## 
+##
 ## data:  ecls[, v] by ecls[, &quot;catholic&quot;]
 ## t = -13.453, df = 2143.3, p-value &lt; 2.2e-16
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
 ##  -0.1936817 -0.1444003
 ## sample estimates:
-## mean in group 0 mean in group 1 
-##       0.5561246       0.7251656 
-## 
-## 
+## mean in group 0 mean in group 1
+##       0.5561246       0.7251656
+##
+##
 ## [[2]]
-## 
+##
 ##  Welch Two Sample t-test
-## 
+##
 ## data:  ecls[, v] by ecls[, &quot;catholic&quot;]
 ## t = -12.665, df = 2186.9, p-value &lt; 2.2e-16
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
 ##  -2.326071 -1.702317
 ## sample estimates:
-## mean in group 0 mean in group 1 
-##        37.56097        39.57516 
-## 
-## 
+## mean in group 0 mean in group 1
+##        37.56097        39.57516
+##
+##
 ## [[3]]
-## 
+##
 ##  Welch Two Sample t-test
-## 
+##
 ## data:  ecls[, v] by ecls[, &quot;catholic&quot;]
 ## t = -20.25, df = 1825.1, p-value &lt; 2.2e-16
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
 ##  -29818.10 -24552.18
 ## sample estimates:
-## mean in group 0 mean in group 1 
-##        54889.16        82074.30 
-## 
-## 
+## mean in group 0 mean in group 1
+##        54889.16        82074.30
+##
+##
 ## [[4]]
-## 
+##
 ##  Welch Two Sample t-test
-## 
+##
 ## data:  ecls[, v] by ecls[, &quot;catholic&quot;]
 ## t = 4.2458, df = 2233.7, p-value = 2.267e-05
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
 ##  0.02150833 0.05842896
 ## sample estimates:
-## mean in group 0 mean in group 1 
-##        1.132669        1.092701 
-## 
-## 
+## mean in group 0 mean in group 1
+##        1.132669        1.092701
+##
+##
 ## [[5]]
-## 
+##
 ##  Welch Two Sample t-test
-## 
+##
 ## data:  ecls[, v] by ecls[, &quot;catholic&quot;]
 ## t = 18.855, df = 2107.3, p-value &lt; 2.2e-16
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
 ##  0.2122471 0.2615226
 ## sample estimates:
-## mean in group 0 mean in group 1 
+## mean in group 0 mean in group 1
 ##       0.4640918       0.2272069</code></pre>
 <p>If you don’t understand the code for the t-tests above, you can also use:</p>
 <pre class="r"><code>with(ecls, t.test(race_white ~ catholic))  #(repeat for each covariate)</code></pre>
-<pre><code>## 
+<pre><code>##
 ##  Welch Two Sample t-test
-## 
+##
 ## data:  race_white by catholic
 ## t = -13.453, df = 2143.3, p-value &lt; 2.2e-16
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
 ##  -0.1936817 -0.1444003
 ## sample estimates:
-## mean in group 0 mean in group 1 
+## mean in group 0 mean in group 1
 ##       0.5561246       0.7251656</code></pre>
 <hr />
 </div>
@@ -320,33 +320,33 @@ ecls %&gt;%
 m_ps &lt;- glm(catholic ~ race_white + w3income_1k + p5hmage + p5numpla + w3momed_hsb,
             family = binomial(), data = ecls)
 summary(m_ps)</code></pre>
-<pre><code>## 
+<pre><code>##
 ## Call:
-## glm(formula = catholic ~ race_white + w3income_1k + p5hmage + 
+## glm(formula = catholic ~ race_white + w3income_1k + p5hmage +
 ##     p5numpla + w3momed_hsb, family = binomial(), data = ecls)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -1.1883  -0.6140  -0.4508  -0.3336   2.5659  
-## 
+##
+## Deviance Residuals:
+##     Min       1Q   Median       3Q      Max
+## -1.1883  -0.6140  -0.4508  -0.3336   2.5659
+##
 ## Coefficients:
-##               Estimate Std. Error z value Pr(&gt;|z|)    
+##               Estimate Std. Error z value Pr(&gt;|z|)
 ## (Intercept) -3.2125519  0.2379826 -13.499  &lt; 2e-16 ***
 ## race_white   0.3145014  0.0700895   4.487 7.22e-06 ***
 ## w3income_1k  0.0073038  0.0006495  11.245  &lt; 2e-16 ***
 ## p5hmage      0.0292168  0.0050771   5.755 8.69e-09 ***
-## p5numpla    -0.1439392  0.0912255  -1.578    0.115    
+## p5numpla    -0.1439392  0.0912255  -1.578    0.115
 ## w3momed_hsb -0.6935868  0.0743207  -9.332  &lt; 2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
+##
 ## (Dispersion parameter for binomial family taken to be 1)
-## 
+##
 ##     Null deviance: 7701.3  on 9266  degrees of freedom
 ## Residual deviance: 7168.8  on 9261  degrees of freedom
 ##   (1811 observations deleted due to missingness)
 ## AIC: 7180.8
-## 
+##
 ## Number of Fisher Scoring iterations: 5</code></pre>
 <p>Using this model, we can now calculate the propensity score for each student. It is simply the student’s predicted probability of being Treated, given the estimates from the logit model. Below, I calculate this propensity score using <code>predict()</code> and create a dataframe that has the propensity score as well as the student’s actual treatment status.</p>
 <pre class="r"><code>prs_df &lt;- data.frame(pr_score = predict(m_ps, type = &quot;response&quot;),
@@ -451,72 +451,72 @@ grid.arrange(
     t.test(dta_m[, v] ~ dta_m$catholic)
 })</code></pre>
 <pre><code>## [[1]]
-## 
+##
 ##  Welch Two Sample t-test
-## 
+##
 ## data:  dta_m[, v] by dta_m$catholic
 ## t = 0.35243, df = 2701.8, p-value = 0.7245
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
 ##  -0.02700440  0.03883872
 ## sample estimates:
-## mean in group 0 mean in group 1 
-##       0.7470414       0.7411243 
-## 
-## 
+## mean in group 0 mean in group 1
+##       0.7470414       0.7411243
+##
+##
 ## [[2]]
-## 
+##
 ##  Welch Two Sample t-test
-## 
+##
 ## data:  dta_m[, v] by dta_m$catholic
 ## t = -0.21331, df = 2702, p-value = 0.8311
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
 ##  -0.4372485  0.3514496
 ## sample estimates:
-## mean in group 0 mean in group 1 
-##         39.5503         39.5932 
-## 
-## 
+## mean in group 0 mean in group 1
+##         39.5503         39.5932
+##
+##
 ## [[3]]
-## 
+##
 ##  Welch Two Sample t-test
-## 
+##
 ## data:  dta_m[, v] by dta_m$catholic
 ## t = -0.64787, df = 2701.9, p-value = 0.5171
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
 ##  -4690.731  2360.845
 ## sample estimates:
-## mean in group 0 mean in group 1 
-##        81403.99        82568.94 
-## 
-## 
+## mean in group 0 mean in group 1
+##        81403.99        82568.94
+##
+##
 ## [[4]]
-## 
+##
 ##  Welch Two Sample t-test
-## 
+##
 ## data:  dta_m[, v] by dta_m$catholic
 ## t = -1.339, df = 2699.5, p-value = 0.1807
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
 ##  -0.038278301  0.007213213
 ## sample estimates:
-## mean in group 0 mean in group 1 
-##        1.076183        1.091716 
-## 
-## 
+## mean in group 0 mean in group 1
+##        1.076183        1.091716
+##
+##
 ## [[5]]
-## 
+##
 ##  Welch Two Sample t-test
-## 
+##
 ## data:  dta_m[, v] by dta_m$catholic
 ## t = -0.51108, df = 2701.5, p-value = 0.6093
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
 ##  -0.03935185  0.02307966
 ## sample estimates:
-## mean in group 0 mean in group 1 
+## mean in group 0 mean in group 1
 ##       0.2152367       0.2233728</code></pre>
 <hr />
 </div>
@@ -533,64 +533,64 @@ grid.arrange(
 <h1><span class="header-section-number">5</span> Estimating treatment effects</h1>
 <p>Estimating the treatment effect is simple once we have a matched sample that we are happy with. We can use a t-test:</p>
 <pre class="r"><code>with(dta_m, t.test(c5r2mtsc_std ~ catholic))</code></pre>
-<pre><code>## 
+<pre><code>##
 ##  Welch Two Sample t-test
-## 
+##
 ## data:  c5r2mtsc_std by catholic
 ## t = 4.1788, df = 2670.1, p-value = 3.025e-05
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
 ##  0.07834911 0.21688388
 ## sample estimates:
-## mean in group 0 mean in group 1 
+## mean in group 0 mean in group 1
 ##       0.3572844       0.2096679</code></pre>
 <p>Or we can use OLS with or without covariates:</p>
 <pre class="r"><code>lm_treat1 &lt;- lm(c5r2mtsc_std ~ catholic, data = dta_m)
 summary(lm_treat1)</code></pre>
-<pre><code>## 
+<pre><code>##
 ## Call:
 ## lm(formula = c5r2mtsc_std ~ catholic, data = dta_m)
-## 
+##
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -3.5089 -0.5754  0.0431  0.6167  3.0764 
-## 
+##     Min      1Q  Median      3Q     Max
+## -3.5089 -0.5754  0.0431  0.6167  3.0764
+##
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
+##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)  0.35728    0.02498  14.304  &lt; 2e-16 ***
 ## catholic    -0.14762    0.03533  -4.179 3.02e-05 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
+##
 ## Residual standard error: 0.9185 on 2702 degrees of freedom
-## Multiple R-squared:  0.006421,   Adjusted R-squared:  0.006054 
+## Multiple R-squared:  0.006421,   Adjusted R-squared:  0.006054
 ## F-statistic: 17.46 on 1 and 2702 DF,  p-value: 3.024e-05</code></pre>
 <pre class="r"><code>lm_treat2 &lt;- lm(c5r2mtsc_std ~ catholic + race_white + p5hmage +
                   I(w3income / 10^3) + p5numpla + w3momed_hsb, data = dta_m)
 summary(lm_treat2)</code></pre>
-<pre><code>## 
+<pre><code>##
 ## Call:
-## lm(formula = c5r2mtsc_std ~ catholic + race_white + p5hmage + 
+## lm(formula = c5r2mtsc_std ~ catholic + race_white + p5hmage +
 ##     I(w3income/10^3) + p5numpla + w3momed_hsb, data = dta_m)
-## 
+##
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -3.6234 -0.5464  0.0336  0.6106  3.1875 
-## 
+##     Min      1Q  Median      3Q     Max
+## -3.6234 -0.5464  0.0336  0.6106  3.1875
+##
 ## Coefficients:
-##                    Estimate Std. Error t value Pr(&gt;|t|)    
+##                    Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)      -0.4973086  0.1490892  -3.336 0.000863 ***
 ## catholic         -0.1452595  0.0333418  -4.357 1.37e-05 ***
 ## race_white        0.2843161  0.0387899   7.330 3.03e-13 ***
 ## p5hmage           0.0151427  0.0032496   4.660 3.32e-06 ***
 ## I(w3income/10^3)  0.0030040  0.0003774   7.959 2.53e-15 ***
-## p5numpla         -0.1106781  0.0555234  -1.993 0.046323 *  
+## p5numpla         -0.1106781  0.0555234  -1.993 0.046323 *
 ## w3momed_hsb      -0.3815903  0.0415457  -9.185  &lt; 2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
+##
 ## Residual standard error: 0.8664 on 2697 degrees of freedom
-## Multiple R-squared:  0.1175, Adjusted R-squared:  0.1155 
+## Multiple R-squared:  0.1175, Adjusted R-squared:  0.1155
 ## F-statistic: 59.85 on 6 and 2697 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Interpret these estimates!</p>
 <hr />

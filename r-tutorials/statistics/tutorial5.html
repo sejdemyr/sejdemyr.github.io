@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="https://www.w3.org/1999/xhtml">
 
 <head>
 
@@ -67,8 +67,8 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 </ul>
 </div>
 
-<!-- 
-* * * * * * * * * * * * * * * * * * * * * * * * 
+<!--
+* * * * * * * * * * * * * * * * * * * * * * * *
 
 R Markdown
 ==========================
@@ -76,13 +76,13 @@ R Markdown
 We'll use R Markdown to write the remainder of the problem sets. Let's
 create our first report in R Markdown:
 
-1. Open [this .Rmd file](startup.Rmd) in RStudio. 
+1. Open [this .Rmd file](startup.Rmd) in RStudio.
 
 2. Render it by clicking `Knit Word`. A word document will end up in your
-   working directory. Optional: If you instead want to create a .pdf report (which 
-   will look nicer), you have to install 
-   (LaTeX)[http://latex-project.org/ftp.html], and change the output argument
-   to "pdf_document" instead of "word_document". 
+   working directory. Optional: If you instead want to create a .pdf report (which
+   will look nicer), you have to install
+   (LaTeX)[https://latex-project.org/ftp.html], and change the output argument
+   to "pdf_document" instead of "word_document".
 
 3. Change the title information in the .Rmd file to "Problem Set
    2". Also change the author and date information. Re-render (`Knit Word`).
@@ -91,20 +91,20 @@ create our first report in R Markdown:
    this code for you and include the output of the code in the pdf
    document.
 
-5. Note that there are three levels for headers. Change "Level 1 Header" 
+5. Note that there are three levels for headers. Change "Level 1 Header"
    to "Part II: Theory Building and Analysis" and "Level 2 Header" to
    "Question 1" and fill in your answers from this part of Problem Set 2
-   under (a), (b), (c)... etc. 
+   under (a), (b), (c)... etc.
 
 6. Transfer the rest of Part II of Problem Set 2 to the .Rmd file. Provide
-   short explanations of code chunks. Re-render. 
+   short explanations of code chunks. Re-render.
 
 7. I suggest that you keep writing the code for the problem sets in a
    .R document. When you're done, you can transfer this code to a .Rmd
    file, include explanations of the code, and insert non-code based answers
    to create the write-up for your problem sets.
 
-8. You will turn in the .Rmd 
+8. You will turn in the .Rmd
 
 -->
 <hr />
@@ -118,7 +118,7 @@ create our first report in R Markdown:
 <div id="one-to-one-merging" class="section level3">
 <h3><span class="header-section-number">1.1.1</span> One-to-one merging</h3>
 <p>To illustrate, say you had two datasets that look like this:</p>
-<pre class="r"><code># Generate toy dataset 1: 
+<pre class="r"><code># Generate toy dataset 1:
 demo &lt;- data.frame(country = c(&quot;USA&quot;, &quot;Albania&quot;, &quot;Turkey&quot;, &quot;China&quot;, &quot;Sudan&quot;),
                    democracy_score = c(19, 16, 16, 5, 10))
 demo</code></pre>
@@ -128,7 +128,7 @@ demo</code></pre>
 ## 3  Turkey              16
 ## 4   China               5
 ## 5   Sudan              10</code></pre>
-<pre class="r"><code># Generate toy dataset 2: 
+<pre class="r"><code># Generate toy dataset 2:
 econ &lt;- data.frame(country = c(&quot;China&quot;, &quot;Albania&quot;, &quot;Turkey&quot;, &quot;USA&quot;, &quot;Sudan&quot;),
                    gdp_pc = c(12000, 10000, 9000, 20000, 500))
 econ</code></pre>
@@ -148,7 +148,7 @@ df</code></pre>
 ## 4  Turkey              16   9000
 ## 5     USA              19  20000</code></pre>
 <p>You can merge on more than one variable. Say you had two datasets that look like this:</p>
-<pre class="r"><code># Generate toy dataset 1: 
+<pre class="r"><code># Generate toy dataset 1:
 demo &lt;- data.frame(expand.grid(country = c(&quot;USA&quot;, &quot;China&quot;, &quot;Sudan&quot;),
                                year = 1994:1996),
                    democracy_score = round(runif(9, 0, 20), 0))
@@ -163,7 +163,7 @@ demo</code></pre>
 ## 7     USA 1996              17
 ## 8   China 1996               3
 ## 9   Sudan 1996               1</code></pre>
-<pre class="r"><code># Generate toy dataset 2: 
+<pre class="r"><code># Generate toy dataset 2:
 econ &lt;- data.frame(expand.grid(year = 1994:1996,
                                country = c(&quot;USA&quot;, &quot;China&quot;, &quot;Sudan&quot;)),
                    gdp_pc = round(runif(9, 1000, 20000), 0))
@@ -233,7 +233,7 @@ econ</code></pre>
                                year = 1994:1996),
                    democracy_score = round(runif(9, 0, 20), 0))
 
-region &lt;- data.frame(country = c(&quot;USA&quot;, &quot;China&quot;, &quot;Sudan&quot;), 
+region &lt;- data.frame(country = c(&quot;USA&quot;, &quot;China&quot;, &quot;Sudan&quot;),
                      region = c(&quot;America&quot;, &quot;Asia&quot;, &quot;Africa&quot;))
 demo</code></pre>
 <pre><code>##   country year democracy_score
@@ -265,14 +265,14 @@ demo</code></pre>
 ## 9     USA 1995              15 America</code></pre>
 <hr />
 <p><strong>Exercise:</strong> Test yourself by merging the three data frames defined below. Your final data frame should have 9 rows and 5 columns. Hint: merge only two data frames at a time.</p>
-<pre class="r"><code>df1 &lt;- data.frame(name = c(&quot;Mary&quot;, &quot;Thor&quot;, &quot;Sven&quot;, &quot;Jane&quot;, &quot;Ake&quot;, &quot;Stephan&quot;, 
+<pre class="r"><code>df1 &lt;- data.frame(name = c(&quot;Mary&quot;, &quot;Thor&quot;, &quot;Sven&quot;, &quot;Jane&quot;, &quot;Ake&quot;, &quot;Stephan&quot;,
                            &quot;Bjorn&quot;, &quot;Oden&quot;, &quot;Dennis&quot;),
-                  treatment_gr = c(rep(c(1, 2, 3), each = 3)), 
+                  treatment_gr = c(rep(c(1, 2, 3), each = 3)),
                   weight_p1 = round(runif(9, 100, 200), 0))
-df2 &lt;- data.frame(name = c(&quot;Sven&quot;, &quot;Jane&quot;, &quot;Ake&quot;, &quot;Mary&quot;, &quot;Thor&quot;, &quot;Stephan&quot;, 
-                           &quot;Oden&quot;, &quot;Bjorn&quot;), 
-                  weight_p2 = round(runif(8, 100, 200), 0))                           
-df3 &lt;- data.frame(treatment_gr = c(1, 2, 3), 
+df2 &lt;- data.frame(name = c(&quot;Sven&quot;, &quot;Jane&quot;, &quot;Ake&quot;, &quot;Mary&quot;, &quot;Thor&quot;, &quot;Stephan&quot;,
+                           &quot;Oden&quot;, &quot;Bjorn&quot;),
+                  weight_p2 = round(runif(8, 100, 200), 0))
+df3 &lt;- data.frame(treatment_gr = c(1, 2, 3),
                   type = c(&quot;dog-lovers&quot;, &quot;cat-lovers&quot;, &quot;all-lovers&quot;))</code></pre>
 <hr />
 </div>
@@ -319,8 +319,8 @@ arrange(df, country, year)</code></pre>
 <p>A prominent economic theory predicts that higher income inequality should be associated with more redistribution from the rich to the poor (Meltzer and Richard 1981).</p>
 <p>Let’s create a dataset that will allow us to test this prediction using U.S. state-level data.</p>
 <ul>
-<li><p>Inequality data are available <a href="http://www.shsu.edu/eco_mwf/inequality.html">here</a>. Use the dataset with six measures of inequality.</p></li>
-<li><p>Tax data that can be used to measure fiscal capacity/redistribution are available <a href="http://www.census.gov/govs/statetax/historical_data.html">here</a>. Use the <code>State Government Tax Collections</code> link.</p></li>
+<li><p>Inequality data are available <a href="https://www.shsu.edu/eco_mwf/inequality.html">here</a>. Use the dataset with six measures of inequality.</p></li>
+<li><p>Tax data that can be used to measure fiscal capacity/redistribution are available <a href="https://www.census.gov/govs/statetax/historical_data.html">here</a>. Use the <code>State Government Tax Collections</code> link.</p></li>
 </ul>
 <hr />
 <ol style="list-style-type: decimal">

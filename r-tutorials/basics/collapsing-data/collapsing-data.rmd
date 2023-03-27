@@ -1,6 +1,6 @@
 ---
-title: Collapsing Data 
-author: <a href="http://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a> 
+title: Collapsing Data
+author: <a href="https://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a>
 date: December, 2015
 summary: This tutorial explains how to collapse data in R. Collapsing means
  using one or several *grouping variables* to find summary statistics
@@ -36,11 +36,11 @@ One grouping variable
 To illustrate how collapsing works, let's create a data frame with
 three variables: `student` (an id variable that uniquely
 identifies each row); `school` (a grouping variable indicating the
-student's school); and `sat_score` (the student's SAT score). 
+student's school); and `sat_score` (the student's SAT score).
 
 ```{r}
 grades <- data.frame(
-    student = c("al", "bo", "cindy", "dan", "ella", "frank", "gina", "henry"), 
+    student = c("al", "bo", "cindy", "dan", "ella", "frank", "gina", "henry"),
     school = c(rep("stanford", 4), rep("berkley", 4)),
     sat_score = c(750, 730, 690, 800, 780, 720, 730, 700)
     )
@@ -48,7 +48,7 @@ grades <- data.frame(
 
 Which school --- Stanford or Berkley --- attracts students with
 a higher SAT score? Based on my (in reality-not-so-random) random
-assignment of scores, it appears to be Stanford: 
+assignment of scores, it appears to be Stanford:
 
 ```{r}
 grades %>%
@@ -78,7 +78,7 @@ grades %>%
 
 Also note that you'd often want to save the resulting collapsed
 data frame to R's memory. Here's how to do this, creating a new
-object called `grades_clps` with the collapsed data: 
+object called `grades_clps` with the collapsed data:
 
 
 ```{r}
@@ -98,9 +98,9 @@ variables. Let's modify the `grades` data frame to illustrate:
 
 ```{r}
 grades <- data.frame(
-    student = c("al", "bo", "cindy", "dan", "ella", "frank", "gina", "henry"), 
+    student = c("al", "bo", "cindy", "dan", "ella", "frank", "gina", "henry"),
     school = c(rep("stanford", 4), rep("berkley", 4)),
-    classof = rep(c(2017, 2017, 2018, 2018), 2), 
+    classof = rep(c(2017, 2017, 2018, 2018), 2),
     sat_score = c(750, 730, 690, 800, 780, 720, 730, 700)
     )
 grades
@@ -110,7 +110,7 @@ We now have two grouping variables: `school` and `classof`. The latter specifies
 the expected graduation year for each student.
 
 Collapsing by these two grouping variables follows the same logic as above. Just
-specify the variables to collapse by inside `group_by()`. 
+specify the variables to collapse by inside `group_by()`.
 
 ```{r}
 grades %>%
@@ -161,7 +161,7 @@ make use of other common functions:
 grades %>%
     group_by(school) %>%
     summarize(median_sat = median(sat_score),
-              sd_sat = sd(sat_score), 
+              sd_sat = sd(sat_score),
               min_sat = min(sat_score),
               max_sat = max(sat_score),
               dif_maxmin = max_sat - min_sat)
@@ -202,18 +202,3 @@ of countries by region.
 3. Find the mean and median GDP per capita, by region and whether a country
 is a "democracy" or not. For the purpose of this exercise, a country is a
 "democracy" if it has a Polity IV score of 15 or higher.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

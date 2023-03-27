@@ -1,6 +1,6 @@
 ---
 title: Wide &#38; Long Data
-author: <a href="http://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a> 
+author: <a href="https://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a>
 date: January, 2016
 summary: This tutorial has three purposes&#58; to explain the difference between
  long and wide form datasets, to show why it's generally preferable to
@@ -20,7 +20,7 @@ Wide versus long data
 Illustrating the difference between wide and long datasets is easiest
 using an example. Here are two datasets with the exact same information
 represented in wide and long form respectively (imagine that `avgtemp`
-represents average temperature in Celsius):  
+represents average temperature in Celsius):
 
 
 ```{r}
@@ -37,7 +37,7 @@ country_wide <- data.frame(
     avgtemp.1994 = country_long$avgtemp[1:3],
     avgtemp.1995 = country_long$avgtemp[4:6],
     avgtemp.1996 = country_long$avgtemp[7:9])
-country_wide 
+country_wide
 ```
 
 
@@ -51,7 +51,7 @@ A case for long data
 
 There are many reasons to prefer datasets structured in long
 form. Repeating some of the points made in Hadley Wickham's
-[excellent paper on the topic](http://vita.had.co.nz/papers/tidy-data.html),
+[excellent paper on the topic](https://vita.had.co.nz/papers/tidy-data.html),
 here are three reasons why you should attempt to structure your data
 in long form:
 
@@ -75,7 +75,7 @@ above.)
 analysis and graphing. For example, if you wanted to run a regression with
 year and/or country fixed effects, you would have to structure your data
 in long form. Furthermore, many graphing packages, including `ggplot`,
-rely on your data being in long form. 
+rely on your data being in long form.
 
 
 
@@ -86,10 +86,10 @@ To illustrate how to convert a dataset from wide to long format, we'll
 use a UNICEF dataset on under-five child mortality across 196
 countries. Download the dataset [here](../data/unicef-u5mr.csv); it is
 based on data that can be found at
-[www.childmortality.org](http://www.childmortality.org/). The under-five mortality
+[www.childmortality.org](https://www.childmortality.org/). The under-five mortality
 rate is expressed as the number of under-five deaths per 1,000 live births.
 
-Set your working directory and read the file: 
+Set your working directory and read the file:
 
 ```{r, echo=FALSE}
 u5mr <- read.csv("../data/unicef-u5mr.csv")
@@ -99,7 +99,7 @@ u5mr <- read.csv("../data/unicef-u5mr.csv")
 u5mr <- read.csv("unicef-u5mr.csv")
 ```
 
-This dataset has 196 rows, one for each country, and 67 variables:  
+This dataset has 196 rows, one for each country, and 67 variables:
 
 ```{r}
 dim(u5mr) #dimensions of the data frame
@@ -109,7 +109,7 @@ names(u5mr) #the variable names
 Let's convert it to long format, where the unit of analysis is
 country-year. That is, we'll have three variables indicating country,
 year, and U5MR. This can be done using `gather()` in the `tidyr`
-package. 
+package.
 
 ```{r}
 require(tidyr)
@@ -139,21 +139,21 @@ tail(u5mr_long)
 
 Learn more about `gather()` and other excellent `tidyr` functions that
 facilitate tidy data
-[here](http://blog.rstudio.org/2014/07/22/introducing-tidyr/) and
-[here](http://blog.rstudio.org/2015/09/13/tidyr-0-3-0/).
+[here](https://blog.rstudio.org/2014/07/22/introducing-tidyr/) and
+[here](https://blog.rstudio.org/2015/09/13/tidyr-0-3-0/).
 
 
 Exercises
 ==========
 
-Go to [www.childmortality.org](http://www.childmortality.org/) and
+Go to [www.childmortality.org](https://www.childmortality.org/) and
 download the dataset under "Estimates for under-five, infant and
 neonatal mortality".  (You can also download it
 [here](../data/RatesDeaths_AllIndicators.xlsx).)  The dataset is in
 wide form and contains six value variables of interest: under-five
 (0-4 years) mortality, infant (0-1 years) mortality, neonatal (0-1
 month) mortality, as well as the number of under-five, infant, and
-neonatal deaths. 
+neonatal deaths.
 
 
 1. Read the dataset into R. Note that it is in .xlsx format --- there
@@ -195,5 +195,3 @@ read.csv("../data/unicef-all.csv") %>%
 
 4. How many under-five, infant, and neonatal deaths occurred in total in the world
 in years 1990, 1995, 2000, 2005, and 2015? (Hint: see the tutorial on [collapsing data](../collapsing-data).)
-
-

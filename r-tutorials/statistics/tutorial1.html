@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="https://www.w3.org/1999/xhtml">
 
 <head>
 
@@ -112,9 +112,9 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
-Renderer: 
+Renderer:
 <a id="plot_id716544299_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id716544299" data-renderer="svg">SVG</a>
- | 
+ |
 <a id="plot_id716544299_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id716544299" data-renderer="canvas">Canvas</a>
 </li>
 <li>
@@ -414,7 +414,7 @@ v</code></pre>
 <p>You can also use scalar objects to create vectors:</p>
 <pre class="r"><code>a &lt;- 0
 b &lt;- 22
-v &lt;- c(b, 1:4, a) 
+v &lt;- c(b, 1:4, a)
 v</code></pre>
 <pre><code>## [1] 22  1  2  3  4  0</code></pre>
 <p><br /> Use the <code>length()</code> and <code>mean()</code> commands to find out how many elements a vector contains and the mean of a vector, respectively:</p>
@@ -464,8 +464,8 @@ df_students &lt;- data.frame(name, height, gpa)   #piecing vectors together</cod
 ## 5 Voldemort    180 3.4</code></pre>
 <p><code>df_students</code> is a data frame with three vectors. Put differently, <code>df_students</code> is a dataset with three variables: <code>name</code> (a nominal variable), <code>height</code> (a continuous variable), and <code>gpa</code> (a continuous variable), where the unit of observation is a student/individual.</p>
 <p>We can create data frames without first creating vectors. The following creates the same data frame (<code>df_students</code>) as above:</p>
-<pre class="r"><code>df_students &lt;- data.frame(name = c(&quot;Harry&quot;, &quot;Ron&quot;, &quot;Hermione&quot;, &quot;Hagrid&quot;, &quot;Voldemort&quot;), 
-                          height = c(176, 175, 167, 230, 180), 
+<pre class="r"><code>df_students &lt;- data.frame(name = c(&quot;Harry&quot;, &quot;Ron&quot;, &quot;Hermione&quot;, &quot;Hagrid&quot;, &quot;Voldemort&quot;),
+                          height = c(176, 175, 167, 230, 180),
                           gpa = c(3.4, 2.8, 4.0, 2.2, 3.4))
 df_students</code></pre>
 <pre><code>##        name height gpa
@@ -475,7 +475,7 @@ df_students</code></pre>
 ## 4    Hagrid    230 2.2
 ## 5 Voldemort    180 3.4</code></pre>
 <p>Say we wanted to add a dummy variable (also called indicator variable) that equals 1 if the individual is good and 0 if he or she is evil. We can do this using the <code>$</code> operator:</p>
-<pre class="r"><code>df_students$good &lt;- c(1, 1, 1, 1, 0)   
+<pre class="r"><code>df_students$good &lt;- c(1, 1, 1, 1, 0)
 df_students</code></pre>
 <pre><code>##        name height gpa good
 ## 1     Harry    176 3.4    1
@@ -590,13 +590,13 @@ df_students</code></pre>
 ## 5   Armenia   C&amp;E Europe      6070     15.0
 ## 6 Australia Asia-Pacific     35677     20.0</code></pre>
 <pre class="r"><code>summary(world)</code></pre>
-<pre><code>##       country             region     gdppcap08        polityIV    
-##  Albania  :  1   Africa      :42   Min.   :  188   Min.   : 0.00  
-##  Algeria  :  1   C&amp;E Europe  :25   1st Qu.: 2153   1st Qu.: 7.67  
-##  Angola   :  1   Asia-Pacific:24   Median : 7271   Median :16.00  
-##  Argentina:  1   S. America  :19   Mean   :13252   Mean   :13.41  
-##  Armenia  :  1   Middle East :16   3rd Qu.:19330   3rd Qu.:19.00  
-##  Australia:  1   W. Europe   :12   Max.   :85868   Max.   :20.00  
+<pre><code>##       country             region     gdppcap08        polityIV
+##  Albania  :  1   Africa      :42   Min.   :  188   Min.   : 0.00
+##  Algeria  :  1   C&amp;E Europe  :25   1st Qu.: 2153   1st Qu.: 7.67
+##  Angola   :  1   Asia-Pacific:24   Median : 7271   Median :16.00
+##  Argentina:  1   S. America  :19   Mean   :13252   Mean   :13.41
+##  Armenia  :  1   Middle East :16   3rd Qu.:19330   3rd Qu.:19.00
+##  Australia:  1   W. Europe   :12   Max.   :85868   Max.   :20.00
 ##  (Other)  :139   (Other)     : 7</code></pre>
 <p>Everything looks as we would have hoped.</p>
 <hr />
@@ -624,7 +624,7 @@ require(dplyr)
 require(ggplot2)</code></pre>
 <p>Alternative way of loading packages that is more compact:</p>
 <pre class="r"><code>sapply(c(&quot;plyr&quot;, &quot;dplyr&quot;, &quot;ggplot2&quot;), require, character.only = T)</code></pre>
-<pre><code>   plyr   dplyr ggplot2 
+<pre><code>   plyr   dplyr ggplot2
    TRUE    TRUE    TRUE </code></pre>
 <hr />
 <div id="exercises-2" class="section level2">
@@ -642,7 +642,7 @@ require(ggplot2)</code></pre>
 <p>There are many ways to subset data frames in <code>R</code>. Here are three ways to subset the world data frame to countries in Africa:</p>
 <pre class="r"><code>setwd(&quot;~/dropbox/155/tutorial1&quot;)
 world &lt;- read.csv(&quot;world_small.csv&quot;)
-afr1 &lt;- world[world$region == &quot;Africa&quot;, ]   #option 1: use brackets 
+afr1 &lt;- world[world$region == &quot;Africa&quot;, ]   #option 1: use brackets
 dim(afr1)</code></pre>
 <pre><code>## [1] 42  4</code></pre>
 <pre class="r"><code>afr1 &lt;- subset(world, region == &quot;Africa&quot;)   #option 2: use subset()
@@ -659,14 +659,14 @@ afr2 &lt;- filter(world, region == &quot;Africa&quot;, polityIV &gt;= 15)       
 <p>Same as above, keeping only variables “country” and “polityIV”</p>
 <pre class="r"><code>afr3 &lt;- world[world$region == &quot;Africa&quot; &amp; world$polityIV &gt;= 15, c(1, 4)]   #option 1
 afr3 &lt;- subset(world, region == &quot;Africa&quot; &amp; polityIV &gt;= 15,                #option 2
-               select = c(&quot;country&quot;, &quot;polityIV&quot;)) 
+               select = c(&quot;country&quot;, &quot;polityIV&quot;))
 afr3 &lt;- filter(world, region == &quot;Africa&quot;, polityIV &gt;= 15) %&gt;%             #option 3
         select(country, polityIV)</code></pre>
 <p>Notes about how we produced these subsets:</p>
 <ul>
 <li>We used the <strong>logical operators</strong> <code>==</code>, <code>&amp;</code> and <code>&gt;=</code>.</li>
 <li>The distinction between a double equal sign (<code>==</code>) and a single equal sign (<code>=</code>) is important. A single equal sign is equivalent to the assignment operator, so <code>a &lt;- 3</code> and <code>a = 3</code> does the same thing. On the other hand, <code>a == 3</code> tests whether <code>a</code> is equal to 3 and returns either TRUE or FALSE, given that <code>a</code> has been defined.</li>
-<li><a href="http://www.statmethods.net/management/operators.html">Read more about logical operators.</a></li>
+<li><a href="https://www.statmethods.net/management/operators.html">Read more about logical operators.</a></li>
 </ul>
 <hr />
 </div>
@@ -693,7 +693,7 @@ head(world)</code></pre>
 </ul>
 <p><code>mutate()</code> from package <code>dplyr</code> is another way to create new variables. Using the data management functions included in <code>dplyr</code> has many advantages (see below).</p>
 <p>The following code accomplishes the same thing as the code above using <code>mutate()</code>:</p>
-<pre class="r"><code>world &lt;- mutate(world, gdp_log = log(gdppcap08), 
+<pre class="r"><code>world &lt;- mutate(world, gdp_log = log(gdppcap08),
                        democ = ifelse(polityIV &gt; 10, 1, 0))
 head(world)</code></pre>
 <pre><code>##     country       region gdppcap08 polityIV gdp_log democ
@@ -708,23 +708,23 @@ head(world)</code></pre>
 <pre><code>## [1] &quot;factor&quot;</code></pre>
 <p>Factor variables are an important class of variables. They are simply categorical variables. Here are the categories (called “levels” in <code>R</code>) of <code>region</code>:</p>
 <pre class="r"><code>levels(world$region)</code></pre>
-<pre><code>## [1] &quot;Africa&quot;       &quot;Asia-Pacific&quot; &quot;C&amp;E Europe&quot;   &quot;Middle East&quot; 
+<pre><code>## [1] &quot;Africa&quot;       &quot;Asia-Pacific&quot; &quot;C&amp;E Europe&quot;   &quot;Middle East&quot;
 ## [5] &quot;N. America&quot;   &quot;S. America&quot;   &quot;Scandinavia&quot;  &quot;W. Europe&quot;</code></pre>
 <p>While this variable could have been stored in character mode, storing it as a facor makes life easier. For example, note that <code>region</code> splits European countries into three categories: “C&amp;E Europe”, “Scandinavia”, and “W. Europe”. Factor variables are easy to recode. Let’s create a new region variable that groups all European countries together:</p>
 <pre class="r"><code>world$region2 &lt;- world$region         #create new region variable identical to 'region'
-levels(world$region2) &lt;- c(&quot;Africa&quot;, &quot;Asia-Pacific&quot;, &quot;Europe&quot;, &quot;Middle East&quot;, 
+levels(world$region2) &lt;- c(&quot;Africa&quot;, &quot;Asia-Pacific&quot;, &quot;Europe&quot;, &quot;Middle East&quot;,
                            &quot;N. America&quot;, &quot;S. America&quot;, &quot;Europe&quot;, &quot;Europe&quot;)     #relevel
 table(world$region)                   #number of countries by region (original variable) </code></pre>
-<pre><code>## 
-##       Africa Asia-Pacific   C&amp;E Europe  Middle East   N. America 
-##           42           24           25           16            3 
-##   S. America  Scandinavia    W. Europe 
+<pre><code>##
+##       Africa Asia-Pacific   C&amp;E Europe  Middle East   N. America
+##           42           24           25           16            3
+##   S. America  Scandinavia    W. Europe
 ##           19            4           12</code></pre>
 <pre class="r"><code>table(world$region2)                  #number of countries by region (recoded variable)</code></pre>
-<pre><code>## 
-##       Africa Asia-Pacific       Europe  Middle East   N. America 
-##           42           24           41           16            3 
-##   S. America 
+<pre><code>##
+##       Africa Asia-Pacific       Europe  Middle East   N. America
+##           42           24           41           16            3
+##   S. America
 ##           19</code></pre>
 <p>Note that the number of European countries in <code>region2</code> is equal to the combined number of European countries (“C&amp;E Europe”, “Scandinavia”, and “W. Europe”) in <code>region</code>.</p>
 <hr />
@@ -740,7 +740,7 @@ table(world$region)                   #number of countries by region (original v
 ## 4 Argentina   S. America     14333     18.0   9.570     1   S. America
 ## 5   Armenia   C&amp;E Europe      6070     15.0   8.711     1       Europe
 ## 6 Australia Asia-Pacific     35677     20.0  10.482     1 Asia-Pacific</code></pre>
-<pre class="r"><code>world &lt;- arrange(world, gdppcap08)           #order by gdp per cap 
+<pre class="r"><code>world &lt;- arrange(world, gdppcap08)           #order by gdp per cap
 head(world)                                  </code></pre>
 <pre><code>##          country region gdppcap08 polityIV gdp_log democ region2
 ## 1       Zimbabwe Africa       188     6.00   5.236     0  Africa
@@ -779,10 +779,10 @@ head(world)</code></pre>
 <li>re-order the data frame based on logged gdp (descending order).</li>
 </ul>
 <p>With <code>dplyr</code>, our code might look something like this:</p>
-<pre class="r"><code>samr &lt;- world %&gt;%                        
+<pre class="r"><code>samr &lt;- world %&gt;%
         filter(region == &quot;S. America&quot;, polityIV &gt; 10) %&gt;%    #subset
         mutate(gdp_log = log(gdppcap08),                     #create new variables
-               democ = ifelse(polityIV &gt; 10, 1, 0)) %&gt;% 
+               democ = ifelse(polityIV &gt; 10, 1, 0)) %&gt;%
         select(country, gdppcap08, gdp_log, democ) %&gt;%       #keep four variables
         arrange(desc(gdp_log))                               #sort based on logged gdp
 samr</code></pre>

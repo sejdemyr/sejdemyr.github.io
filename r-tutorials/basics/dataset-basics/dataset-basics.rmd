@@ -1,6 +1,6 @@
 ---
 title: Dataset Basics
-author: <a href="http://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a> 
+author: <a href="https://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a>
 date: December, 2015
 summary: This tutorial introduces datasets --- "data frames" in R. If you've
  completed the <a href="../vectors">tutorial on vectors</a>, you'll
@@ -21,20 +21,20 @@ Creating datasets
 
 Let's start by learning how to create a dataset in R. This turns
 out to be very simple --- just combine vectors using the `data.frame()`
-command. 
+command.
 
 
 ```{r}
-# Create three vectors 
+# Create three vectors
 name <- c("al", "bea", "carol")
 age <- c(6, 7, 4)
 hair <- c("brown", "green", "blond")
 
-# Create data frame 
+# Create data frame
 children <- data.frame(name, age, hair)
 children
 
-# Creating a data frame can also be done without first saving vectors 
+# Creating a data frame can also be done without first saving vectors
 children <- data.frame(
     name = c("al", "bea", "carol"),
     age = c(6, 7, 4),
@@ -45,18 +45,18 @@ children
 
 We created a dataset called `children`, which has 3 rows and 3
 columns. We used two approaches that differ in whether they first save
-vectors to R's memory. 
+vectors to R's memory.
 
 
 Dataset structure
 ====================
 
 More important than learning the mechanics of creating a dataset in
-R is to understand their general structure: 
+R is to understand their general structure:
 
 1. Each column should consist of a vector that gives some fact about
 the world (e.g., age in years). We usually refer to these columns
-as *variables*. 
+as *variables*.
 2. At least one column should identify who or what the information in
 the data is about.  Such a variable is called an "id" variable or
 "key". In the `children` dataset above this variable is `name`. The
@@ -122,7 +122,7 @@ Snapshots
 
 Use `head()` and `tail()` to look at the first and last few rows of
 a dataset, respectively. This is more useful when we have datasets
-with many observations. 
+with many observations.
 
 ```{r}
 head(countries)
@@ -130,16 +130,16 @@ tail(countries)
 ```
 
 Other useful commands to get to know variables better include `summary()`,
-`table()`, and `prop.table()`. 
+`table()`, and `prop.table()`.
 
 ```{r}
 # Get some summary information about each variable
 summary(countries)
 
-# Number of observations by country 
+# Number of observations by country
 table(countries$country)
 
-# Proportion of observations by country 
+# Proportion of observations by country
 prop.table(table(countries$country))
 ```
 
@@ -149,7 +149,7 @@ Accessing specific rows and columns
 Like with vectors, brackets (`[]`) can be used to access data in
 datasets. But unlike with vectors, we need to input *two* arguments
 --- separated by a comma --- into the brackets. The first argument
-always applies to rows while the second applies to columns. 
+always applies to rows while the second applies to columns.
 
 ```{r}
 countries <- data.frame(
@@ -175,7 +175,7 @@ because then the indexing will change (e.g., column 3 representing GDP
 per capita may now be in column 4).
 
 For this reason, it's better to access columns using column
-names. 
+names.
 
 ```{r}
 # Access a column using column/variable name (two equivalent approaches)
@@ -203,7 +203,7 @@ countries[countries$year == 1995 & countries$country == "USA", ]
 
 
 
-Reading data 
+Reading data
 =========================
 
 
@@ -218,14 +218,14 @@ elements in the file or even to reconvert the whole file to a
 different format (e.g., using Stat/Transfer). For now, we'll assume
 that the file is in a readable format.
 
-To read a file you need to 
+To read a file you need to
 
-1. Specify where the file is located on your computer. This is referred to 
-as setting your working directory. 
-2. Execute a command that will read the file from your working directory. 
+1. Specify where the file is located on your computer. This is referred to
+as setting your working directory.
+2. Execute a command that will read the file from your working directory.
 
 
-Setting the working directory 
+Setting the working directory
 ----------------------
 
 You can set your working directory manually. In RStudio, go to
@@ -237,7 +237,7 @@ code. Use `setwd(path-to-dir)` where `path-to-dir` is the the path to
 the folder in which the file is located. How can you find this path?
 Here are instructions for
 [Windows](https://technet.microsoft.com/en-us/magazine/ff678296.aspx)
-and [mac](http://josharcher.uk/code/find-path-to-folder-on-mac/).
+and [mac](https://josharcher.uk/code/find-path-to-folder-on-mac/).
 If you're still not sure how to do this, take a look at
 [this tutorial](https://sites.google.com/site/manabusakamoto/home/r-tutorials/r-tutorial-4).
 
@@ -245,10 +245,10 @@ To check that your working directory includes the file you want
 to read, use `dir()` without anything in the parentheses. This function
 outputs all the files in your working directory into the R console.
 So, if you want to read the `world-small.csv` file that you downloaded above,
-you should see this file listed when you execute `dir()`. 
+you should see this file listed when you execute `dir()`.
 
 
-Reading the file 
+Reading the file
 ----------------------
 
 Now that we've told R where to look for our file, it's time to read
@@ -260,11 +260,11 @@ world <- read.csv("../data/world-small.csv")
 ```
 
 ```{r, eval=FALSE}
-world <- read.csv("world-small.csv") 
+world <- read.csv("world-small.csv")
 ```
 
 I'm reading the file from the working directory and assigning it
-to the object `world`, which becomes of class `data.frame`. 
+to the object `world`, which becomes of class `data.frame`.
 
 ```{r}
 class(world)
@@ -275,7 +275,7 @@ Let's check if the file was read correctly, using `dim()`
 and `summary()` (returns summary information about each variable):
 
 ```{r}
-dim(world) #the number of rows and columns 
+dim(world) #the number of rows and columns
 head(world) #the first few rows of the dataset
 summary(world) #a summary of the variables in the dataset
 ```
@@ -287,7 +287,7 @@ Exercises
 ============
 
 1. Read the `world-small.csv` data into R and store it in an object
-called `world`. (Set your working directory using code first.) 
+called `world`. (Set your working directory using code first.)
 
 2. (Conceptual) What is the unit of analysis in the dataset? What's the name
 of the dataset's id variable?
@@ -297,7 +297,7 @@ command to find out.
 
 4. Use brackets and a logical statement to inspect all the values for
    Nigeria and United States. That is, your code should return two
-   entire rows of the dataset. 
+   entire rows of the dataset.
 
 5. Use R to return China's Polity IV score. As in question 4, use a logical
 statement and brackets, but don't return the entire row. Rather, return a single
@@ -309,9 +309,3 @@ value with the Polity IV score.
 return the country name and be general enough so that if the observations
 in the dataset --- or their order --- change, your code should still return the
 country with the lowest GDP per capita.)
-
-
-
-
-
-

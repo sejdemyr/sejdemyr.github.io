@@ -1,6 +1,6 @@
 ---
 title: Vectors
-author: <a href="http://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a> 
+author: <a href="https://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a>
 date: December, 2015
 summary: This tutorial introduces a key object in R&#58; vectors. Vectors have one
  dimension that represents some concept or fact about the
@@ -9,7 +9,7 @@ summary: This tutorial introduces a key object in R&#58; vectors. Vectors have o
  vectors, how to subset them, how to modify them, and how to summarize
  them.
 related: <a href="../introduction">Introduction</a>
-         <a href="../dataset-basics">Dataset basics</a> 
+         <a href="../dataset-basics">Dataset basics</a>
          <a href="../modifying-data">Modifying data</a>
 output:
   html_document:
@@ -23,10 +23,10 @@ Creating vectors
 ================
 
 We'll create three types of vectors: numeric, character, and logical.
-Here are examples of each type: 
+Here are examples of each type:
 
 ```{r}
-# Numeric vectors 
+# Numeric vectors
 n1 <- 20
 n2 <- c(20, 25, 60, 55)
 
@@ -36,7 +36,7 @@ c2 <- c("Red", "Green", "Purple")
 
 # Logical vectors
 l1 <- TRUE
-l2 <- c(TRUE, FALSE, TRUE) 
+l2 <- c(TRUE, FALSE, TRUE)
 ```
 
 Note that vectors can consist of one or many *elements*. Three
@@ -53,7 +53,7 @@ whatever values you specify in the parentheses.
 <span class="fw"> seq() </span>
 -------------------------
 
-`seq()` applies to numeric vectors only: 
+`seq()` applies to numeric vectors only:
 
 ```{r}
 n1 <- seq(from = 0, to = 10, by = 2)   #using 'by'
@@ -108,12 +108,12 @@ Here are a two examples:
 
 ```{r}
 rep(c("blue", "red"), 3)
-c(rep(seq(0, 6, 2), 2), 4:1) 
+c(rep(seq(0, 6, 2), 2), 4:1)
 ```
 
 The second example is somewhat hard to follow, and is probably at the
 limit of complexity in terms of how many functions we want to combine. Separating
-a task into multiple lines of codes can help. 
+a task into multiple lines of codes can help.
 
 ```{r}
 s <- rep(seq(0, 6, 2), 2)
@@ -135,12 +135,12 @@ In R, there are three ways to filter a vector: using a separate
 logical vector, using indexing, and using names. I tend to use the
 first method most, but all three are useful.
 
-Subsetting with logicals 
+Subsetting with logicals
 ---------------------
 
 Let's jump right into an example. Say we have a character vector
 with only two elements ("apple" and "banana"). Subsetting it to
-"apple" could be done like so: 
+"apple" could be done like so:
 
 ```{r}
 fruits <- c("apple", "banana")
@@ -156,20 +156,20 @@ are dropped.
 
 This process is extremely useful when combined with a *logical
 operation*.  Please familiarize yourself with the logical operations
-listed [here](http://www.statmethods.net/management/operators.html).
+listed [here](https://www.statmethods.net/management/operators.html).
 For example, using a logical operation we can filter a large vector of
 oranges, apples and bananas:
 
 ```{r}
-# Create a vector with 30 fruits 
+# Create a vector with 30 fruits
 fruits <- rep(c("orange", "apple", "banana"), 10)
-fruits 
+fruits
 
 # Create a logical vector for dropping bananas
 # Note: I'm creating the exact same logical vector three times (overriding it each time)
 # This is for illustrative purposes; using one of these is sufficient
-lv <- fruits == "orange" | fruits == "apple" 
-lv <- fruits != "banana" 
+lv <- fruits == "orange" | fruits == "apple"
+lv <- fruits != "banana"
 lv <- fruits %in% c("orange", "apple")
 lv
 
@@ -182,7 +182,7 @@ we want to subset. We do so using a logical vector (`lv`), where
 elements that match with `TRUE` are kept. The only difference here is
 that we create the logical vector with a logical operation. The logical
 operators (e.g., `!=`, `|`) used here are discussed in the link above,
-with the exception of `%in%`. 
+with the exception of `%in%`.
 
 <div class="general-note">
 
@@ -235,7 +235,7 @@ fruits[seq(1, 30, by = 5)]
 
 I sometimes use this when I want to inspect or modify an
 element that I know occurs at a specific index in the vector, a more
-manual approach than using logical statements. 
+manual approach than using logical statements.
 
 Subsetting using indexing can also be used in *random sampling*,
 which has many important applications --- for example, in experiments
@@ -243,14 +243,14 @@ and when you want to test-run code on a representative subset of your
 data. So, let's introduce the `sample()` function:
 
 ```{r}
-# Draw 10 elements at random from 1 to 100 
+# Draw 10 elements at random from 1 to 100
 sample(1:100, size = 10)
 ```
 
 The function takes a vector of values (often successive integer
 values) and an argument that specifies how many values to draw at
 random from this vector.  We can use the resulting values as
-indeces to subset another vector: 
+indeces to subset another vector:
 
 ```{r}
 fruits <- rep(c("orange", "apple", "banana"), 10)
@@ -273,7 +273,7 @@ subset based on the names.
 ```{r}
 age <- c(50, 55, 80)
 names(age) <- c("mom", "dad", "grandpa")
-age #note that values now have names 
+age #note that values now have names
 age[c("dad", "grandpa")] #subset
 ```
 
@@ -289,7 +289,7 @@ The subsetting logic from above can be used to modify vectors. The
 idea here is that instead of keeping elements that meet a logical
 condition or occur at a specific index, we can change them. For example,
 what if we had mis-entered grandpa's age above? We can fix it using indexing,
-a logical statement, or naming. 
+a logical statement, or naming.
 
 ```{r}
 # Recreate vector with age values from above
@@ -308,8 +308,8 @@ A logical statement is most efficient when we need to change a lot
 of elements.
 
 ```{r}
-fruits <- rep(c("orange", "apple", "bamama"), 5) 
-fruits #bamamas anyone? 
+fruits <- rep(c("orange", "apple", "bamama"), 5)
+fruits #bamamas anyone?
 
 # Let's fix the misspelled element
 fruits[fruits == "bamama"] <- "banana"
@@ -320,30 +320,30 @@ Vector arithmetics
 --------------------
 
 We can modify or create new numeric vectors using arithmetic
-operations. Three common types of operations involve: 
+operations. Three common types of operations involve:
 
 1. A vector with more than one element and a vector with only one element.
 2. Two vectors with the same number of elements. Elements are matched
 based on index.
-3. A vector modified by a function. 
+3. A vector modified by a function.
 
 In all cases, we can modify all elements of a vector or only a subset
-of elements using the bracket notation we learned above. 
+of elements using the bracket notation we learned above.
 
 
 ```{r}
 numbers <- 1:10
 numbers
 
-# One value modifying all values in a vector 
+# One value modifying all values in a vector
 numbers <- numbers / 10
-numbers 
+numbers
 
-# One value modifying a subset of a vector 
+# One value modifying a subset of a vector
 numbers[numbers > 0.5] <- numbers[numbers > 0.5] * 100
 numbers
 
-# Two vectors with the same number of elements 
+# Two vectors with the same number of elements
 numbers1 <- 1:10
 numbers2 <- 10:1
 numbers3 <- numbers2 - numbers1
@@ -363,11 +363,11 @@ log(numbers[c(1, 5, 10)]) #natural log
 
 Vector arithmetics can also be carried out in R on two multi-value
 vectors with different number of elements. Such operations use
-the [recycling rule](http://www.r-tutor.com/r-introduction/vector/vector-arithmetics).
+the [recycling rule](https://www.r-tutor.com/r-introduction/vector/vector-arithmetics).
 
 
 
-Summarizing vectors 
+Summarizing vectors
 ===========================
 
 We often want to get summary statistics from a vector --- that is,
@@ -382,7 +382,7 @@ numbers <- sample(1:1000, 10)
 numbers
 
 class(numbers) #check the class
-length(numbers) #number of elements 
+length(numbers) #number of elements
 max(numbers) #maximum value
 min(numbers) #minimum value
 sum(numbers) #sum of all values in the vector
@@ -390,7 +390,7 @@ mean(numbers) #mean
 median(numbers) #median
 var(numbers) #variance
 sd(numbers) #standard deviation
-quantile(numbers) #percentiles in intervals of .25 
+quantile(numbers) #percentiles in intervals of .25
 quantile(numbers, probs = seq(0, 1, 0.1)) #percentiles in invervals of 0.1
 summary(numbers) #function that contains many summary stats from above
 ```
@@ -406,14 +406,14 @@ Code generalization
 
 We want our code to be as general as possible so that it can be
 reapplied to a different coding task or if the data change.
-Commands that summarize vectors can be useful to accomplish this. 
+Commands that summarize vectors can be useful to accomplish this.
 
 Remember above when we found a random sample of `fruits`?  Here is
 more or less the code we used:
 
 ```{r}
 fruits <- rep(c("orange", "apple", "banana"), 10)
-length(fruits) 
+length(fruits)
 random_sample <- fruits[sample(1:30, size = 5)]
 random_sample
 ```
@@ -434,7 +434,7 @@ function.
 
 ```{r}
 fruits <- rep(c("orange", "apple", "banana"), 100)
-n <- length(fruits) #store the result of length() in an object 
+n <- length(fruits) #store the result of length() in an object
 n
 
 random_sample <- fruits[sample(1:n, size = 5)] #now use 'n' in the sample() function
@@ -477,4 +477,3 @@ will turn 100 years old.
 8. Create a new vector with a random sample of 3 individuals from your
 original vector. What is the mean age of the people in this new
 vector?
-

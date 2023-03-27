@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="https://www.w3.org/1999/xhtml">
 
 <head>
 
@@ -79,7 +79,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <hr />
 <div id="tables-and-graphs-for-professional-reports" class="section level1">
 <h1><span class="header-section-number">1</span> Tables and Graphs for Professional Reports</h1>
-<p>Many of you will have to produce professional reports and presentations, for which producing nice tables and graphs is important. The best way to automate this process is to use <a href="http://www.latex-project.org/">LaTeX</a> and <a href="http://en.wikibooks.org/wiki/LaTeX/Presentations">Beamer</a> rather than Microsoft Word and Powerpoint. Alternatively, check out the RStudio team’s slick <a href="http://rmarkdown.rstudio.com/">R Markdown package</a>, which makes producing beautiful reports really simple.</p>
+<p>Many of you will have to produce professional reports and presentations, for which producing nice tables and graphs is important. The best way to automate this process is to use <a href="https://www.latex-project.org/">LaTeX</a> and <a href="https://en.wikibooks.org/wiki/LaTeX/Presentations">Beamer</a> rather than Microsoft Word and Powerpoint. Alternatively, check out the RStudio team’s slick <a href="https://rmarkdown.rstudio.com/">R Markdown package</a>, which makes producing beautiful reports really simple.</p>
 <p>However, here are some options if you still want to use Word.</p>
 <hr />
 <div id="tables" class="section level2">
@@ -102,9 +102,9 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <h3><span class="header-section-number">1.1.1</span> Example 1</h3>
 <p>Here’s an example of the first two steps using a <a href="states.csv">dataset on U.S. states</a> (codebook <a href="states_codebook.csv">here</a>).</p>
 <pre class="r"><code># Read data
-states &lt;- read.csv(&quot;states.csv&quot;)          
+states &lt;- read.csv(&quot;states.csv&quot;)
 
-# (1) Create a table of Bush support by U.S. region in 2000 (South versus Non-South): 
+# (1) Create a table of Bush support by U.S. region in 2000 (South versus Non-South):
 t &lt;- with(states, table(south, gb_win00))
 t &lt;- prop.table(t, margin = 1)
 t                                         #large Majority of Southerners voted for Bush:    </code></pre>
@@ -112,7 +112,7 @@ t                                         #large Majority of Southerners voted f
 ## south      Bush win Gore win
 ##   Nonsouth   0.4706   0.5294
 ##   South      0.8750   0.1250</code></pre>
-<pre class="r"><code># (2) Write this table to a comma separated .txt file:    
+<pre class="r"><code># (2) Write this table to a comma separated .txt file:
 write.table(t, file = &quot;bush_south.txt&quot;, sep = &quot;,&quot;, quote = FALSE)</code></pre>
 <p>The .txt file will end up in your working directory. Now follow steps 3 and 4 to create a table in Word.</p>
 </div>
@@ -182,7 +182,7 @@ p &lt;- ggplot(states, aes(x = attend_pct, y = bush00)) +
 pdf(file = &quot;bush_religion.pdf&quot;, height = 6, width = 8)
 p
 dev.off()</code></pre>
-<pre><code>## pdf 
+<pre><code>## pdf
 ##   2</code></pre>
 </div>
 <div id="arranging-images-in-columns-and-rows" class="section level3">
@@ -190,7 +190,7 @@ dev.off()</code></pre>
 <p>Arranging graphs into a matrix of rows and columns, like we did on problem set 2, can be very useful for presentational purposes. There are two ways to do this using <code>ggplot</code>:</p>
 <ol style="list-style-type: decimal">
 <li>Create each graph separately and then arrange them using the function <code>grid.arrange()</code> in the <code>gridExtra</code> package.</li>
-<li>Use <a href="http://docs.ggplot2.org/0.9.3.1/facet_wrap.html">facet_wrap()</a>, like we did in <a href="http://stanford.edu/~ejdemyr/tutorial2.html#scatter-plots">this example in Tutorial 2</a>. This second approach is useful if we want to display the same relationship across different groups or years.</li>
+<li>Use <a href="https://docs.ggplot2.org/0.9.3.1/facet_wrap.html">facet_wrap()</a>, like we did in <a href="https://stanford.edu/~ejdemyr/tutorial2.html#scatter-plots">this example in Tutorial 2</a>. This second approach is useful if we want to display the same relationship across different groups or years.</li>
 </ol>
 <p>Here’s an example of the first approach:</p>
 <pre class="r"><code>p1 &lt;- ggplot(states, aes(x = bush00, y = bush04)) +
@@ -198,7 +198,7 @@ dev.off()</code></pre>
         geom_text(aes(label = stateid, y = bush04 - 0.7), size = 3) +
         geom_smooth(method = &quot;loess&quot;, se = F) +
         xlab(&quot;% in State Voting for Bush in 2000&quot;) +
-        ylab(&quot;% in State Voting for Bush in 2004&quot;)  
+        ylab(&quot;% in State Voting for Bush in 2004&quot;)
 
 p2 &lt;- ggplot(states, aes(x = bush04, y = obama08)) +
         geom_point() +
@@ -247,17 +247,17 @@ grid.arrange(p1, p2, p3, p4,     #specify the graphs to include
 <pre class="r"><code>states &lt;- read.csv(&quot;states.csv&quot;)
 
 with(states, table(gb_win00, states$gay_policy))</code></pre>
-<pre><code>##           
+<pre><code>##
 ## gb_win00   Conservative Liberal Most conservative Most liberal
 ##   Bush win            7       2                20            1
 ##   Gore win            3      12                 0            5</code></pre>
-<pre class="r"><code># Rearrange the order of the gay policy scale 
+<pre class="r"><code># Rearrange the order of the gay policy scale
 states$gay_policy &lt;- factor(states$gay_policy,
                             levels = c(&quot;Most liberal&quot;, &quot;Liberal&quot;,
                                        &quot;Conservative&quot;, &quot;Most conservative&quot;))
 
 with(states, table(gb_win00, states$gay_policy))</code></pre>
-<pre><code>##           
+<pre><code>##
 ## gb_win00   Most liberal Liberal Conservative Most conservative
 ##   Bush win            1       2            7                20
 ##   Gore win            5      12            3                 0</code></pre>
@@ -267,9 +267,9 @@ with(states, table(gb_win00, states$gay_policy))</code></pre>
 <p>Let’s do a chi-squared test on the actual distribution:</p>
 <pre class="r"><code>t &lt;- with(states, table(gb_win00, states$gay_policy))
 chisq.test(t)</code></pre>
-<pre><code>## 
+<pre><code>##
 ##  Pearson's Chi-squared test
-## 
+##
 ## data:  t
 ## X-squared = 30.63, df = 3, p-value = 1.015e-06</code></pre>
 <p>How do we interpret this output?</p>
@@ -281,16 +281,16 @@ chisq.test(t)</code></pre>
 <pre class="r"><code>mean(states$prcapinc)</code></pre>
 <pre><code>## [1] 31951</code></pre>
 <pre class="r"><code>t.test(states$prcapinc, mu = 30000)</code></pre>
-<pre><code>## 
+<pre><code>##
 ##  One Sample t-test
-## 
+##
 ## data:  states$prcapinc
 ## t = 3.101, df = 49, p-value = 0.003193
 ## alternative hypothesis: true mean is not equal to 30000
 ## 95 percent confidence interval:
 ##  30687 33215
 ## sample estimates:
-## mean of x 
+## mean of x
 ##     31951</code></pre>
 <p>How do we interpret this output?</p>
 <!-- If the true mean---assumed to follow a t-distribution with 49 (*n* - 1)
@@ -304,16 +304,16 @@ confident that average per capita income is not 30000. -->
 <p>In two-sample t-tests, we want to test whether two samples (or groups) assumed to come from the same distribution have different means. For example, say we wanted to test whether the percentage women in state legislatures differ across Southern and non-Southern states. Before we carry out this test, what is the null hypothesis? What is the alternative hypothesis?</p>
 <p>The following carries out a Welch test, which doesn’t assume that the two groups have the same variances and uses Satterthaite-Welch adjustment of the degrees of freedom (usually resulting in non-integer degrees of freedom):</p>
 <pre class="r"><code>with(states, t.test(womleg ~ south))</code></pre>
-<pre><code>## 
+<pre><code>##
 ##  Welch Two Sample t-test
-## 
+##
 ## data:  womleg by south
 ## t = 3.301, df = 28.7, p-value = 0.002583
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
 ##   2.563 10.924
 ## sample estimates:
-## mean in group Nonsouth    mean in group South 
+## mean in group Nonsouth    mean in group South
 ##                  25.41                  18.66</code></pre>
 <p>How do we interpret this output?</p>
 <hr />

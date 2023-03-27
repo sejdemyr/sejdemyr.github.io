@@ -1,13 +1,13 @@
 ---
 title: Introduction
-author: <a href="http://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a> 
+author: <a href="https://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a>
 date: December, 2015
 summary: In this first in a number of tutorials, we'll cover the very basics of
  R. If you've programmed before you can skip much of this. But
  regardless of your background, I hope you'll find this and subsequent
  tutorials useful for learning R's many tools for graphing,
  statistical analysis, and data collection and management --- or what we
- collectively might call "data science." 
+ collectively might call "data science."
 output:
   html_document:
      template: ../template/r-tutorial-template-v2.html
@@ -15,7 +15,7 @@ output:
 ---
 
 
-	
+
 
 Running R
 =================
@@ -26,7 +26,7 @@ application than R's native environment, which provides only limited
 functionality in terms of syntax highlighting, auto-completion, and
 debugging. Alternatives include [RStudio](https://www.rstudio.com/)
 and
-[Emacs](https://www.gnu.org/software/emacs/)/[ESS](http://ess.r-project.org/). I
+[Emacs](https://www.gnu.org/software/emacs/)/[ESS](https://ess.r-project.org/). I
 very much prefer the latter, but if you've never programmed before I
 would go with RStudio (installation instructions
 [here](https://www.rstudio.com/products/rstudio/download/); note that
@@ -51,14 +51,14 @@ class="fw">Command+Enter</span> (mac) in RStudio.
 
 ```{r}
 hello_world <- "hello world"
-hello_world 
+hello_world
 ```
 
 In case it's not obvious, R output is displayed in
 <span style="color: #969696;"> gray</span>, above which is code that you
 should type into your text editor.
 
-Now execute the following code (but type it into your text editor first): 
+Now execute the following code (but type it into your text editor first):
 ```{r eval=FALSE}
 # Create two objects and perform simple arithmetics
 a <- 5
@@ -66,14 +66,14 @@ b <- 7
 a - b
 a + b + 10
 
-# Create a third object 
+# Create a third object
 w <- a + b
 w
 
-# Logical tests 
+# Logical tests
 w - b == a
 w - b > a
-b <- 1             #overwrite b 
+b <- 1             #overwrite b
 x <- w - b > a
 x
 ```
@@ -87,7 +87,7 @@ Here are some things to pay attention to from our first few lines of code:
 
 2. **The assignment operator**. R uses `<-` (the assignment
 operator) to create objects. A single equal sign (`=`) also works, but
-the norm is to use `<-` in R. 
+the norm is to use `<-` in R.
 
 3. **Objects**. We used the assignment operator to create *objects*
 --- for example, `hello_world` and `a`. The names of these objects are
@@ -100,18 +100,18 @@ you create. Three classes were used above: numeric,
 character, and logical. Use `class()` to see what type an object is
 (e.g., `class(hello_world)`, `class(a)`, and `class(x)`). Why is this
 important? For one, you may think a certain object has one class when
-it has another. This will cause issues. For example, this throws an error: 
+it has another. This will cause issues. For example, this throws an error:
 
 <div class="indent">
 ```{r eval=FALSE}
 a <- 5
 b <- "7"
-a + b 
+a + b
 ```
 Not knowing that `b` is a character object (which often is much
 less obvious than here) would be frustrating. Other classes include
 <span class="fw">factor</span>, <span class="fw">matrix</span>,
-<span class="fw">data.frame</span> and many more that we'll get to. 
+<span class="fw">data.frame</span> and many more that we'll get to.
 </div>
 
 5. **Overwriting objects**. You can overwrite objects without R
@@ -123,19 +123,19 @@ doesn't need to hold an additional object, which may be consequential
 when you work with large datasets.
 
 
-Packages 
-========================== 
+Packages
+==========================
 
 The true power of R is that it's open-source. As such, anyone can
 extend its core functionality through packages. This often results in
 remarkable improvements to how we can approach complex data tasks. In
-subsequent tutorials, I will make particular use of a set of R packages 
-developed by [Hadley Wickham](http://had.co.nz/). 
+subsequent tutorials, I will make particular use of a set of R packages
+developed by [Hadley Wickham](https://had.co.nz/).
 
-To use a package you must: 
+To use a package you must:
 
-1. **Install it.** You only need to do this once. 
-2. **Load it.** You need to re-load packages every time you open R. 
+1. **Install it.** You only need to do this once.
+2. **Load it.** You need to re-load packages every time you open R.
 
 
 To install packages `plyr`, `dplyr`, and `tidyr`, which we'll use a lot,
@@ -145,7 +145,7 @@ run
 install.packages(c("plyr", "dplyr", "tidyr"), dep = T)
 ```
 
-And to load these packages, use: 
+And to load these packages, use:
 
 ```{r, comment = "", eval=FALSE}
 require(plyr)
@@ -153,7 +153,7 @@ require(dplyr)
 require(tidyr)
 ```
 
-Or you can load many packages more compactly like so: 
+Or you can load many packages more compactly like so:
 
 ```{r, comment = "", eval=FALSE}
 pkgs <- c("plyr", "dplyr", "tidyr")
@@ -187,8 +187,8 @@ me: I personally like underscores for object and function names.)
 
 
 
-Trouble shooting 
-========================== 
+Trouble shooting
+==========================
 
 Many, many times when coding you'll have an idea of what you want to
 do but won't know how to do it in R. This happens even for
@@ -204,5 +204,3 @@ R also has a help feature that can be called using the following
 syntax: `?commandname`, where `commandname` is the name of the command
 that you need help with. For example, `?mean` will bring up a help
 dialog box with information about how to use R's `mean()` command.
-
-

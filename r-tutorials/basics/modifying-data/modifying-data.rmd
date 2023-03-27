@@ -1,17 +1,17 @@
 ---
 title: Modifying Data
-author: <a href="http://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a> 
+author: <a href="https://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a>
 date: December, 2015
 summary: Being able to quickly modify datasets is critical. This involves,
  among other things&#58; subsetting, sorting, extracting unique
  observations, renaming variables, dropping variables, and creating new
  variables.  To accomplish each of these tasks, we'll use a set of
  relatively new functions introduced in the **dplyr** package developed
- by [Hadley Wickham](http://had.co.nz/).  A nice introduction to this
+ by [Hadley Wickham](https://had.co.nz/).  A nice introduction to this
  package is [here](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html).
  I'll try to give more of a beginner's introduction below.
 related: <a href="../dataset-basics">Dataset basics</a>
-         <a href="../collapsing-data">Collapsing data</a> 
+         <a href="../collapsing-data">Collapsing data</a>
          <a href="../merging-appending">Merging &amp; appending</a>
 output:
   html_document:
@@ -24,7 +24,7 @@ Overview
 ====================
 
 The table below gives an overview of very common data management tasks
-and their corresponding dplyr function. 
+and their corresponding dplyr function.
 
 <table class="table" style="width: auto !important">
 
@@ -72,7 +72,7 @@ and their corresponding dplyr function.
 </tr>
 <tr>
 <td>Collapsing data&#42;</td>
-<td>`group_by()` and `summarize()` 
+<td>`group_by()` and `summarize()`
 </tr>
 </tbody>
 
@@ -87,7 +87,7 @@ additional advantage of using dplyr functions is that they can be
 combined in an elegant way using [chaining](#chaining).
 
 To demonstrate these functions, we'll rely on a small
-data frame called `countries` that you can create as follows: 
+data frame called `countries` that you can create as follows:
 
 ```{r}
 countries <- data.frame(
@@ -106,8 +106,8 @@ they need to be installed first --- remind yourself
 [here](../introduction/#packages).)
 
 ```{r}
-require(plyr) 
-require(dplyr) 
+require(plyr)
+require(dplyr)
 ```
 
 <div style="margin-top: 15px"> </div>
@@ -142,7 +142,7 @@ below accomplishes the same thing as that above using `%>%` and moving
 the data frame outside the `filter()` function.
 
 ```{r}
-countries %>% filter(country == "China") 
+countries %>% filter(country == "China")
 countries %>% filter(year == 1996)
 countries %>% filter(country == "USA" & year == 1995)
 countries %>% filter(gdp_pc > 5000 & gdp_pc < 14000)
@@ -170,10 +170,10 @@ this remember that you can just bring the data frame `countries`
 inside the function.)
 
 ```{r}
-# Sort by country names 
-countries %>% arrange(country) 
+# Sort by country names
+countries %>% arrange(country)
 
-# Sort by GDP (ascending is default) 
+# Sort by GDP (ascending is default)
 countries %>% arrange(gdp_pc)
 
 # Sort by GDP (descending)
@@ -229,7 +229,7 @@ countries2 <- rbind(
     data.frame(country = "USA", year = 1994, gdp_pc = 10000),
     countries
     )
-countries2 
+countries2
 ```
 
 Note that we all of a sudden have two USA 1994 observations. Delete
@@ -239,7 +239,7 @@ one of them using `distinct()`.
 countries2 %>% distinct(country, year)
 ```
 
-New variables 
+New variables
 ================
 
 Use `mutate()` to create new variables or to modify existing
@@ -255,7 +255,7 @@ countries %>% mutate(country_lc = tolower(country))
 # Both in one statement
 countries %>% mutate(gdppc_1k = gdp_pc / 1000,
                      country_lc = tolower(country))
-    
+
 ```
 
 A lot of times it makes more sense to just overwrite an
@@ -266,7 +266,7 @@ countries %>% mutate(country = tolower(country))
 ```
 
 `mutate()` can be combined with two other useful functions: `ifelse()`
-and `revalue()`. 
+and `revalue()`.
 
 
 <span class="fw"> ifelse() </span>
@@ -287,7 +287,7 @@ the code above numbers greater than 5 are multiplied by 10 and numbers
 less than or equal to 5 are divided by 10.
 
 We can apply this to variables in data frames. Let's use the `world-small.csv`
-dataset to illustrate (download [here](../data/world-small.csv)). 
+dataset to illustrate (download [here](../data/world-small.csv)).
 
 
 ```{r, echo=FALSE}
@@ -295,7 +295,7 @@ world <- read.csv("../data/world-small.csv")
 ```
 
 ```{r, eval=FALSE}
-# Read world-small dataset 
+# Read world-small dataset
 world <- read.csv("world-small.csv")
 ```
 
@@ -304,11 +304,11 @@ world <- read.csv("world-small.csv")
 head(world)
 
 # Create a new variable equal to "democracy" if a country has
-# a polity score >= 15 and "autocracy" otherwise 
+# a polity score >= 15 and "autocracy" otherwise
 world <- world %>% mutate(democracy = ifelse(polityIV >= 15, "democracy", "autocracy"))
 head(world)
 
-# Or represent this information as a dummy variable instead 
+# Or represent this information as a dummy variable instead
 world <- world %>% mutate(democracy = ifelse(polityIV >= 15, 1, 0))
 head(world)
 ```
@@ -316,7 +316,7 @@ head(world)
 We first created a new variable called `democracy` equal to
 "democracy" if a country has a Polity IV score of at least 15 and
 "autocracy" otherwise.  We then overwrote this variable with a "dummy
-variable" representing the same information using zeroes and ones. 
+variable" representing the same information using zeroes and ones.
 
 <div class="general-note">
 
@@ -336,7 +336,7 @@ countries that we classified as "democracy".
 <span class="fw"> revalue() </span>
 ------------------------------
 
-We often want to recode the categories of a variable. 
+We often want to recode the categories of a variable.
 For example, take a look at the `region` variable in `world`:
 
 ```{r}
@@ -346,7 +346,7 @@ table(world$region)
 Currently this variable has eight categories. Say we wanted to
 simplify it a little bit by combining the three regions in Europe. We
 also want to rename the two regions in America. This can be accomplished
-with `revalue()` from the **plyr** package. 
+with `revalue()` from the **plyr** package.
 
 ```{r}
 world$region <- revalue(world$region, c(
@@ -359,18 +359,18 @@ table(world$region)
 ```
 
 This can also be accomplished with `ifelse()`, but we would have to
-nest several `ifelse()` statements. For this reason I prefer `revalue()`. 
+nest several `ifelse()` statements. For this reason I prefer `revalue()`.
 
 
 
 
-A note on factor variables 
+A note on factor variables
 ------------------------------
 
 The `read.csv()` function automatically converts variables that
 contain strings to the class "factor". Note, for example, that both
 the `country` and `region` variables in the `world` dataset are
-represented as factors. 
+represented as factors.
 
 ```{r}
 class(world$country)
@@ -388,12 +388,12 @@ particular, factor variables are sometimes displayed to the user as a
 certain set of numbers, yet are stored internally as an entirely
 different set of numbers. For example, say the `gdppcap08` variable in
 `world` had been read as a factor. (Fortunately, in reality it was
-read correctly as numeric, but this sometimes isn't the case.) 
+read correctly as numeric, but this sometimes isn't the case.)
 
 
 ```{r}
 # Recode gdp per capita to factor
-# NOTE: Only for illustrative purposes! 
+# NOTE: Only for illustrative purposes!
 world <- world %>% mutate(gdppcap08 = as.factor(gdppcap08))
 head(world)
 class(world$gdppcap08)
@@ -413,7 +413,7 @@ Something has gone seriously wrong --- look at the values of
 `gdppcap08`. **Here's the learning lesson: to convert a factor
 variable to numeric, you have to recode it to character first.** Use
 `as.numeric(as.character(variable))`, where `variable` is the factor
-variable to convert. 
+variable to convert.
 
 ```{r}
 world <- world %>% mutate(gdppcap08 = as.numeric(as.character(gdppcap08)))
@@ -434,7 +434,7 @@ years 1995 and 1996 (dropping 1994), should be sorted by country name
 (in lower case), and should have a new variable equal to GDP per
 capita in 1000s.
 
-Here's how we could do this *without* chaining: 
+Here's how we could do this *without* chaining:
 
 ```{r}
 countries_new <- filter(countries, year != 1994) #drop year 1994
@@ -444,7 +444,7 @@ countries_new <- mutate(countries_new, country = tolower(country), #convert name
 countries_new
 ```
 
-Here's the same thing using chaining: 
+Here's the same thing using chaining:
 
 ```{r}
 countries_new <- countries %>%
@@ -465,31 +465,29 @@ variable representing GDP per capita in 1000s.
 
 
 
-Exercises 
+Exercises
 ==================
 
 1. Read the `world-small.csv` dataset into R and store it in an object called `world`.
 
 2. Subset `world` to European countries. Save this subset as a new data frame called `europe`.
 
-3. Add two variables to `europe`: 
-    a. A variable that recodes `polityIV` from 0-20 to -10-10. 
-    b. A variable that categorizes a country as "rich" or "poor" based on some 
-cutoff of `gdppcap08` you think is reasonable. 
+3. Add two variables to `europe`:
+    a. A variable that recodes `polityIV` from 0-20 to -10-10.
+    b. A variable that categorizes a country as "rich" or "poor" based on some
+cutoff of `gdppcap08` you think is reasonable.
 
-4. Drop the `region` variable in `europe` (keep the rest). 
+4. Drop the `region` variable in `europe` (keep the rest).
 
-5. Sort `europe` based on Polity IV. 
+5. Sort `europe` based on Polity IV.
 
-6. Repeat Exercises 2-5 using chaining. 
+6. Repeat Exercises 2-5 using chaining.
 
 7. What was the world's mean GDP per capita in 2008? Polity IV score?
 
 8. What was Africa's mean GDP per capita and Polity IV score?
 
-9. What was the poorest country in the world in 2008? Richest? 
+9. What was the poorest country in the world in 2008? Richest?
 
-10. How many countries in Europe are "rich" according to your coding? 
+10. How many countries in Europe are "rich" according to your coding?
 How many are poor? What percentage have Polity IV scores of at least 18?
-
-

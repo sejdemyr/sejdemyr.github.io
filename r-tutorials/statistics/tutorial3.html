@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="https://www.w3.org/1999/xhtml">
 
 <head>
 
@@ -73,8 +73,8 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <h1><span class="header-section-number">1</span> More on For Loops</h1>
 <p>In <a href="tutorial2.html">Tutorial 2</a> we learned to run for loops of the following type:</p>
 <pre class="r"><code>v1 &lt;- c(175, 182, 150, 187, 165)
-v2 &lt;- rep(NA, 5)            
-for(i in 1:5) {              
+v2 &lt;- rep(NA, 5)
+for(i in 1:5) {
     v2[i] &lt;- v1[i] / 100
 }
 v2                         </code></pre>
@@ -139,37 +139,37 @@ for(i in 1:n){
 <pre class="r"><code>lapply(l, dim)     </code></pre>
 <pre><code>## [[1]]
 ## [1] 1386    3
-## 
+##
 ## [[2]]
 ## [1] 1917    3
-## 
+##
 ## [[3]]
 ## [1] 2163    3
-## 
+##
 ## [[4]]
 ## [1] 1768    3
-## 
+##
 ## [[5]]
 ## [1] 1965    3
-## 
+##
 ## [[6]]
 ## [1] 2246    3
-## 
+##
 ## [[7]]
 ## [1] 1791    3
-## 
+##
 ## [[8]]
 ## [1] 1533    3
-## 
+##
 ## [[9]]
 ## [1] 1278    3
-## 
+##
 ## [[10]]
 ## [1] 1552    3
-## 
+##
 ## [[11]]
 ## [1] 1061    3
-## 
+##
 ## [[12]]
 ## [1] 2092    3</code></pre>
 <div id="exercises" class="section level2">
@@ -206,24 +206,24 @@ for(i in 1:n){
 <pre class="r"><code>dat &lt;- read.csv(&quot;nesexample2.csv&quot;)</code></pre>
 <p>Let’s work with the democratic feeling thermometer.</p>
 <pre class="r"><code>summary(dat$therm.dems)</code></pre>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's
 ##     0.0    50.0    60.0    59.8    75.0    97.0     707</code></pre>
-<pre class="r"><code>thd &lt;- na.omit(dat$therm.dems)     #omit NA's in and store variable in vector 
+<pre class="r"><code>thd &lt;- na.omit(dat$therm.dems)     #omit NA's in and store variable in vector
 length(thd)                        #20,045 valid answers </code></pre>
 <pre><code>## [1] 20045</code></pre>
 <p>To illustrate how well we do when we estimate a population mean with a sample mean, we will pretend that the mean of <code>thd</code> is the population mean. This is clearly not true and only used for illustrative purposes.</p>
 <pre class="r"><code>mean(thd)</code></pre>
 <pre><code>## [1] 59.84</code></pre>
 <p>Now let’s draw a random sample of 900 from this variable, and calculate the sample mean and confidence interval associated with the sample mean. For illustrative purposes, we’ll construct 75% confidence intervals.</p>
-<pre class="r"><code>n &lt;- 900                      
+<pre class="r"><code>n &lt;- 900
 
-# Generate a sample and calculate the sample mean 
-smpl &lt;- sample(thd, n)        
+# Generate a sample and calculate the sample mean
+smpl &lt;- sample(thd, n)
 mean(smpl)                    </code></pre>
 <pre><code>## [1] 60.87</code></pre>
 <pre class="r"><code># Generate 75% confidence intervals
 std.err &lt;- function(x) sd(x) / sqrt(length(x))
-z &lt;- qnorm(0.875)                        #find z-score 
+z &lt;- qnorm(0.875)                        #find z-score
 mean(smpl) - z * std.err(smpl)           #lower CI</code></pre>
 <pre><code>## [1] 59.96</code></pre>
 <pre class="r"><code>mean(smpl) + z * std.err(smpl)           #upper CI</code></pre>
@@ -239,12 +239,12 @@ mean(smpl) - z * std.err(smpl)           #lower CI</code></pre>
 <div id="writing-functions" class="section level1">
 <h1><span class="header-section-number">3</span> Writing Functions</h1>
 <p>Functions come in handy for both data management and analysis. In addition, using functions will make your code cleaner. For example, above we created a function called <code>std.err</code> that calculates the standard error of a sample mean, which we then used to generate confidence intervals.</p>
-<pre class="r"><code>thd &lt;- na.omit(dat$therm.dems)  
-n &lt;- 900                      
-smpl &lt;- sample(thd, n)                          
+<pre class="r"><code>thd &lt;- na.omit(dat$therm.dems)
+n &lt;- 900
+smpl &lt;- sample(thd, n)
 
 std.err &lt;- function(x) sd(x) / sqrt(length(x))
-z &lt;- qnorm(0.875)                        #find z-score 
+z &lt;- qnorm(0.875)                        #find z-score
 mean(smpl) - z * std.err(smpl)           #lower CI</code></pre>
 <pre><code>## [1] 59.5</code></pre>
 <pre class="r"><code>mean(smpl) + z * std.err(smpl)           #upper CI</code></pre>
