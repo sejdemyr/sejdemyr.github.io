@@ -1,0 +1,76 @@
+*
+{
+	font-family: Lora,Arial;
+	font-size: 11pt;
+	line-height: 140%;
+}
+
+body
+{
+	text-align: center;
+}
+
+#page
+{
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	max-width: 600px;
+	padding: 10px 0 100px;
+}
+
+@media only screen and (max-width: 768px) {
+	*
+	{
+		font-size: 12pt;
+	}
+    #page
+	{
+       padding-left: 10px;
+       padding-right: 10px;
+    }
+ }
+
+ @media only screen and (max-width: 480px) {
+	*
+	{
+		font-size: 14pt;
+	}
+    #page
+	{
+       padding-left: 5px;
+       padding-right: 5px;
+    }
+ }
+
+h1,
+h2 {
+    font-family: Arial;
+}
+
+h1
+{
+	font-size: 200%;
+	margin: 20px 0 5px;
+}
+
+h2
+{
+	font-size: 150%;
+}
+
+p
+{
+	margin-top: 20px;
+	color: #444;
+}
+
+a
+{
+	color: #666;
+}
+
+a:hover
+{
+	color: black;
+}

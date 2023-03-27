@@ -1,254 +1,90 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Simon Ejdemyr is a Ph.D. Candidate in the Department of Political Science at Stanford University.">
-    <meta name="keywords" content="Simon Ejdemyr, simon ejdemyr, Simon, Ejdemyr, simon, ejdemyr, Stanford, stanford, political science, political science PhD at Stanford">
-
-    <title>Simon Ejdemyr - R Tutorials </title>
-
-    <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-    <!-- Custom grayscale CSS from bootstrap, modified by SE -->
-    <link href="../../css/grayscale-se.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-
-</head>
-
-
-
-<body>
-
-   <section id="r-tutorials" class="container text-left" style="margin-top: 40px">
-
-
-      <div class="col-md-9 col-md-offset-1">
-	<h4> R Tutorials: Basics </h4>
-
-	<p style="font-size: 95%; margin: -20px 0 30px 0">
-	  by <a href="http://stanford.edu/~ejdemyr/"> Simon Ejdemyr </a>
-	</p>
-
-
-	<!--
-	========================================================================
-	-->
-
-	<div class="row">
-	  <div class="col-sm-5">
-	    <p>  <a href="introduction" target="_blank">
-		Introduction </a> </p>
-
-	    <p class="small top-nobuffer">
-	      In this first in a number of tutorials, we’ll cover the
-	      very basics of R: how to execute code; how to install
-	      and load packages; style; and trouble shooting.
-	    </p>
-
-
-	  </div>
-
-
-	  <div class="col-sm-5 col-sm-offset-1">
-	    <p>  <a href="vectors" target="_blank">
-		Vectors </a> </p>
-
-	    <p class="small top-nobuffer">
-	      This tutorial introduces a key object in R: vectors. It
-	      explains how to create different types of vectors, how
-	      to subset them, how to modify them, and how to summarize
-	      them.
-	    </p>
-
-	  </div>
-	</div>
-
-
-
-	<div class="row">
-	  <div class="col-sm-5">
-	    <p>  <a href="dataset-basics" target="_blank">
-		Dataset Basics </a> </p>
-
-	    <p class="small top-nobuffer">
-
-	      This tutorial introduces datasets &mdash; “data frames” in
-	      R. Datasets can be thought of as a collection of vectors
-	      stored as columns. We’ll talk about how to create
-	      datasets and how to read them from file. We’ll also talk
-	      more conceptually about how datasets should be
-	      structured.
-
-	    </p>
-
-	  </div>
-
-
-
-
-	  <div class="col-sm-5 col-sm-offset-1">
-	    <p>  <a href="modifying-data" target="_blank">
-		Modifying Data </a> </p>
-
-	    <p class="small top-nobuffer">
-
-	      Being able to quickly modify datasets &mdash; using tasks like
-	      subsetting, sorting, extracting unique observations,
-	      renaming variables, dropping variables, and creating new
-	      variables &mdash; is critical. This tutorial explains how to
-	      easily do this in R with functions from the dplyr package.
-
-	    </p>
-
-
-	  </div>
-	</div>
-
-
-	<div class="row">
-	  <div class="col-sm-5">
-	    <p>  <a href="collapsing-data/" target="_blank">
-		Collapsing Data </a> </p>
-
-	    <p class="small top-nobuffer">
-
-	      This tutorial explains how to find summary statistics for
-	      different categories in a dataset &mdash; what is often
-	      referred to as collapsing data. Like the tutorial on
-	      modifying data, the tutorial draws on a set of intuitive
-	      and elegant functions from the dplyr package.
-
-	    </p>
-
-	  </div>
-
-
-	  <div class="col-sm-5 col-sm-offset-1">
-	    <p>  <a href="merging-appending" target="_blank">
-		Merging & Appending </a> </p>
-
-	    <p class="small top-nobuffer">
-
-	      This tutorial explains how to combine datasets by merging
-	      or appending them. Merging means transferring columns from
-	      one dataset to another, while appending means transferring
-	      rows from one dataset to another.
-
-	    </p>
-
-	  </div>
-	</div>
-
-
-	<div class="row">
-	  <div class="col-sm-5">
-	    <p>  <a href="wide-and-long" target="_blank">
-		Wide & Long Data </a> </p>
-
-	    <p class="small top-nobuffer">
-
-	      This tutorial explains the difference between long and
-	      wide form datasets, shows why it’s generally preferable
-	      to use long form datasets, and goes over how to convert
-	      datasets from wide to long form.
-
-	    </p>
-
-	  </div>
-
-	  <div class="col-sm-5 col-sm-offset-1">
-	    <p>  <a href="for-loops" target="_blank">
-		For Loops </a> </p>
-
-	    <p class="small top-nobuffer">
-
-	      This tutorial explains how to write for loops &mdash; which
-	      can be useful when you want to iterate a process in R
-	      &mdash; and shows how to use for loops to carry out Monte
-	      Carlo simulations.
-
-	    </p>
-
-	  </div>
-
-
-	</div>
-
-
-	<div class="row">
-
-	  <div class="col-sm-5">
-	    <p>  <a href="writing-functions" target="_blank">
-		Writing Functions </a> </p>
-
-	    <p class="small top-nobuffer">
-
-	      This tutorial explains how you can write your own
-	      functions in R. After explaining the basics, the
-	      tutorial dives into two data science applications for
-	      writing functions.
-
-	    </p>
-
-	  </div>
-
-
-	  <div class="col-sm-5 col-sm-offset-1">
-	    <p>  <a href="tables-in-r" target="_blank">
-	         Tables in R </a> </p>
-
-	    <p class="small top-nobuffer">
-
-	      This tutorial explains how to create and export tables
-	      in R. It was originally designed for undergraduate
-	      students at Stanford who tend to use Word rather than
-	      LaTeX.
-
-	    </p>
-
-	  </div>
-
-	</div>
-
-
-
-
-	<!--
-	========================================================================
-	  -->
-
-      </div>
-    </section>
-
-
-
-
-
-
-
-
-
-
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-grayscale/1.0.5/js/grayscale.min.js"></script>
-
-
-</body>
+<!doctype html>
+<html>
+	<head>
+		<title>Simon Ejdemyr - R Tutorials</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="Simon Ejdemyr is a Data Scientist.">
+
+		<link rel="stylesheet" type="text/css" href="../../css/style.css">
+		<link href="https://fonts.googleapis.com/css?family=Lora:400,500,600,700,400italic,700italic" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+		<div id="page">
+			<h1>R Tutorials: Basics </h1>
+			By <a href="../../"> Simon Ejdemyr </a>
+			<ul>
+				<li>
+					<a href="introduction"> Introduction.</a> In this first in
+					a number of tutorials, we'll cover the very basics of R: how to
+					execute code; how to install and load packages; style; and
+					trouble shooting.
+				</li>
+				<li>
+					<a href="vectors"> Vectors.</a> This tutorial introduces a
+					key object in R: vectors. It explains how to create
+					different types of vectors, how to subset them, how to
+					modify them, and how to summarize them.
+				</li>
+				<li>
+					<a href="dataset-basics"> Dataset Basics.</a> This tutorial
+					introduces datasets &mdash; “data frames” in R. Datasets can
+					be thought of as a collection of vectors stored as columns.
+					We’ll talk about how to create datasets and how to read them
+					from file. We’ll also talk more conceptually about how
+					datasets should be structured.
+				</li>
+				<li>
+					<a href="modifying-data"> Modifying Data.</a> Being able to
+					quickly modify datasets &mdash; using tasks like subsetting,
+					sorting, extracting unique observations, renaming variables,
+					dropping variables, and creating new variables &mdash; is
+					critical. This tutorial explains how to easily do this in R
+					with functions from the dplyr package.
+				</li>
+				<li>
+					<a href="collapsing-data"> Collapsing Data.</a> This
+					tutorial explains how to find summary statistics for
+					different categories in a dataset &mdash; what is often
+					referred to as collapsing data. Like the tutorial on
+					modifying data, the tutorial draws on a set of intuitive and
+					elegant functions from the dplyr package.
+				</li>
+				<li>
+					<a href="merging-appending"> Merging &amp; Appending.</a>
+					This tutorial explains how to combine datasets by merging or
+					appending them. Merging means transferring columns from one
+					dataset to another, while appending means transferring rows
+					from one dataset to another.
+				</li>
+				<li>
+					<a href="wide-and-long"> Wide &amp; Long Data.</a>
+					This tutorial explains the difference between long and wide
+					form datasets, shows why it's generally preferable to use
+					long form datasets, and goes over how to convert datasets
+					from wide to long form.
+				</li>
+				<li>
+					<a href="for-loops"> For Loops.</a>
+					This tutorial explains how to write for loops &mdash; which
+					can be useful when you want to iterate a process in R
+					&mdash; and shows how to use for loops to carry out Monte
+					Carlo simulations.
+				</li>
+				<li>
+					<a href="writing-functions"> Writing Functions.</a>
+					This tutorial explains how you can write your own functions
+					in R. After explaining the basics, the tutorial dives into
+					two data science applications for writing functions.
+				</li>
+				<li>
+					<a href="tables-in-r"> Tables in R.</a>
+					This tutorial explains how to create and export tables
+					in R. It was originally designed for undergraduate
+					students at Stanford who tend to use Word rather than
+					LaTeX.
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>
